@@ -3,5 +3,5 @@
   "name": "Large beast",
   "parent": "base.quadruped",
   "status": "active",
-  "examples": "Bear, boar, tortoise"
+  "examples": "Bear, boar, tortoise, four-legged dinosaur"
 }
