@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill point rules (two tracks)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spirit_points",
+    "morph_points"
+  ],
+  "properties": {
+    "spirit_points": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "track",
+        "spendable_on"
+      ],
+      "properties": {
+        "track": {
+          "const": "spirit"
+        },
+        "spendable_on": {
+          "const": "any_owned_morph"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "morph_points": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "track",
+        "spendable_on"
+      ],
+      "properties": {
+        "track": {
+          "const": "morph"
+        },
+        "spendable_on": {
+          "const": "earning_morph_only"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

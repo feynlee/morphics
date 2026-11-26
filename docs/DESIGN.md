@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.25)
+# Morphics: Design Doc (v0.26)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -37,7 +37,7 @@ Decided by Ziyue:
 - Starters are **very plain and basic archetypes**. Themed variants (such as Ember Fox) are farmable, not starters.
 - Roles come from a **skill tree**. Ziyue will detail it later (section 4c, pending).
 - Skins are **named after the morph** (section 4).
-- Skill points are **earned only, through experience and quest rewards. They are never bought with currency** (section 4d).
+- Skill points are **earned only, through experience and quest rewards. They are never bought with currency.** Two experience tracks: the player (spirit) track, whose points can be spent on any owned morph, and a per-morph track, whose points must be earned in that morph (section 4d).
 - **Prism pricing is deferred.** No Prism prices are set now. Ziyue will cover it later in development (see `REMINDERS.md`).
 - Retention goal: a "continual playthrough" game. There is always something new to unlock or farm, so the player's investment feels worthwhile.
 
@@ -251,7 +251,7 @@ Body-type cue (recommendation, for Ziyue to decide):
 - Result: roles are not fixed labels. A role is what a player builds on the tree. The start node is a head start, not a limit.
 
 **How it works with the other systems**
-- Players spend **skill points** on nodes (sources in section 4d).
+- Players spend **skill points** on nodes: spirit points on any owned morph, and each morph's own morph points on that morph only (section 4d).
 - Assumption to confirm: **each form has its own progress** on the shared tree, starting at that form's node. Switching morph switches to that form's build. (Open: or is there one build per player?)
 - The `role` field on a form is a **placeholder** and may become a label derived from where the player has gone on the tree. Do not rely on it for gameplay.
 - Nodes will grant skills, stat changes, and passives. Which skills attach to which nodes is pending.
@@ -273,40 +273,64 @@ Body-type cue (recommendation, for Ziyue to decide):
 6. Do skills carry between morphs? (Default: no, each morph has its own skills from its own build.)
 7. Does each skill on the tree stay in a body type, or can any form learn any skill? (Body types change animations. A skill needs an animation that fits the body.)
 
-## 4d. Skill points: earned only, never bought
-**Decided by Ziyue: skill points cannot be purchased with currency.** They are earned only in two ways:
-1. **Experience** (farming XP by playing).
-2. **Quest rewards.**
+## 4d. Experience tracks and skill points
+**Decided by Ziyue:**
+- Skill points cannot be purchased with currency. They are earned only through **experience** (farming XP) and **quest rewards**.
+- There are **two experience tracks**: the player (spirit) track and a per-morph track.
 
-Skill points feed the skill tree (section 4c). They are not sold in the market, not skippable with Spectrums or Prisms, and not in any bundle or paid pass track. No price of any kind can be attached to them.
+Skill points feed the skill tree (section 4c). They are not sold in the market, not skippable with Spectrums or Prisms, and not in any bundle or paid pass track.
 
-**Sources** (listed in `data/skill_point_sources.json`; amounts are pending the tree design):
+### The two tracks
+| | Spirit track (the player) | Morph track (one per morph) |
+|---|---|---|
+| Who earns it | The player, the spirit that inhabits any form | Each morph, on its own |
+| Experience | Player level | Morph level |
+| Skill points | **Spirit points** | **Morph points** |
+| Earned | In any form, in any mission | **Only while playing that morph** |
+| Spent on | **Any morph the player owns**, including a newly gained one | **Only the morph that earned them** |
 
-*Experience*
-- Level-ups.
-- Form mastery levels.
+**What this means**
+- The spirit track is the player's overall progress. The spirit points are a pool that the player can spend on **any morph they have**.
+- When the player **gains a new morph, all their spirit points can be spent on it right away.** The new morph is playable and buildable from the first minute.
+- The **morph-specific experience and morph points must be earned** in that morph. A new morph starts at morph level 1 with no morph points. So every morph has its own growth to look forward to, and mastery cannot be skipped.
+- Morph points never come from the spirit track, and spirit points are never turned into morph points. The two stay separate.
 
-*Quest rewards*
+**Rules (enforced by the validator)**
+- Every skill point source belongs to one track. A spirit-track source grants spirit points only. A morph-track source grants morph points only, and it requires that the player is playing that morph.
+- Morph points are **never granted or spent through the player track.**
+- Spirit points can be spent on any owned morph. Morph points can be spent only on the morph that earned them. These are fixed in `data/skill_point_rules.json`, and the validator rejects any change.
+- No price, skip price, or purchase can be attached to spirit points or morph points.
+
+### Sources (`data/skill_point_sources.json`; amounts are pending the tree design)
+
+*Spirit track (earned in any form)*
+- Player level-ups (experience).
 - Mission clears, and optional mission objectives.
 - First defeat of a boss, and first defeat of each enemy category.
 - Discoveries and exploration.
 - Challenges and achievements.
 - Daily and weekly goals.
 - Co-op milestones.
-- **The first time a morph is earned in play (by farming)** and the first time a piece of gear is earned in play. Ziyue wants unlocks to be rewarding. Only earning counts: a morph or gear that is bought (market, Prisms, Spectrum skip) gives no skill points. (Open question: does skipping with Spectrum count as earned? Default: no. Skip means no quest was done.)
+- The first time a morph is earned in play (by farming), and the first time a piece of gear is earned in play. Only earning counts: a morph or gear that is bought (market, Prisms, Spectrum skip) gives no skill points. (Open question: does a Spectrum skip count as earned? Default: no.)
 - Collection milestones, counted from earned items only.
 - Event quests.
-- The **free** pass track. The paid track never gives skill points, because that would sell them. (Open question: should the pass give skill points at all? Default: free track only.)
+- The **free** pass track. The paid track never gives skill points. (Open question: should the pass give points at all? Default: free track only.)
 
-**Rules**
-- Skill points are **earned in play**, so they are never pay-to-win. A player who spends money gets the same skill points as one who does not.
+*Morph track (earned only while playing that morph)*
+- Morph level-ups (morph experience).
+- Morph challenges: goals done with that morph.
+- Morph mission objectives done with that morph.
+
+### Design notes
+- Why two tracks: the spirit track makes a new morph usable right away, so players are not afraid to try morphs. The morph track keeps each morph worth playing for its own sake, which helps the "always something to farm" goal and the value of owning many morphs.
+- Balance: a paid morph and an earned morph both start with zero morph points, and both can use the player's spirit points. Spending money gives no skill points, so power stays equal (section 5).
 - Every source gives a fair amount, so no single source is required.
 - The point totals and the tree costs are set after Ziyue defines the tree.
 
-**Validator**
-- `data/skill_point_sources.json` allows only the `experience` and `quest` channels. There is no purchase channel.
-- A source cannot carry any price field.
-- The validator also scans all data and rejects any entry that links skill points to a price, skip price, Prisms, Spectrum, currency, or purchase. I tested these cases.
+**Open questions for Ziyue**
+1. Are spirit points assigned to a morph for good, or can the player move them between morphs? (Default: assigned per morph and movable only with a respec, once respec is defined.)
+2. How are spirit points and morph points mixed on the tree? (Default: either kind can pay for any node of the morph that holds them. Some nodes may need morph points only, to be decided with the tree.)
+3. Is there a cap on how many spirit points one morph can hold? (Default: no cap.)
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.

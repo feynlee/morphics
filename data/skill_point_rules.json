@@ -1,0 +1,12 @@
+{
+  "spirit_points": {
+    "track": "spirit",
+    "spendable_on": "any_owned_morph",
+    "note": "Earned by the player (the spirit). A newly gained morph can use them at once."
+  },
+  "morph_points": {
+    "track": "morph",
+    "spendable_on": "earning_morph_only",
+    "note": "Earned only while playing that morph. Never granted or spent through the spirit track."
+  }
+}

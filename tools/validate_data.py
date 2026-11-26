@@ -6,6 +6,10 @@ Needs the `jsonschema` package. Cross checks:
   category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
 - skill points are never sold: data/skill_point_sources.json has only experience and quest
   channels, and no data file may attach a currency price, skip, or purchase to skill points
+- two skill point tracks: a spirit-track source awards spirit_points only, a morph-track source awards
+  morph_points only and requires the active morph; morph_points are never granted or spent through the
+  spirit track (data/skill_point_rules.json: spirit_points spend on any owned morph, morph_points only
+  on the morph that earned them)
 - skill tree (data/skill_tree.json): edges name real nodes, the tree is connected (every node can be
   reached from every other, so players can move anywhere), and every form has a tree_start node
 - no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
@@ -106,8 +110,9 @@ PRICE_KEYS = {"price", "prices", "cost", "skip", "prisms", "spectrum", "currency
 def find_skill_point_price(node, path):
     """Yield paths where skill points are given a currency price or are bought."""
     if isinstance(node, dict):
+        words = ("skill_point", "spirit_points", "morph_points")
         mentions = any(
-            "skill_point" in str(k).lower() or (isinstance(v, str) and "skill_point" in v.lower())
+            any(w in str(k).lower() for w in words) or (isinstance(v, str) and any(w in v.lower() for w in words))
             for k, v in node.items()
         )
         if mentions and any(k in PRICE_KEYS for k in node):
@@ -126,6 +131,18 @@ def check_skill_points():
     doc = json.loads(sources_file.read_text())
     for err in Draft202012Validator(schema).iter_errors(doc):
         errors.append(f"data/skill_point_sources.json: {err.message}")
+    for s in doc.get("sources", []):
+        if s.get("track") == "spirit" and s.get("awards") != "spirit_points":
+            errors.append(f"{s['id']}: the spirit track cannot grant {s.get('awards')}. Morph points are never granted through the player track")
+        if s.get("track") == "morph":
+            if s.get("awards") != "morph_points":
+                errors.append(f"{s['id']}: the morph track must grant morph_points, not {s.get('awards')}")
+            if s.get("requires_active_morph") is not True:
+                errors.append(f"{s['id']}: a morph-track source must require playing that morph")
+    rules_schema = json.loads((DATA / "schema" / "skill_point_rules.schema.json").read_text())
+    rules = json.loads((DATA / "skill_point_rules.json").read_text())
+    for err in Draft202012Validator(rules_schema).iter_errors(rules):
+        errors.append(f"data/skill_point_rules.json: {err.message}")
     ids = [s.get("id") for s in doc.get("sources", [])]
     if len(ids) != len(set(ids)):
         errors.append("data/skill_point_sources.json: duplicate source id")
