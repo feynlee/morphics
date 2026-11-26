@@ -3,7 +3,7 @@
   "name": "Small canine",
   "parent": "base.walker.canine",
   "status": "active",
-  "examples": "Fox, small canine, otter (provisional)",
+  "examples": "Fox, small canine",
   "animation_overrides": [
     "run",
     "jump"

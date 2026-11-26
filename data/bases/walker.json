@@ -2,5 +2,5 @@
   "id": "base.walker",
   "name": "Walker",
   "status": "active",
-  "description": "Moves on legs on the ground. Four-legged animals such as otters are Walkers. Subcategories hold the skeletons and gaits."
+  "description": "Moves on legs on the ground. Subcategories hold the skeletons and gaits."
 }

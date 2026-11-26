@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.59)
+# Morphics: Design Doc (v0.60)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -234,7 +234,7 @@ Decided by Ziyue (applied in v0.50):
 - A **subcategory** is a unique **skeleton (rig), gait set, base mesh and Spectrum color**. Skins attach to the subcategory mesh. A morph is a skin plus skills on a subcategory.
 - A **size** (small, medium, large) is a scale of the subcategory mesh. It inherits the rig, gait, mesh and color, and may override a few animations.
 - A creature that flies is a Flyer, even if it can also walk. So the Gale Heron is a Flier.
-- **Movement rule (Ziyue):** if it flies, it is a Flyer, even if it can also walk. If it has legs and walks, it is a Walker. If it has fins or flippers, it is a Swimmer. So an **otter has four legs and is a Beast (Walker, Green)**, and a **seal has flippers and is a Swimmer (Blue)**. A seal needs its own swimmer subcategory later. **For now a dragon is a Flyer (Yellow)** (Ziyue). **A werewolf is a Humanoid (Red)** (Ziyue). Other beast-people with a human body, such as a fox-person, follow the same rule and are Humanoids (confirmed). **No winged humanoids or centaurs for now** (Ziyue will say when he decides). **Raptor and Tyrant stay Green** (confirmed). It uses the Flier subcategory, large size, until a better fit is designed.
+- **Movement rule (Ziyue):** if it flies, it is a Flyer, even if it can also walk. If it has legs and walks, it is a Walker. If it has fins or flippers, it is a Swimmer. So a **seal has flippers and is a Swimmer (Blue)**. **No otter for now** (Ziyue). A seal needs its own swimmer subcategory later. **For now a dragon is a Flyer (Yellow)** (Ziyue). **A werewolf is a Humanoid (Red)** (Ziyue). Other beast-people with a human body, such as a fox-person, follow the same rule and are Humanoids (confirmed). **No winged humanoids or centaurs for now** (Ziyue will say when he decides). **Raptor and Tyrant stay Green** (confirmed). It uses the Flier subcategory, large size, until a better fit is designed.
 - Four-legged dinosaurs are large beasts. Raptor and Tyrant are counted as beasts for now. All of these are Green.
 
 ```
@@ -617,10 +617,9 @@ Decided questions were removed. Still open:
 
 **Design questions (body types), first priority.** The first build is a proof of concept with three forms: a human, a canine (Wolf) and a hawk.
 - **Swimmer order:** decided. The first swimmer is the Shark. Which swimmer subcategory comes next (fish, sea mammals, crustaceans, eels) is open and not urgent.
-- **Otter subcategory:** decided that an otter is a Beast. Which subcategory? Canine is the nearest, but an otter's bounding gait may need its own (mustelid) subcategory. For now it is listed as a provisional canine example.
 - **Hybrids:** a dragon is a Flyer for now (decided). Does it need its own Flyer subcategory later, since no flier rig has four legs? Winged humanoids and centaurs are on hold: Ziyue will say when he decides.
-- **Build order after the proof of concept:** hoofed and shelled (they have forms), feline, or a first swimmer?
-- **Limited morphs:** can a pass morph use a subcategory nobody can farm yet (Prism Stag under hoofed)?
+- **Build order after the proof of concept:** decided. **Feline next, then Shark** (Ziyue). Hoofed and shelled wait.
+- **Limited morphs, in plain words:** some morphs are sold only for a limited time, for example with a season pass. The Prism Stag (a deer) is one. Question: should a limited morph always be a kind of creature that players can already farm in the normal game? Or may we release a limited morph first, for example a shark, before players can farm any shark in the normal game? Example: the Prism Stag is a deer, but deer are not buildable yet. Which is better?
 
 Other open questions:
 1. **Art quality bar**: Claude's art is made with scripts and tools (see `ART_PIPELINE.md`). Visual quality is the product, so Ziyue should judge the first form and set the bar. If it is not enough, we change the plan (for example: add a human artist for hero forms, or use licensed assets).

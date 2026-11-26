@@ -8,7 +8,7 @@ First we build a proof of concept with three forms, one per top group of the bod
 - **Beast:** a canine (`base.walker.canine.medium`, form Wolf). Green.
 - **Winged:** a hawk (`base.flyer.flier.medium`, form Hawk). Yellow.
 
-The other subcategories, forms and colors stay in the data as planned entries. They are not built until the proof of concept works. The Hawk subcategory (Flier) is `planned` in the data. It becomes `active` when the Flier rig and art exist.
+Build order after the proof of concept (Ziyue): **Feline next, then Shark**. The other subcategories, forms and colors stay in the data as planned entries. They are not built until the proof of concept works. The Hawk subcategory (Flier) is `planned` in the data. It becomes `active` when the Flier rig and art exist.
 
 
 ## Done in this scaffold
