@@ -5,7 +5,7 @@ Needs the `jsonschema` package. Cross checks:
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
   a root has required_animations, a child is not "active" under a "planned" parent
 - animation_overrides only name animations that the root requires
-- a starter form is free (unlock type "free")
+- a starter form is never sold: its unlock type is "free" or "earn"
 - exactly one starter form per active top-level body type; at most one per planned one
 - a form's base exists
 - a skin's base exists
@@ -108,8 +108,8 @@ def main():
         for sid in form.get("skills", []):
             if sid not in skills:
                 errors.append(f"{form['id']}: unknown skill {sid}")
-        if form.get("starter") and form["unlock"]["type"] != "free":
-            errors.append(f"{form['id']}: a starter form must be free")
+        if form.get("starter") and form["unlock"]["type"] not in ("free", "earn"):
+            errors.append(f"{form['id']}: a starter form must be free or earned, not {form['unlock']['type']}")
         sid = form.get("default_skin")
         skin = skins.get(sid)
         if skin is None:

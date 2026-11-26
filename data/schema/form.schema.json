@@ -127,7 +127,7 @@
     "starter": {
       "type": "boolean",
       "default": false,
-      "description": "True if the player can inhabit this form as the first form (the opening). Starter forms must be free."
+      "description": "True if the player can inhabit this form as the first form (the opening). Starter forms are never sold. The one the player picks is granted in setup. The others are earned in play (unlock type earn)."
     }
   }
 }

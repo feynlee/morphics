@@ -21,8 +21,8 @@
   "model": "",
   "default_skin": "skin.gale_heron.default",
   "unlock": {
-    "type": "free",
-    "cost": 0
+    "type": "earn",
+    "cost": 600
   },
   "starter": true
 }

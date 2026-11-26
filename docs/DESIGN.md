@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.14)
+# Morphics: Design Doc (v0.15)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -65,8 +65,8 @@ Target length: a few minutes. It is mostly presentation, so it is cheap to build
 **How the first form is chosen (decided)**
 - During setup, the player **picks a starter form**.
 - There is **one starter per top-level body type**. Each starter is a very basic form of that body type, so the choice shows the variety of the game on the first screen.
-- Starters are free. They are marked `starter: true` in their JSON.
-- Validator rule: **exactly one starter per top-level body type**. For a body type that is still `planned` (no art yet), zero starters are allowed until it becomes `active`, and at most one. A starter must be free.
+- The starter the player picks is **granted free** in setup. All the other starters are **free to acquire through farming and gameplay** (decided). They are marked `starter: true` in their JSON.
+- Validator rule: **exactly one starter per top-level body type**. For a body type that is still `planned` (no art yet), zero starters are allowed until it becomes `active`, and at most one. A starter is never sold: its unlock type is `free` or `earn`, never `buy`, `pass`, or `event`.
 - Starters should be plain, with no strong elemental or special theme. Special forms are for the store and for farming.
 
 Starter slots:
@@ -81,11 +81,14 @@ Starter slots:
 Notes:
 - The starters are placeholders. In particular, Ember Fox and Gale Heron have a themed look and should be replaced with plain starters (for example a plain wolf and a plain hawk) before launch.
 - Adding a new top-level body type adds a new starter slot. The picker shows one card per top-level body type.
-- Players keep access to all starters. A player who picks one can later get the others (they are free), so the pick is a first step, not a lock.
+- **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They come from missions: form fragments and Shards, like other earned forms. They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
+- Starters are never sold for Prisms. (This keeps the promise that the basic forms are always free. If we later want a convenience purchase to skip farming, that is a separate decision.)
+- Data: starters use unlock type `earn` with a Shards or fragment cost. The picked starter is granted by the setup rule and does not use that cost.
+- Farming goal: the unpicked starters are an early target for new players, and they give a reason to play missions in the first sessions.
 - Skins for a starter are sold like any other skin. Starters are a good first target for early skin sales, because every player owns one.
 
 Open questions for Ziyue:
-- Do all starters stay free for everyone, or can a player who picks one get the other starters only by earning them in play? (Default: all starters are free to unlock in the hub, in any order.)
+- (Answered) Unpicked starters are free to acquire through farming and gameplay.
 - Does the spirit get cosmetics (aura, trail) that are sold? (Default: no. The spirit is setup-only and not seen in play, so it would not sell.)
 
 ## 3. Core loop

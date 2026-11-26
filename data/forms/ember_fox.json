@@ -21,8 +21,8 @@
   "model": "",
   "default_skin": "skin.ember_fox.default",
   "unlock": {
-    "type": "free",
-    "cost": 0
+    "type": "earn",
+    "cost": 600
   },
   "starter": true
 }
