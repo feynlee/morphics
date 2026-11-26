@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.5)
+# Morphics: Design Doc (v0.6)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -21,6 +21,7 @@ Decided by Ziyue:
 - Launch content: as many forms as possible. Ziyue and Claude design the forms together.
 - Monetization: forms are sold for an in-game currency. Currency bundles are sold on Steam.
 - Audience: teen and older (teen+).
+- Base categories: every form declares a base category (body type) and a size variant. Forms in one base share a skeleton and animations. See section 4b.
 - Art: Claude makes the 3D art and animations (models, rigs, animations, VFX briefs), with Ziyue's direction and approval.
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
@@ -64,6 +65,8 @@ This lets us add forms without code changes.
 | id | Stable unique key |
 | name, lore | Display text |
 | role | Tank, Striker, Support, Scout, Controller |
+| base, variant | Base category and size variant (see section 4b). Sets skeleton and shared animations. |
+| extra_animations[] | Optional form-specific animations on top of the base set |
 | base_stats | HP, speed, power, defense |
 | skills[] | 1 basic attack, 2 active skills, 1 ultimate |
 | passives[] | Always-on traits (for example: "faster on water") |
@@ -92,6 +95,33 @@ Effects use a small shared set of building blocks (damage, heal, push, status, s
 New forms mostly recombine these blocks.
 
 A JSON schema checks every data file in CI before import.
+
+## 4b. Base categories
+A **base category** is a body type. Forms of one base share a skeleton and one animation set.
+This is what lets us make many forms: a new form is a new look plus skills, not a new animation set.
+
+Structure: **base > variant > form (submorph)**.
+- **Base**: the body type and skeleton (for example, humanoid).
+- **Variant**: a size or proportion inside the base (for example, short humanoid).
+- **Form**: the actual morph (for example, a dwarf).
+
+| Base | Variants | Example forms | Status |
+|---|---|---|---|
+| Humanoid | medium, short, large | human, orc, elf / dwarf, gnome, halfling / ogre, giant | active |
+| Four-legged | lean, heavy | large cat, large canine / bear, boar | active |
+| Bird | medium, large | heron, hawk / eagle | planned |
+| Bipedal dinosaur | medium, large | raptor / rex type | planned |
+
+Rules:
+- Every form declares `base` and `variant` in its JSON. The validator rejects an unknown base or variant.
+- All forms in a base use the same required animation list (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death).
+- A variant reuses the base animations, retargeted or scaled to its proportions.
+- A form may add `extra_animations` for its own signature moves.
+- New bases are added as data (`data/bases/*.json`). A new base needs a new skeleton and a new animation set, so it is a bigger task than a new form.
+- Skins stay on their form's skeleton, as before.
+- Gameplay: the base sets default movement feel and hitbox size range. A form can change them within limits.
+
+Open point for Ziyue: should co-op players be able to see which base a teammate is? (Default: no, only the look.)
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.

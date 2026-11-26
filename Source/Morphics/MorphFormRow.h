@@ -18,6 +18,10 @@ struct FMorphFormRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FText DisplayName;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString Role;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString Rarity;
+	/** Base category (skeleton and shared animations), for example base.quadruped. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString BaseId;
+	/** Variant inside the base (size or proportion). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString VariantId;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float Hp = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float Speed = 1.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float Power = 1.f;

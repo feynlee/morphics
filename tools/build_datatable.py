@@ -22,6 +22,8 @@ def row(form):
         "DisplayName": form["name"],
         "Role": form["role"],
         "Rarity": form["rarity"],
+        "BaseId": form["base"],
+        "VariantId": form["variant"],
         "Hp": stats["hp"],
         "Speed": stats["speed"],
         "Power": stats["power"],

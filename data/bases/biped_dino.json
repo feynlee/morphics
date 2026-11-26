@@ -1,0 +1,33 @@
+{
+  "id": "base.biped_dino",
+  "name": "Bipedal dinosaur",
+  "status": "planned",
+  "description": "Two strong legs, a tail, and small or no arms.",
+  "variants": [
+    {
+      "id": "medium",
+      "name": "Medium biped dino",
+      "examples": "Raptor"
+    },
+    {
+      "id": "large",
+      "name": "Large biped dino",
+      "examples": "Rex type"
+    }
+  ],
+  "skeleton": "",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ]
+}
