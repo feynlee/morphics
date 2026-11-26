@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.27)
+# Morphics: Design Doc (v0.28)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -256,6 +256,15 @@ Body-type cue (recommendation, for Ziyue to decide):
 - **Any points can buy these nodes**: spirit points or morph points. There is no special currency for them.
 - The validator checks that each of these nodes names a real body type, that every form has base-variant nodes it can invest in, and that the rules file keeps them payable with any points.
 
+**Respec (decided: it has a cost)**
+- A player can respec a morph's tree (undo node choices and spend the points again), and **respec costs Spectrums**. (Ziyue said "likely": Spectrums is the working decision.)
+- **Amount and rules are pending.** They will be set later. Not decided yet: the amount, whether the first respec is free, whether the cost scales or is per node or for the whole tree, and any cooldown.
+- Assumption to confirm: the cost is paid in the respecced morph's own Spectrum (the color of its body type).
+- Respec returns the points that were spent on that morph's tree. It never changes the spirit balance, which is shared (section 4d).
+- Prisms are not used for respec for now. (The validator allows only Spectrums. It can change if Ziyue decides otherwise.)
+- Data: `data/respec.json` holds the cost with `status: pending` and no amount. The validator requires that a respec cost is declared, that it is in Spectrums, that a pending cost has a null amount, and that a cost marked `set` has a whole-number amount.
+- Reminder: set the respec cost and rules before M2 (`REMINDERS.md`).
+
 **How it works with the other systems**
 - Players spend **skill points** on nodes: spirit points on any owned morph, and each morph's own morph points on that morph only (section 4d).
 - **Each morph has its own build** on the shared tree, starting at that morph's node. Switching morph switches to that morph's build. The spirit points are shared, so every morph's build can use the full spirit balance.
@@ -272,7 +281,7 @@ Body-type cue (recommendation, for Ziyue to decide):
 
 **Pending: Ziyue's detailed tree design.** Open questions for when Ziyue details it:
 1. Node types and sizes (small, notable, keystone), like Path of Exile? Or a grid like Final Fantasy X's Sphere Grid?
-2. Respec: can a player undo node choices on one morph's tree, and does it cost anything? (See section 4d. Default: free or cheap early on.)
+2. Respec rules: the cost is decided (Spectrums, pending amount, see above). Left to set: the amount, free first respec, scaling, and any cooldown.
 3. Are there locked areas that need a gate (a level or an item)?
 4. How many nodes, and how much does each cost? (There is no point cap, so tree size and costs decide how long the "always something to earn" loop lasts.)
 5. Does each skill stay within a body type, or can any form learn any skill? (Body types change animations. A skill needs an animation that fits the body.)
@@ -333,8 +342,7 @@ Skill points feed the skill tree (section 4c). They are not sold in the market, 
 - Every source gives a fair amount, so no single source is required.
 - The point totals and the tree costs are set after Ziyue defines the tree.
 
-**Open question for Ziyue**
-- **Respec:** can a player undo node choices on a morph's tree (a respec), and does it cost anything? Spirit points do not move between morphs (they are shared), so this is only about undoing choices inside one morph's tree. (Default: free or cheap respec early on. Needs Ziyue's rule.)
+**Respec** is covered in section 4c: it costs Spectrums, with the amount and rules pending. Spirit points are never moved or respec'd between morphs.
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.

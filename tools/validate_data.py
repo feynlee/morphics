@@ -12,6 +12,8 @@ Needs the `jsonschema` package. Cross checks:
   on the morph that earned them)
 - no cap on spirit points or morph points (data/skill_point_rules.json); spirit points are shared by
   every morph; base-variant tree nodes name a real body type and every form has one it can invest in
+- respec cost (data/respec.json): a respec cost is declared, in Spectrums. While pending the amount is
+  null. Once set it must be a whole number of at least 1
 - skill tree (data/skill_tree.json): edges name real nodes, the tree is connected (every node can be
   reached from every other, so players can move anywhere), and every form has a tree_start node
 - no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
@@ -287,6 +289,16 @@ def main():
     for b in bases.values():
         if "parent" not in b and b.get("status") == "active" and b["id"] not in seen_drop:
             errors.append(f"data/drops.json: active body type {b['id']} needs a drop entry")
+
+    respec = json.loads((DATA / "respec.json").read_text())
+    respec_schema = json.loads((DATA / "schema" / "respec.schema.json").read_text())
+    for err in Draft202012Validator(respec_schema).iter_errors(respec):
+        errors.append(f"data/respec.json: {err.message}")
+    cost = respec.get("cost", {})
+    if cost.get("status") == "pending" and cost.get("amount") is not None:
+        errors.append("data/respec.json: the respec cost is pending, so the amount must be null")
+    if cost.get("status") == "set" and not isinstance(cost.get("amount"), int):
+        errors.append("data/respec.json: the respec cost is set, so it needs a whole-number amount")
 
     tree = json.loads((DATA / "skill_tree.json").read_text())
     tree_schema = json.loads((DATA / "schema" / "skill_tree.schema.json").read_text())

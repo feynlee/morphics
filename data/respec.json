@@ -1,0 +1,12 @@
+{
+  "cost": {
+    "currency": "spectrum",
+    "spectrum_color": "morph_own",
+    "amount": null,
+    "status": "pending"
+  },
+  "rules": {
+    "status": "pending",
+    "note": "Respecting a morph's skill tree costs Spectrums (likely). The amount, the exact rules (free first respec, scaling, per node or full), and the Spectrum color are set later by Ziyue."
+  }
+}
