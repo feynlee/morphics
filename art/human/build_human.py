@@ -272,6 +272,9 @@ if "--render" in sys.argv:
     for name, (loc, tgt, lens) in views.items():
         L.render_still(os.path.join(OUT, f"human_{name}.png"), L.camera(loc, tgt, name, lens), samples=int(os.environ.get("SAMPLES", "32")))
         print("rendered", name)
+if "--sideattack" in sys.argv:
+    L.build_stage()
+    L.contact_sheet(arm_obj, ["attack_basic", "jump"], L.camera((5.5, 0.1, 0.9), (0, 0, 0.8), "side", 60), os.path.join(OUT, "human_side_check.png"), tiles=6)
 if "--sheet" in sys.argv:
     cam = L.camera((4.4, 3.4, 1.2), (0, 0, 0.8), "sheet", 55)
     L.contact_sheet(arm_obj, [a[0] for a in ACTIONS], cam, os.path.join(OUT, "human_anim_sheet.png"))

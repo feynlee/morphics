@@ -23,6 +23,15 @@ for i, a in enumerate(sys.argv):
 os.makedirs(OUT, exist_ok=True)
 scene = L.reset()
 
+def Z(z):
+    """Shorter legs: the body sits lower; the first draft had legs 0.33 m long."""
+    return z * 0.70 if z < 0.33 else z - 0.099
+
+
+def zt(pt):
+    return (pt[0], pt[1], Z(pt[2]))
+
+
 # ---------------------------------------------------------------- palette (flat, saturated)
 RUSSET, DARK, CREAM, GOLD, CAP = (lin((0.82, 0.46, 0.22)), lin((0.36, 0.22, 0.16)), lin((1.0, 0.93, 0.74)),
                                   lin((1.0, 0.80, 0.22)), lin((0.52, 0.30, 0.18)))
@@ -33,9 +42,9 @@ P = {
     "pelvis": (0, -0.14, 0.34, 0.100, 0.100),
     "spine": (0, -0.02, 0.40, 0.125, 0.125),
     "chest": (0, 0.08, 0.46, 0.135, 0.135),
-    "neck": (0, 0.13, 0.56, 0.085, 0.085),
-    "head": (0, 0.16, 0.665, 0.115, 0.115),
-    "crown": (0, 0.155, 0.745, 0.080, 0.080),
+    "neck": (0, 0.12, 0.53, 0.090, 0.090),
+    "head": (0, 0.16, 0.605, 0.120, 0.115),
+    "crown": (0, 0.155, 0.685, 0.085, 0.080),
     "tail_1": (0, -0.24, 0.34, 0.055, 0.035),
     "tail_2": (0, -0.34, 0.32, 0.035, 0.022),
 }
@@ -63,8 +72,8 @@ L.clean_and_decimate(body, TARGET_TRIS)
 BODY_TRIS = L.tri_count(body)
 
 # face points on the real surface
-eye = L.surface(body, 0.078, 0.685)
-cheek = L.surface(body, 0.085, 0.64)
+eye = L.surface(body, 0.080, 0.625)
+cheek = L.surface(body, 0.085, 0.58)
 assert eye and cheek
 
 # ---------------------------------------------------------------- parts: beak, toes, feathers
@@ -80,7 +89,7 @@ def aim_cone(name, base, direction, length, r1, r2, verts=8, scale=(1, 1, 1)):
     return o
 
 
-beak = aim_cone("Beak", (0, BEAK_Y - 0.03, 0.655), (0, 0.9, -0.32), 0.115, 0.050, 0.008, verts=10)
+beak = aim_cone("Beak", (0, BEAK_Y - 0.03, 0.595), (0, 0.9, -0.32), 0.115, 0.050, 0.008, verts=10)
 parts.append(beak)
 for sd, s in (("L", 1), ("R", -1)):
     fx = s * 0.070
@@ -152,6 +161,9 @@ L.paint(body, lambda x, y, z: RUSSET)
 for o in parts[:9]:
     L.paint(o, (lambda x, y, z: GOLD) if o.name.startswith("Toe") else (lambda x, y, z: mix(GOLD, DARK, smooth(y, 0.31, 0.325))))
 L.join(parts, body)
+for v in body.data.vertices:
+    v.co.z = Z(v.co.z)
+eye, cheek = zt(eye), zt(cheek)
 bpy.ops.object.shade_smooth()
 TRIS = L.tri_count(body)
 print("TRIANGLES", TRIS)
@@ -163,20 +175,21 @@ features = [
     ((eye[0] + 0.007, eye[1] + 0.002, eye[2] + 0.010), 0.0095, 0.0075, (1, 1, 1), True),  # highlight
 ]
 zones = [
-    (CREAM, [("z", 0.46, 0.42), ("z", 0.26, 0.30), ("y", -0.18, -0.14), ("ax", 0.16, 0.14)]),   # belly and thighs
-    (CAP, [("z", 0.70, 0.715), ("y", -0.0, 0.03), ("ax", 0.14, 0.12)]),                   # head cap
-    (GOLD, [("z", 0.28, 0.26), ("ax", 0.12, 0.11)]),                                      # lower legs
+    (CREAM, [("z", Z(0.46), Z(0.425)), ("z", Z(0.25), Z(0.27)), ("y", -0.18, -0.14), ("ax", 0.16, 0.14)]),   # belly and thighs
+    (CAP, [("z", Z(0.64), Z(0.655)), ("y", -0.0, 0.03), ("ax", 0.14, 0.12)]),             # head cap
+    (GOLD, [("z", Z(0.27), Z(0.25)), ("ax", 0.12, 0.11)]),                                # lower legs
 ]
 paint_mat = L.paint_material("HawkPaint", features, zones=zones)
-L.bake_and_finish(body, paint_mat, OUT, "hawk", size=TEX)
+if "--nobake" not in sys.argv:
+    L.bake_and_finish(body, paint_mat, OUT, "hawk", size=TEX)
 
 # ---------------------------------------------------------------- armature (rig.flyer.flier)
 bones = [
     ("root", (0, 0, 0), (0, 0.15, 0), None),
     ("pelvis", (0, -0.14, 0.34), (0, -0.02, 0.40), "root"),
     ("spine", (0, -0.02, 0.40), (0, 0.08, 0.46), "pelvis"),
-    ("neck", (0, 0.08, 0.46), (0, 0.13, 0.57), "spine"),
-    ("head", (0, 0.13, 0.57), (0, 0.16, 0.74), "neck"),
+    ("neck", (0, 0.08, 0.46), (0, 0.12, 0.53), "spine"),
+    ("head", (0, 0.12, 0.53), (0, 0.16, 0.68), "neck"),
     ("tail_1", (0, -0.14, 0.34), (0, -0.30, 0.32), "pelvis"),
     ("tail_2", (0, -0.30, 0.32), (0, -0.48, 0.28), "tail_1"),
 ]
@@ -189,15 +202,17 @@ for s, sd in ((1, "L"), (-1, "R")):
         (f"{sd}_shin", (s * 0.075, 0.01, 0.22), (s * 0.070, -0.02, 0.12), f"{sd}_thigh"),
         (f"{sd}_foot", (s * 0.070, -0.02, 0.12), (s * 0.070, 0.05, 0.02), f"{sd}_shin"),
     ]
+bones = [(n, zt(h), zt(t), par) for n, h, t, par in bones]
 arm_obj = L.build_armature("Hawk_Armature", bones)
 L.bind(body, arm_obj)
 PO = L.Poser(arm_obj)
 
 # ---------------------------------------------------------------- animation
+_R = float(os.environ.get("FOLDROLL", "1.3"))
 FOLD = {  # folded wing directions (left side; x is mirrored for the right), and roll
-    1: ((0.30, -0.80, -0.52), -1.3),
-    2: ((0.08, 0.95, -0.10), -1.3),
-    3: ((-0.05, -0.95, -0.15), -1.3),
+    1: ((0.30, -0.80, -0.52), _R),
+    2: ((0.08, 0.95, -0.10), _R),
+    3: ((-0.05, -0.95, -0.15), _R),
 }
 
 
@@ -219,7 +234,7 @@ def pose(P, root=(0, 0, 0), root_rot=(0, 0, 0), pitch=0.0, roll=0.0, yaw=0.0, dz
     """pitch: nose up is +. legs: (thigh swing, knee, foot) with + forward. tuck 0..1 pulls legs back for flight."""
     P.move("root", *root)
     P.rel("root", *root_rot)
-    P.move("pelvis", 0, 0, dz)
+    P.move("pelvis", 0, 0, dz - 0.035 * (1 - tuck))
     P.rel("pelvis", pitch, roll, yaw)
     P.rel("spine", 0.1 * pitch * 0, 0, 0)
     P.rel("neck", head[0] * 0.4, head[1] * 0.4, head[2] * 0.4)
@@ -233,7 +248,7 @@ def pose(P, root=(0, 0, 0), root_rot=(0, 0, 0), pitch=0.0, roll=0.0, yaw=0.0, dz
         P.rel(f"{sd}_foot", ft + (0.2 + 0.3 * pitch) * (1 - tuck) - 0.5 * tuck, 0, 0)
 
 
-PERCH = 0.5
+PERCH = 0.55
 
 
 def idle(t, P):
@@ -337,6 +352,12 @@ scene.render.fps = L.FPS
 # ---------------------------------------------------------------- previews and export
 if "--render" in sys.argv or "--sheet" in sys.argv:
     L.build_stage()
+if "--perch" in sys.argv:
+    L.build_stage()
+    arm_obj.animation_data.action = acts["idle"]
+    scene.frame_set(1)
+    for name, loc in (("perch_front", (1.3, 1.9, 0.7)), ("perch_back", (-1.3, -1.9, 0.8)), ("perch_side", (2.2, 0.2, 0.6))):
+        L.render_still(os.path.join(OUT, f"hawk_{name}.png"), L.camera(loc, (0, 0, 0.3), name, 50), size=(640, 480), samples=8)
 if "--render" in sys.argv:
     # rest pose (wings spread) for the mesh views
     arm_obj.animation_data.action = None

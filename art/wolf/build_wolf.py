@@ -9,8 +9,11 @@ import math
 import os
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "common"))
 import bpy
 from mathutils import Vector
+import morph_lib as L
+from morph_lib import rx, ry, rz, curve, ease
 
 OUT = "art/wolf/out"
 TARGET_TRIS = int(os.environ.get("TARGET_TRIS", "10000"))
@@ -155,8 +158,8 @@ def lin(c):
     return tuple(v ** 2.2 for v in c)
 
 
-COAT, DARK, LIGHT, GREY = lin((0.55, 0.47, 0.40)), lin((0.27, 0.22, 0.19)), lin((0.93, 0.87, 0.76)), lin((0.65, 0.60, 0.55))
-PINK = lin((0.70, 0.52, 0.50))
+COAT, DARK, LIGHT, GREY = lin((0.60, 0.67, 0.86)), lin((0.30, 0.36, 0.60)), lin((0.97, 0.97, 1.0)), lin((0.72, 0.78, 0.94))
+PINK = lin((1.0, 0.62, 0.68))
 
 
 def mix(a, b, t):
@@ -248,8 +251,8 @@ def paint_material():
     nt.links.new(col.outputs["Color"], mixn.inputs["A"])
     shade = nt.nodes.new("ShaderNodeMapRange")
     nt.links.new(k, shade.inputs["Value"])
-    shade.inputs["To Min"].default_value = 0.78
-    shade.inputs["To Max"].default_value = 1.12
+    shade.inputs["To Min"].default_value = 1.0   # flat color, no fur-noise shading (map style)
+    shade.inputs["To Max"].default_value = 1.0
     gray = nt.nodes.new("ShaderNodeCombineColor")
     for i in range(3):
         nt.links.new(shade.outputs[0], gray.inputs[i])
@@ -335,33 +338,14 @@ paint = paint_material()
 base_path = os.path.join(OUT, "wolf_basecolor.png")
 base_img = bake(paint, "DIFFUSE", TEX, base_path)
 
-# normal map: bump from the fur stroke noise
-nm = bpy.data.materials.new("WolfNormalBake")
-nm.use_nodes = True
-nt = nm.node_tree
-bsdf = nt.nodes["Principled BSDF"]
-geo = nt.nodes.new("ShaderNodeNewGeometry")
-st = stroke_noise(nt, geo.outputs["Position"], scale=(46, 11, 46), detail=6)
-bump = nt.nodes.new("ShaderNodeBump")
-bump.inputs["Strength"].default_value = 0.7
-bump.inputs["Distance"].default_value = 0.01
-nt.links.new(st, bump.inputs["Height"])
-nt.links.new(bump.outputs[0], bsdf.inputs["Normal"])
-normal_path = os.path.join(OUT, "wolf_normal.png")
-normal_img = bake(nm, "NORMAL", TEX // 2, normal_path)
-
-# final single material: base color + normal map
+# final single material: flat base color (map style, no normal map)
 final = bpy.data.materials.new("WolfMat")
 final.use_nodes = True
 nt = final.node_tree
 bs = nt.nodes["Principled BSDF"]
-bs.inputs["Roughness"].default_value = 0.85
+bs.inputs["Roughness"].default_value = 0.9
 ti = nt.nodes.new("ShaderNodeTexImage"); ti.image = base_img
 nt.links.new(ti.outputs["Color"], bs.inputs["Base Color"])
-tn = nt.nodes.new("ShaderNodeTexImage"); tn.image = normal_img
-nmn = nt.nodes.new("ShaderNodeNormalMap"); nmn.inputs["Strength"].default_value = 0.8
-nt.links.new(tn.outputs["Color"], nmn.inputs["Color"])
-nt.links.new(nmn.outputs[0], bs.inputs["Normal"])
 body.data.materials.clear()
 body.data.materials.append(final)
 
@@ -488,6 +472,76 @@ acts = {
     "run": make_action("run", 20, lambda t, f: gait(t, f, 0.95, 1.3, 0.07, 0.14, lat=False)),
 }
 bpy.ops.object.mode_set(mode="OBJECT")
+for _n, _l in (("idle", 90), ("walk", 36), ("run", 20)):
+    L.ANIMS[_n] = {"frames": _l + 1, "fps": 30, "loop": True}
+PO = L.Poser(arm_obj)
+
+
+def wp(P, root=(0, 0, 0), root_rot=(0, 0, 0), pelvis=(0, 0, 0), spine=0.0, neck=0.0, head=(0, 0), jaw=0.0,
+       fL=(0, 0), fR=(0, 0), hL=(0, 0), hR=(0, 0), tail=(0.0, 0.0), ears=0.0, dz=0.0):
+    """World-axis pose. Legs: (swing forward +, bend -). head: (pitch, yaw). tail: (droop, sway)."""
+    P.move("root", *root)
+    P.rel("root", *root_rot)
+    P.rel("pelvis", *pelvis)
+    P.move("pelvis", 0, 0, dz)
+    P.rel("spine_1", spine * 0.5, 0, 0)
+    P.rel("spine_2", spine * 0.5, 0, 0)
+    P.rel("neck_1", neck * 0.5, 0, head[1] * 0.3)
+    P.rel("neck_2", neck * 0.5, 0, head[1] * 0.3)
+    P.rel("head", head[0], 0, head[1] * 0.4)
+    P.rel("jaw", jaw, 0, 0)
+    for sd, (sw, bd) in (("L", fL), ("R", fR)):
+        P.rel(f"{sd}_f_upper", sw, 0, 0)
+        P.rel(f"{sd}_f_lower", bd, 0, 0)
+        P.rel(f"{sd}_f_paw", -0.5 * (sw + bd), 0, 0)
+    for sd, (sw, bd) in (("L", hL), ("R", hR)):
+        P.rel(f"{sd}_h_upper", sw, 0, 0)
+        P.rel(f"{sd}_h_lower", bd, 0, 0)
+        P.rel(f"{sd}_h_paw", -0.5 * (sw + bd), 0, 0)
+    for i in range(1, 6):
+        P.rel(f"tail_{i}", tail[0] / 5, 0, tail[1] * (0.5 + 0.2 * i))
+    for sd, s in (("L", 1), ("R", -1)):
+        P.rel(f"ear_{sd}", -ears, 0, s * ears * 0.6)
+
+
+def w_jump(t, P):
+    crouch = curve(t, [(0, 0), (0.2, 1), (0.3, 0.0), (0.78, 0.0), (0.88, 0.8), (1, 0)])
+    air = curve(t, [(0, 0), (0.26, 0), (0.36, 1), (0.66, 1), (0.8, 0), (1, 0)])
+    h = 0.5 * 4 * ((t - 0.28) / 0.5) * (1 - (t - 0.28) / 0.5) if 0.28 <= t <= 0.78 else 0.0
+    wp(P, root=(0, 0.45 * air, h), pelvis=(0.5 * crouch - 0.25 * air, 0, 0), spine=-0.3 * crouch + 0.1 * air, neck=0.2 * crouch - 0.2 * air,
+       dz=-0.06 * crouch, head=(0.2 * air, 0), jaw=0,
+       fL=(-0.5 * crouch + 1.1 * air, -0.6 * crouch - 0.5 * air), fR=(-0.5 * crouch + 1.1 * air, -0.6 * crouch - 0.5 * air),
+       hL=(0.6 * crouch - 0.9 * air, -1.0 * crouch - 0.2 * air), hR=(0.6 * crouch - 0.9 * air, -1.0 * crouch - 0.2 * air),
+       tail=(-0.3 * air, 0), ears=0.3 * air)
+
+
+def w_attack(t, P):
+    c = curve(t, [(0, 0), (0.30, -1), (0.45, 1), (0.60, 1), (1, 0)])
+    f, w = max(c, 0.0), max(-c, 0.0)
+    wp(P, root=(0, 0.4 * f - 0.05 * w, 0.0), pelvis=(0.25 * w - 0.35 * f, 0, 0), spine=0.1 * w - 0.2 * f, neck=0.3 * w - 0.5 * f,
+       head=(0.2 * w - 0.2 * f, 0), jaw=-0.7 * f - 0.1 * w,
+       fL=(0.9 * f - 0.3 * w, -0.4 * f), fR=(0.9 * f - 0.3 * w, -0.4 * f),
+       hL=(-0.6 * f + 0.3 * w, -0.2 * f), hR=(-0.6 * f + 0.3 * w, -0.2 * f), tail=(0.2 * f, 0), ears=0.5 * f)
+
+
+def w_hit(t, P):
+    k = curve(t, [(0, 0), (0.22, 1), (0.55, 0.4), (1, 0)])
+    wp(P, root=(0, -0.12 * k, 0.02 * k), pelvis=(-0.2 * k, 0.05 * k, 0), spine=0.25 * k, neck=0.3 * k, head=(0.3 * k, 0.4 * k), jaw=-0.3 * k,
+       fL=(0.4 * k, -0.2 * k), fR=(0.3 * k, -0.1 * k), hL=(-0.2 * k, -0.2 * k), hR=(-0.2 * k, -0.2 * k),
+       tail=(-0.3 * k, 0.8 * k), ears=0.7 * k)
+
+
+def w_death(t, P):
+    fall = curve(t, [(0.05, 0), (0.5, 1), (0.58, 0.95), (0.66, 1)])
+    stg = curve(t, [(0, 0), (0.15, 1), (0.45, 0)])
+    wp(P, root=(0, -0.05 * fall, 0.2 * fall), root_rot=(0, 1.4 * fall, 0), pelvis=(0.25 * stg, 0, 0), spine=0.2 * stg, neck=0.3 * stg + 0.2 * fall,
+       head=(0.2 * fall, 0.3 * fall), jaw=-0.25 * fall,
+       fL=(0.7 * fall + 0.3 * stg, -0.4 * fall), fR=(0.9 * fall, -0.2 * fall), hL=(-0.6 * fall, -0.3 * fall), hR=(-0.4 * fall, -0.2 * fall),
+       tail=(0.3 * fall, 0.4 * fall), ears=0.6 * fall, dz=-0.03 * stg)
+
+
+for _n, _l, _f, _lp in (("jump", 36, w_jump, False), ("attack_basic", 24, w_attack, False), ("hit", 18, w_hit, False), ("death", 48, w_death, False)):
+    acts[_n] = L.make_action(PO, _n, _l, _f, _lp)
 # Every motion is a sum of sines with whole periods, so the last key equals the first and the loop closes.
 arm_obj.animation_data.action = acts["idle"]
 bpy.ops.object.mode_set(mode="POSE")
@@ -498,7 +552,7 @@ bpy.ops.object.mode_set(mode="OBJECT")
 scene.frame_start, scene.frame_end = 1, 91
 
 # ---------------------------------------------------------------- scene + render
-def build_stage():
+def _old_build_stage():
     bpy.ops.mesh.primitive_plane_add(size=30, location=(0, 0, 0))
     g = bpy.context.active_object
     gm = new_mat("Ground")
@@ -526,6 +580,9 @@ def build_stage():
     w.node_tree.nodes["Background"].inputs["Color"].default_value = (0.55, 0.62, 0.78, 1)
     w.node_tree.nodes["Background"].inputs["Strength"].default_value = 0.8
     scene.world = w
+
+build_stage = L.build_stage
+
 
 def cam(loc, target, name, lens=70):
     c = bpy.data.cameras.new(name)
@@ -561,6 +618,11 @@ if "--render" in sys.argv:
         bpy.ops.render.render(write_still=True)
         print("rendered", name)
 
+if "--sheet" in sys.argv:
+    if "--render" not in sys.argv:
+        build_stage()
+    L.contact_sheet(arm_obj, list(acts.keys()), cam((3.8, 3.4, 1.1), (0, 0, 0.45), "sheet", 50), os.path.join(OUT, "wolf_anim_sheet.png"))
+    arm_obj.animation_data.action = acts["idle"]
 if "--strip" in sys.argv:
     # walk cycle contact sheet: 6 frames, side view
     if "--render" not in sys.argv:
