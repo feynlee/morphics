@@ -5,7 +5,7 @@ This is the main production task. This doc says how, and what is still unproven.
 
 ## Visual style
 Target: realistic-stylized, similar in feel to ARK: Survival Ascended. **Decided by Ziyue (2026-11-26): more realistic, with no cartoon exaggeration.** The Palworld-like option is dropped. All art is original. We copy no creature, design, or asset from any game. See `DESIGN.md` section 1b.
-- The first quality-test form is the Wolf, the plain four-legged starter. Its brief is in `art/WOLF_BRIEF.md`. Ziyue approves it before we scale.
+- The first quality-test form is the Wolf, the plain four-legged starter. Its brief is in `docs/art/WOLF_BRIEF.md`. Ziyue approves it before we scale.
 - Starters are plain and basic archetypes. Themed variants (Ember Fox, and so on) come after and are farmed.
 
 ## Honest limits
