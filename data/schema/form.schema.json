@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Form",
+  "type": "object",
+  "required": ["id", "name", "role", "rarity", "base_stats", "skills", "skins", "unlock"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^form\\.[a-z0-9_]+$" },
+    "name": { "type": "string" },
+    "lore": { "type": "string" },
+    "role": { "enum": ["Tank", "Striker", "Support", "Scout", "Controller"] },
+    "rarity": { "enum": ["Common", "Rare", "Epic", "Legendary"] },
+    "base_stats": {
+      "type": "object",
+      "required": ["hp", "speed", "power", "defense"],
+      "properties": {
+        "hp": { "type": "number", "exclusiveMinimum": 0 },
+        "speed": { "type": "number", "exclusiveMinimum": 0 },
+        "power": { "type": "number", "minimum": 0 },
+        "defense": { "type": "number", "minimum": 0 }
+      }
+    },
+    "skills": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "type": "string" } },
+    "passives": { "type": "array", "items": { "type": "string" } },
+    "model": { "type": "string", "description": "Unreal asset path. Empty in M1." },
+    "skins": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "unlock": {
+      "type": "object",
+      "required": ["type", "cost"],
+      "properties": {
+        "type": { "enum": ["free", "earn", "buy", "pass", "event"] },
+        "cost": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

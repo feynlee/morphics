@@ -1,0 +1,14 @@
+{
+  "id": "skill.ember_fox.flame_burst",
+  "name": "Flame Burst",
+  "type": "attack",
+  "cooldown": 6,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 24
+    }
+  ],
+  "vfx": ""
+}

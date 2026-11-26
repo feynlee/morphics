@@ -1,0 +1,28 @@
+{
+  "id": "form.gale_heron",
+  "name": "Gale Heron",
+  "lore": "Very fast and mobile, fragile.",
+  "role": "Scout",
+  "rarity": "Rare",
+  "base_stats": {
+    "hp": 80,
+    "speed": 11,
+    "power": 8,
+    "defense": 3
+  },
+  "skills": [
+    "skill.gale_heron.basic",
+    "skill.gale_heron.wind_glide",
+    "skill.gale_heron.feather_volley",
+    "skill.gale_heron.storm_lift"
+  ],
+  "passives": [],
+  "model": "",
+  "skins": [
+    "skin.gale_heron.default"
+  ],
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}

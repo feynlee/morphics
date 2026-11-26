@@ -1,0 +1,13 @@
+{
+  "id": "skin.stone_tortoise.default",
+  "form_id": "form.stone_tortoise",
+  "name": "Stone Tortoise Default",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}

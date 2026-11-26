@@ -1,0 +1,14 @@
+{
+  "id": "skill.ember_fox.basic",
+  "name": "Ember Fox Strike",
+  "type": "attack",
+  "cooldown": 0.6,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 12
+    }
+  ],
+  "vfx": ""
+}

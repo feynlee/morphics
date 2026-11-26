@@ -1,0 +1,14 @@
+{
+  "id": "skill.stone_tortoise.shell_guard",
+  "name": "Shell Guard",
+  "type": "buff",
+  "cooldown": 8,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "status",
+      "amount": 3
+    }
+  ],
+  "vfx": ""
+}

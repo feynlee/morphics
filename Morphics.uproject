@@ -1,0 +1,17 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.8",
+	"Category": "",
+	"Description": "Morphics: a 3D game where players become different forms.",
+	"Modules": [
+		{
+			"Name": "Morphics",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{ "Name": "OnlineSubsystem", "Enabled": true },
+		{ "Name": "OnlineSubsystemSteam", "Enabled": true }
+	]
+}

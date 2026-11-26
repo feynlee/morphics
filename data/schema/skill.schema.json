@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Skill",
+  "type": "object",
+  "required": ["id", "name", "type", "cooldown", "cost", "effects"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^skill\\.[a-z0-9_.]+$" },
+    "name": { "type": "string" },
+    "type": { "enum": ["attack", "buff", "move", "summon"] },
+    "cooldown": { "type": "number", "minimum": 0 },
+    "cost": { "type": "number", "minimum": 0 },
+    "effects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["kind", "amount"],
+        "properties": {
+          "kind": { "enum": ["damage", "heal", "push", "status", "spawn"] },
+          "amount": { "type": "number" }
+        }
+      }
+    },
+    "vfx": { "type": "string" }
+  }
+}

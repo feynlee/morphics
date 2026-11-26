@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Skin (cosmetic only)",
+  "type": "object",
+  "required": ["id", "form_id", "name", "look", "unlock"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^skin\\.[a-z0-9_.]+$" },
+    "form_id": { "type": "string" },
+    "name": { "type": "string" },
+    "look": { "type": "object" },
+    "sfx_pack": { "type": "string" },
+    "unlock": {
+      "type": "object",
+      "required": ["type", "cost"],
+      "properties": {
+        "type": { "enum": ["free", "earn", "buy", "pass", "event"] },
+        "cost": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "skin.gale_heron.default",
+  "form_id": "form.gale_heron",
+  "name": "Gale Heron Default",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}

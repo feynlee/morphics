@@ -1,0 +1,14 @@
+{
+  "id": "skill.stone_tortoise.quake_step",
+  "name": "Quake Step",
+  "type": "attack",
+  "cooldown": 7,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 12
+    }
+  ],
+  "vfx": ""
+}

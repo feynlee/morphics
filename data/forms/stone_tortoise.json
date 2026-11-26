@@ -1,0 +1,28 @@
+{
+  "id": "form.stone_tortoise",
+  "name": "Stone Tortoise",
+  "lore": "Slow, very tough, low damage.",
+  "role": "Tank",
+  "rarity": "Common",
+  "base_stats": {
+    "hp": 180,
+    "speed": 4,
+    "power": 6,
+    "defense": 12
+  },
+  "skills": [
+    "skill.stone_tortoise.basic",
+    "skill.stone_tortoise.shell_guard",
+    "skill.stone_tortoise.quake_step",
+    "skill.stone_tortoise.mountain_wall"
+  ],
+  "passives": [],
+  "model": "",
+  "skins": [
+    "skin.stone_tortoise.default"
+  ],
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}
