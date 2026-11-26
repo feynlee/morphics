@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.34)
+# Morphics: Design Doc (v0.35)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -11,7 +11,7 @@ Forms and skins are the main product the studio sells. Visual quality is the key
 
 ## 1b. Visual style
 - **Target look: realistic-stylized, similar in feel to ARK: Survival Ascended.** That means detailed creatures with believable anatomy, rich lighting, grounded materials, and strong atmosphere.
-- **A slightly cartoonier look, like Palworld, is acceptable.** For example, friendlier proportions, bolder shapes, and simpler materials. The final point between the two looks is decided with the first form (see `ART_PIPELINE.md`, quality test).
+- **Decided by Ziyue (2026-11-26): build more realistic.** The earlier "slightly cartoonier, like Palworld" option is dropped. Use believable anatomy and proportions, real fur and skin materials, and grounded colors. No cartoon exaggeration: no oversized heads or eyes, no rubbery shapes. Stylization comes from clean readable silhouettes and strong lighting, not from caricature.
 - **All art is original.** We use these games only as a rough guide to quality and mood. We do not copy any creature, character, name, design, texture, or asset from them or from any other game.
 - Readability first: because skins are the product, every morph needs a clear silhouette and a distinct main color (section 4b).
 - Unreal fits this look: Nanite and Lumen for detail and light, Niagara for effects, material instances for skin variants.
@@ -33,7 +33,7 @@ Decided by Ziyue:
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
 - Opening: the player starts as an amorphic spirit. The spirit is for **game setup and storytelling only**, with no gameplay. The player picks a starter form during setup, so gameplay always starts in a form. Inhabiting the first form unlocks gaining more forms and morphing at will. See section 3a.
-- Visual style: **realistic-stylized, similar in feel to ARK: Survival Ascended** (detailed creatures, rich lighting, grounded materials). A **slightly cartoonier look, like Palworld, is acceptable**. All art is original (section 1b).
+- Visual style: **realistic-stylized, similar in feel to ARK: Survival Ascended** (detailed creatures, rich lighting, grounded materials). The look is **realistic, with no cartoon exaggeration** (decided). All art is original (section 1b).
 - Starters are **very plain and basic archetypes**. Themed variants (such as Ember Fox) are farmable, not starters.
 - Roles come from a **skill tree**. Ziyue will detail it later (section 4c, pending).
 - Skins are **named after the morph** (section 4).
