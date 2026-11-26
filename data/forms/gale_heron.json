@@ -22,7 +22,11 @@
   "default_skin": "skin.gale_heron.default",
   "unlock": {
     "type": "earn",
-    "cost": 600
+    "cost": 600,
+    "skip": {
+      "currency": "shards",
+      "amount": 1500
+    }
   },
   "starter": true
 }

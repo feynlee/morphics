@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.15)
+# Morphics: Design Doc (v0.16)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -82,8 +82,8 @@ Notes:
 - The starters are placeholders. In particular, Ember Fox and Gale Heron have a themed look and should be replaced with plain starters (for example a plain wolf and a plain hawk) before launch.
 - Adding a new top-level body type adds a new starter slot. The picker shows one card per top-level body type.
 - **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They come from missions: form fragments and Shards, like other earned forms. They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
-- Starters are never sold for Prisms. (This keeps the promise that the basic forms are always free. If we later want a convenience purchase to skip farming, that is a separate decision.)
-- Data: starters use unlock type `earn` with a Shards or fragment cost. The picked starter is granted by the setup rule and does not use that cost.
+- **Skip farming with Shards.** Players can always spend Shards (the soft currency earned in play) to skip the farming for a starter. Prisms never buy a starter directly. (Prisms stay out of starters, so the basic forms are never a paid product.)
+- Data: starters use unlock type `earn` with a farming target (`cost`) and a Shard skip price (`skip`). The picked starter is granted by the setup rule and does not use that cost.
 - Farming goal: the unpicked starters are an early target for new players, and they give a reason to play missions in the first sessions.
 - Skins for a starter are sold like any other skin. Starters are a good first target for early skin sales, because every player owns one.
 
@@ -106,7 +106,7 @@ The "morph" action is still the key moment. It must feel fast and good to watch.
 ## 3b. Retention: always something to do
 Goal: a player at any level has a next target.
 - **Form mastery**: each form has levels, skill upgrades, and mastery rewards (titles, emotes, skin variants).
-- **Farm targets**: missions drop form fragments and materials. A set of fragments unlocks or upgrades a form.
+- **Farm targets** (every one can be skipped with currency, see section 6): missions drop form fragments and materials. A set of fragments unlocks or upgrades a form.
 - **Rotating content**: weekly missions and daily goals.
 - **Seasons**: a new season every 8 to 12 weeks with new missions, new forms, and a new reward track.
 - **New forms on a schedule**: a new form every 2 to 4 weeks.
@@ -242,10 +242,17 @@ Currencies (names are placeholders):
 | Item | How to get it |
 |---|---|
 | Starter forms (3 to 4) | Free for all players |
-| Standard forms | Prisms, OR earn with form fragments from missions |
+| Standard forms | Earn with form fragments from missions, OR skip the farming with Shards or Prisms, OR buy with Prisms |
 | Premium forms | Prisms |
 | Skins | Prisms, event rewards, or pass tiers |
 | Form XP and skill upgrades | Earned in play only (Shards, materials) |
+
+Skip farming (decided): **there is always an option to spend in-game currency to skip farming** for any earned form or skin.
+- Every `earn` unlock has a `skip` price (the validator requires it). The skip price is in Shards or in Prisms.
+- Shards (earned in play) can skip farming for earned forms and skins, so a player who plays a lot can always shortcut a target.
+- Prisms can skip farming for non-starter earned forms. Prisms never skip farming for starters.
+- Skipping gives the same item as farming. It changes only how the player gets it, so it does not break the no-pay-to-win rule.
+- Price care: set skip prices so that farming is a real, fair path and skipping is a convenience. Show both options on the item. Check this with playtests.
 
 Principles:
 1. Anything that changes power can be earned in play. Paid forms give variety, not advantage.

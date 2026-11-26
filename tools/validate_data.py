@@ -7,6 +7,8 @@ Needs the `jsonschema` package. Cross checks:
 - animation_overrides only name animations that the root requires
 - a starter form is never sold: its unlock type is "free" or "earn"
 - exactly one starter form per active top-level body type; at most one per planned one
+- an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
+- a starter's skip price is in shards only (prisms never buy starters)
 - a form's base exists
 - a skin's base exists
 - a form's skills exist
@@ -119,6 +121,15 @@ def main():
             errors.append(f"{sid}: made for {skin.get('base')}, which does not fit {form['id']} ({form.get('base')})")
         if skin.get("form_id") not in (None, form["id"]):
             errors.append(f"{sid}: is exclusive to {skin['form_id']}, not {form['id']}")
+
+    for item in list(forms.values()) + list(skins.values()):
+        unlock = item.get("unlock", {})
+        if unlock.get("type") == "earn" and "skip" not in unlock:
+            errors.append(f"{item['id']}: an earn unlock needs a skip price")
+        if unlock.get("type") != "earn" and "skip" in unlock:
+            errors.append(f"{item['id']}: skip is only for earn unlocks")
+        if item.get("starter") and unlock.get("skip", {}).get("currency") == "prisms":
+            errors.append(f"{item['id']}: prisms cannot skip a starter; use shards")
 
     starters = {}
     for form in forms.values():

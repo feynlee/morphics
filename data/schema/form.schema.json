@@ -108,7 +108,30 @@
         },
         "cost": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "description": "For earn: the farming target (fragments or Shards to collect)."
+        },
+        "skip": {
+          "type": "object",
+          "required": [
+            "currency",
+            "amount"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "currency": {
+              "enum": [
+                "shards",
+                "prisms"
+              ],
+              "description": "shards = soft currency earned in play. prisms = premium currency bought on Steam."
+            },
+            "amount": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "description": "Price to skip farming. Required when type is earn. Starters may only use shards."
         }
       }
     },

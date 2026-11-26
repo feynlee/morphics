@@ -21,8 +21,12 @@
   "model": "",
   "default_skin": "skin.stone_tortoise.default",
   "unlock": {
-    "type": "free",
-    "cost": 0
+    "type": "earn",
+    "cost": 900,
+    "skip": {
+      "currency": "prisms",
+      "amount": 300
+    }
   },
   "starter": false
 }

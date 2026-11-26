@@ -22,7 +22,11 @@
   "default_skin": "skin.ember_fox.default",
   "unlock": {
     "type": "earn",
-    "cost": 600
+    "cost": 600,
+    "skip": {
+      "currency": "shards",
+      "amount": 1500
+    }
   },
   "starter": true
 }
