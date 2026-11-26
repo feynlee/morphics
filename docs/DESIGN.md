@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.16)
+# Morphics: Design Doc (v0.17)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -54,7 +54,7 @@ Target length: a few minutes. It is mostly presentation, so it is cheap to build
 
 **Unlock of morphing**
 - Inhabiting the first form **unlocks the ability to gain more forms**. It also unlocks the morph action: change into any owned form at will (no time limit, short cooldown only, see section 3).
-- The collection screen, the Hub, and the form store open in steps after inhabitation, so the first mission is not overwhelming. The first gameplay teaches movement, combat, and then morphing, all as a form.
+- The collection screen and the Hub open in steps after inhabitation, so the first mission is not overwhelming. The **market is open from the start** (see section 6b). The first gameplay teaches movement, combat, and then morphing, all as a form.
 - Story idea (placeholder): the spirit "remembers" how to take forms as it learns each body. Each new form adds to the collection.
 
 **Co-op and repeat play**
@@ -270,6 +270,40 @@ Revenue levers (in order of priority):
 4. Supporter or starter packs.
 
 Platform notes: Steam is the storefront. Steam takes a share of sales, so plan bundle prices with that fee. See `ENGINE_AND_STEAM.md`. Currency sold on Steam must follow Steam's rules for virtual items. Check the current rules before the store page goes live.
+
+## 6b. In-game market
+Decided by Ziyue: there is an **in-game market that players can use from the beginning**, where they can buy any morph they like.
+
+**What it sells**
+- **Any non-starter morph**, for **Shards** (earned in play) or **Prisms** (bought on Steam). Each item shows both prices when both are allowed.
+- **Skins**, for Shards or Prisms, with the fit rule shown (which body types the skin fits).
+- **Currency**: a "Get Prisms" button opens the Steam bundle purchase. All real-money purchases go through Steam.
+- Items that are currently limited-time (for example a seasonal pass reward or an event reward) are listed with their rule. See the open question below.
+
+**Access**
+- Open from the start of gameplay: the first mission ends, or the player walks into the Hub, and the market is there. It is not locked behind progress.
+- It is not part of the setup sequence (section 3a). The spirit never sees the market.
+- Players can preview any item in 3D before buying (a full try-on, with their equipped skin and any skin on sale).
+
+**How it fits the other rules**
+- Buying an earned form in the market is the same as skipping farming (section 6). The same price rules apply: every `earn` item has a `skip` price. A `buy` item has a Prisms price.
+- Shards prices must be high enough that farming and the market both make sense. Set them by playtest. A new player should not be able to buy the best forms in the first hour with only starter Shards.
+- No pay-to-win: the market sells variety, not power. Bought forms equal earned forms in power (section 5).
+- Teen+ care: show the real price, ask for confirmation, and show total Prisms spent on request.
+- No loot boxes and no random offers. The market shows fixed prices.
+
+**Starters in the market: open question for Ziyue (not changed yet)**
+Today the rule is: starters are earn-only, and Prisms never buy a starter directly (section 3a and the validator). "Buy any morph" conflicts with that. Options:
+1. **Keep the rule**: the market sells every non-starter morph. Starters can only be earned, or skipped with Shards. This is how it is written now.
+2. **Starters for Shards only**: the market sells starters for Shards, never Prisms. This matches the current skip rule and gives "any morph" for free currency.
+3. **Starters for Prisms too**: the market sells every morph for Prisms. The validator rule on starters would be removed. The basic forms become a paid product, which is a bigger change.
+Recommendation: option 2. It keeps the promise that the basic forms are never a paid product, and it still lets players buy any morph with in-game currency.
+
+Other open questions for the market:
+- Are pass or event exclusive forms sold in the market while the event or pass is active? (Default: no, only after the event ends. Then they join the market.)
+- Rotating sales or discounts? (Default: none at first. If used, they must be honest and not fake scarcity.)
+
+Milestone note: the market is built in M3. M1 has no market.
 
 ## 7. Content pipeline
 - Forms and skins are JSON data plus 3D art assets.
