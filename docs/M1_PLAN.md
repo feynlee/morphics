@@ -13,7 +13,7 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
   4. Import that file in the editor as a Data Table (row type `MorphFormRow`).
 - CI (`.github/workflows/data.yml`) runs steps 2 and 3 on each PR.
 - a body-type tree (`data/bases`, 4 top-level types with 2 or 3 subcategories each) and 4 placeholder forms with original names: Wanderer (humanoid starter), Ember Fox (four-legged starter), Stone Tortoise (four-legged), Gale Heron (bird starter, planned base).
-- M1 note: Gale Heron uses a planned base, so M1 needs only the four-legged base for playable forms. Add a humanoid form if a humanoid test is wanted.
+- M1 note: Gale Heron uses a planned base, so it is data only in M1. Playable M1 forms need the humanoid and four-legged bases.
 
 ## Not verified yet
 - The C++ module was NOT compiled. The scaffold was written without Unreal installed.
