@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.6)
+# Morphics: Design Doc (v0.7)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -121,7 +121,21 @@ Rules:
 - Skins stay on their form's skeleton, as before.
 - Gameplay: the base sets default movement feel and hitbox size range. A form can change them within limits.
 
-Open point for Ziyue: should co-op players be able to see which base a teammate is? (Default: no, only the look.)
+### Skins and what players see
+- The **look is a skin worn over the body type**. The body type (base and variant) is a gameplay detail. It sets skeleton, animations, and movement feel.
+- **Every player sees every other player's skin**, in co-op and in shared spaces. Skins are the way teammates recognize each other in the 3D world.
+- Skins are always shown. Players cannot turn off other players' skins or replace them with a default look. (A "reduce effects" option may lower VFX, but the model and colors stay.)
+- Skin readability rules: a skin keeps a clear silhouette and a distinct main color. It must still read from far away, and two teammates in different skins must be easy to tell apart.
+- Fairness rule: a skin's silhouette must stay inside the form's hitbox size range. A skin cannot make a player look smaller or larger than the real hitbox. (Teammates and enemies read hitboxes from the look.)
+- Because skins are the main product, the **hub, the store preview, and co-op lobbies** all show the full 3D skin.
+
+Body-type cue (recommendation, for Ziyue to decide):
+- Show a **small role icon** on the teammate nameplate (Tank, Striker, Support, Scout, Controller). Role helps co-op play. It is a small icon and does not cover the skin.
+- Do NOT show the body type (base or variant) as an icon. The silhouette already shows it, and it is not useful information for a teammate.
+- The nameplate is hidden or small by default, so the skin stays the main identity. Players can show or hide nameplates.
+- Optional: ping or highlight outline on a teammate when they are off screen or behind cover.
+
+Open point for Ziyue: does a skin belong to ONE form (current data model), or can one skin be worn over any form in the same base? The second option sells skins across many forms, but the skin must then fit each form's proportions. Default: one skin per form. Raise this before M3 (store).
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.
