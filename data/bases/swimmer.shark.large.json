@@ -1,0 +1,7 @@
+{
+  "id": "base.swimmer.shark.large",
+  "name": "Large shark",
+  "parent": "base.swimmer.shark",
+  "status": "planned",
+  "examples": "Great white"
+}

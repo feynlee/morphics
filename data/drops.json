@@ -22,5 +22,13 @@
     "chance": 0.03,
     "amount_min": 1,
     "amount_max": 3
+  },
+  {
+    "source": "wild_enemy",
+    "match": "subcategory_color",
+    "spectrum": "blue",
+    "chance": 0.03,
+    "amount_min": 1,
+    "amount_max": 3
   }
 ]

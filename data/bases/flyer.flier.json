@@ -3,7 +3,7 @@
   "name": "Flier",
   "parent": "base.flyer",
   "status": "planned",
-  "examples": "Hawk, eagle, roc",
+  "examples": "Hawk, eagle, roc, dragon (for now)",
   "rig": "rig.flyer.flier",
   "mesh": "mesh.flyer.flier",
   "skeleton": "",

@@ -1,0 +1,7 @@
+{
+  "id": "base.swimmer.shark.medium",
+  "name": "Medium shark",
+  "parent": "base.swimmer.shark",
+  "status": "planned",
+  "examples": "Reef shark, hammerhead"
+}

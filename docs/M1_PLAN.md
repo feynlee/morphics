@@ -21,7 +21,7 @@ The other subcategories, forms and colors stay in the data as planned entries. T
   3. `python tools/build_datatable.py` writes `Content/Data/Generated/Forms.json`.
   4. Import that file in the editor as a Data Table (row type `MorphFormRow`).
 - CI (`.github/workflows/data.yml`) runs steps 2 and 3 on each PR.
-- a body-type tree (`data/bases`: 3 top categories, 11 subcategories and their sizes) and 8 placeholder forms with original names: four plain starters (Wanderer, Wolf, Hawk, Raptor), three farmable variants (Ember Fox, Stone Tortoise, Gale Heron), and one limited pass morph (Prism Stag).
+- a body-type tree (`data/bases`: 3 top categories, 12 subcategories and their sizes) and 8 placeholder forms with original names: four plain starters (Wanderer, Wolf, Hawk, Raptor), three farmable variants (Ember Fox, Stone Tortoise, Gale Heron), and one limited pass morph (Prism Stag).
 - M1 note: Hawk and Raptor use planned bases, so they are data only in M1. Playable M1 forms need the humanoid and beast bases.
 
 ## Not verified yet

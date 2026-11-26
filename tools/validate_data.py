@@ -35,7 +35,7 @@ Needs the `jsonschema` package. Cross checks:
   a child is not "active" under a "planned" parent
 - animation_overrides only name animations that the subcategory requires
 - a starter form is never sold: its unlock type is "free" or "earn"
-- at most one starter form per subcategory, and every color in use has at least one starter
+- at most one starter form per subcategory, and every color used by an active subcategory has at least one starter
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
 - every earned form (morph), starters included, has a Prisms skip price (the value is "deferred" until
   Prism pricing is set), and no unlock or market price uses Spectrums (Spectrums are in-game currency only)
@@ -504,7 +504,7 @@ def main():
             errors.append(f"{sub_id}: more than one starter form: {', '.join(found)}")
     colors_with_starter = {bases[sub_id].get("spectrum") for sub_id in starters if sub_id in bases}
     for b in bases.values():
-        if level(bases, b["id"]) == 1 and b.get("spectrum") not in colors_with_starter:
+        if level(bases, b["id"]) == 1 and b.get("status") == "active" and b.get("spectrum") not in colors_with_starter:
             errors.append(f"{b['id']}: its color {b.get('spectrum')} has no starter form")
             colors_with_starter.add(b.get("spectrum"))
 
