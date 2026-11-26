@@ -1,7 +1,7 @@
 {
   "id": "skin.wanderer.default",
   "base": "base.humanoid.medium",
-  "name": "Wanderer Default",
+  "name": "Wanderer",
   "look": {
     "material_instance": "",
     "vfx_set": ""

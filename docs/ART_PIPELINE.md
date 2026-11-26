@@ -3,6 +3,11 @@
 Claude makes the 3D art and animations. Ziyue directs and approves.
 This is the main production task. This doc says how, and what is still unproven.
 
+## Visual style
+Target: realistic-stylized, similar in feel to ARK: Survival Ascended. A slightly cartoonier look, like Palworld, is acceptable. All art is original. We copy no creature, design, or asset from any game. See `DESIGN.md` section 1b.
+- The first quality-test form (Wolf, the plain four-legged starter) also sets the exact style point between the two looks. Ziyue approves it.
+- Starters are plain and basic archetypes. Themed variants (Ember Fox, and so on) come after and are farmed.
+
 ## Honest limits
 - Claude works through code and tools. It does not sculpt by hand.
 - Models come from scripts (Blender Python), procedural tools, or AI 3D generation tools if available.
@@ -11,7 +16,7 @@ This is the main production task. This doc says how, and what is still unproven.
 
 ## Body types (a tree)
 Animation is made **per top-level body type, not per form**. See `DESIGN.md` section 4b for the tree.
-- Body types live in `data/bases/*.json` as a tree. Example: Four-legged beast > Small four-legged beast > Ember Fox.
+- Body types live in `data/bases/*.json` as a tree. Example: Four-legged beast > Small four-legged beast > Ember Fox (a farmable variant).
 - Each top-level body type has ONE skeleton and ONE required animation list.
 - Each subcategory (small, medium, large, and so on) reuses the animations through retargeting (Unreal IK Retargeter) with its proportion settings.
 - A form picks a node. An orc and a human both use `base.humanoid.medium`. A dwarf uses `base.humanoid.short`.
@@ -47,6 +52,6 @@ Animation is made **per top-level body type, not per form**. See `DESIGN.md` sec
 
 ## Next steps
 1. Check which tools can run where (Blender, Python, Unreal command line).
-2. Build the first base end to end. Four-legged is a good first test: skeleton, the 12 required animations for the small subcategory, then Ember Fox (model, textures, default skin).
-3. Retarget to the large subcategory and test with Stone Tortoise.
+2. Build the first base end to end. Four-legged is a good first test: skeleton, the 12 required animations for the small subcategory, then Wolf (the plain starter: model, textures, default skin). Ember Fox is a later, farmable variant.
+3. Retarget to the large subcategory and test with Stone Tortoise or Ember Fox.
 4. Ziyue reviews it in the editor. Decide: continue, adjust, or change the plan.

@@ -1,0 +1,31 @@
+{
+  "id": "form.raptor",
+  "name": "Raptor",
+  "lore": "A plain raptor. The starter bipedal dinosaur.",
+  "role": "Striker",
+  "rarity": "Common",
+  "base": "base.biped_dino.medium",
+  "base_stats": {
+    "hp": 100,
+    "speed": 9,
+    "power": 9,
+    "defense": 4
+  },
+  "skills": [
+    "skill.raptor.basic",
+    "skill.raptor.lunge",
+    "skill.raptor.hiss",
+    "skill.raptor.rake"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.raptor.default",
+  "unlock": {
+    "type": "earn",
+    "cost": 600,
+    "skip": {
+      "spectrum": 1500
+    }
+  },
+  "starter": true
+}

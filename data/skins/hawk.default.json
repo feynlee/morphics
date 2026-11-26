@@ -1,0 +1,13 @@
+{
+  "id": "skin.hawk.default",
+  "base": "base.bird.medium",
+  "name": "Hawk",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}

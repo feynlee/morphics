@@ -2,7 +2,7 @@
   "id": "skin.gale_heron.default",
   "base": "base.bird.medium",
   "form_id": "form.gale_heron",
-  "name": "Gale Heron Default",
+  "name": "Gale Heron",
   "look": {
     "material_instance": "",
     "vfx_set": ""

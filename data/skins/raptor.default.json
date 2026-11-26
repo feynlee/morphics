@@ -1,0 +1,13 @@
+{
+  "id": "skin.raptor.default",
+  "base": "base.biped_dino.medium",
+  "name": "Raptor",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}

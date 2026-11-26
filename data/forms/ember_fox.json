@@ -22,11 +22,10 @@
   "default_skin": "skin.ember_fox.default",
   "unlock": {
     "type": "earn",
-    "cost": 600,
+    "cost": 800,
     "skip": {
-      "spectrum": 1500,
-      "prisms": 400
+      "spectrum": 1400
     }
   },
-  "starter": true
+  "starter": false
 }

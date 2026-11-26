@@ -1,7 +1,7 @@
 {
   "id": "skin.prism_stag.default",
   "base": "base.quadruped.medium",
-  "name": "Prism Stag Default",
+  "name": "Prism Stag",
   "look": {
     "material_instance": "",
     "vfx_set": ""

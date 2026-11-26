@@ -22,11 +22,10 @@
   "default_skin": "skin.gale_heron.default",
   "unlock": {
     "type": "earn",
-    "cost": 600,
+    "cost": 900,
     "skip": {
-      "spectrum": 1500,
-      "prisms": 400
+      "spectrum": 1400
     }
   },
-  "starter": true
+  "starter": false
 }

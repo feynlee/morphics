@@ -1,0 +1,31 @@
+{
+  "id": "form.wolf",
+  "name": "Wolf",
+  "lore": "A plain wolf. The starter four-legged beast.",
+  "role": "Striker",
+  "rarity": "Common",
+  "base": "base.quadruped.medium",
+  "base_stats": {
+    "hp": 110,
+    "speed": 8,
+    "power": 9,
+    "defense": 5
+  },
+  "skills": [
+    "skill.wolf.basic",
+    "skill.wolf.pounce",
+    "skill.wolf.howl",
+    "skill.wolf.rend"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.wolf.default",
+  "unlock": {
+    "type": "earn",
+    "cost": 600,
+    "skip": {
+      "spectrum": 1500
+    }
+  },
+  "starter": true
+}

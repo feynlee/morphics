@@ -10,9 +10,12 @@ Needs the `jsonschema` package. Cross checks:
   a root has required_animations, a child is not "active" under a "planned" parent
 - animation_overrides only name animations that the root requires
 - a starter form is never sold: its unlock type is "free" or "earn"
-- exactly one starter form per active top-level body type; at most one per planned one
+- exactly one starter form per top-level body type (planned types included)
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
-- every earned form (morph), starters included, has BOTH a spectrum and a prisms skip price
+- every earned form (morph), starters included, has a spectrum skip price
+- Prism pricing is deferred (data/pricing.json): no Prism price may be set until Ziyue decides
+- skins are named after the morph: a default skin has its form's name; a form-exclusive skin
+  name starts with its form's name
 - limited morphs: a pass or event unlock must set limited true; market_override needs limited true
   and approval by Ziyue Li (a limited morph is not sold in the market unless Ziyue says so)
 - a form's base exists
@@ -154,6 +157,8 @@ def main():
             owner = forms.get(skin["form_id"])
             if owner is None:
                 errors.append(f"{skin['id']}: unknown form_id {skin['form_id']}")
+            elif not skin["name"].startswith(owner["name"]):
+                errors.append(f"{skin['id']}: a form-exclusive skin is named after its morph ({owner['name']})")
             elif not skin_fits(bases, skin, owner.get("base")):
                 errors.append(f"{skin['id']}: base {skin['base']} does not fit {owner['id']} ({owner.get('base')})")
 
@@ -171,7 +176,7 @@ def main():
         if "market_override" in form:
             if not form.get("limited"):
                 errors.append(f"{form['id']}: market_override is only for limited morphs")
-            if "prisms" not in form["market_override"]:
+            if pricing.get("prism_pricing") != "deferred" and "prisms" not in form["market_override"]:
                 errors.append(f"{form['id']}: market_override needs a prisms price")
             if form["market_override"].get("approved_by") != "Ziyue Li":
                 errors.append(f"{form['id']}: market_override must be approved by Ziyue Li")
@@ -182,19 +187,25 @@ def main():
             continue
         if not skin_fits(bases, skin, form.get("base")):
             errors.append(f"{sid}: made for {skin.get('base')}, which does not fit {form['id']} ({form.get('base')})")
+        if skin.get("name") != form.get("name") and sid == form.get("default_skin") and skin.get("form_id") is None:
+            errors.append(f"{sid}: a default skin is named after its morph ({form.get('name')})")
         if skin.get("form_id") not in (None, form["id"]):
             errors.append(f"{sid}: is exclusive to {skin['form_id']}, not {form['id']}")
 
+    pricing = json.loads((DATA / "pricing.json").read_text())
     for item in list(forms.values()) + list(skins.values()):
         unlock = item.get("unlock", {})
         if unlock.get("type") == "earn" and "skip" not in unlock:
             errors.append(f"{item['id']}: an earn unlock needs a skip price")
         if unlock.get("type") != "earn" and "skip" in unlock:
             errors.append(f"{item['id']}: skip is only for earn unlocks")
-        if unlock.get("type") == "earn" and item["id"] in forms:
-            for currency in ("spectrum", "prisms"):
-                if currency not in unlock.get("skip", {}):
-                    errors.append(f"{item['id']}: an earned form needs a {currency} skip price")
+        if unlock.get("type") == "earn" and item["id"] in forms and "spectrum" not in unlock.get("skip", {}):
+            errors.append(f"{item['id']}: an earned form needs a spectrum skip price")
+        if pricing.get("prism_pricing") == "deferred":
+            if "prisms" in unlock.get("skip", {}):
+                errors.append(f"{item['id']}: Prism pricing is deferred. Do not set a Prism price yet")
+            if "prisms" in item.get("market_override", {}):
+                errors.append(f"{item['id']}: Prism pricing is deferred. Do not set a market Prism price yet")
 
     drops = json.loads((DATA / "drops.json").read_text())
     drop_schema = json.loads((DATA / "schema" / "drop.schema.json").read_text())
@@ -227,7 +238,7 @@ def main():
         found = starters.get(b["id"], [])
         if len(found) > 1:
             errors.append(f"{b['id']}: more than one starter form: {', '.join(found)}")
-        elif not found and b["status"] == "active":
+        elif not found:
             errors.append(f"{b['id']}: needs exactly one starter form, found none")
 
     for err in errors:

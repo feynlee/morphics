@@ -12,8 +12,8 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
   3. `python tools/build_datatable.py` writes `Content/Data/Generated/Forms.json`.
   4. Import that file in the editor as a Data Table (row type `MorphFormRow`).
 - CI (`.github/workflows/data.yml`) runs steps 2 and 3 on each PR.
-- a body-type tree (`data/bases`, 4 top-level types with 2 or 3 subcategories each) and 4 placeholder forms with original names: Wanderer (humanoid starter), Ember Fox (four-legged starter), Stone Tortoise (four-legged), Gale Heron (bird starter, planned base).
-- M1 note: Gale Heron uses a planned base, so it is data only in M1. Playable M1 forms need the humanoid and four-legged bases.
+- a body-type tree (`data/bases`, 4 top-level types with 2 or 3 subcategories each) and 8 placeholder forms with original names: four plain starters (Wanderer, Wolf, Hawk, Raptor), three farmable variants (Ember Fox, Stone Tortoise, Gale Heron), and one limited pass morph (Prism Stag).
+- M1 note: Hawk and Raptor use planned bases, so they are data only in M1. Playable M1 forms need the humanoid and four-legged bases.
 
 ## Not verified yet
 - The C++ module was NOT compiled. The scaffold was written without Unreal installed.
@@ -21,7 +21,7 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
 - The Data Table import was NOT tested in the editor.
 
 ## Opening in M1
-M1 includes a minimal setup scene: a short spirit intro (no gameplay), a starter picker with the two active starters (Wanderer for humanoid, Ember Fox for four-legged), and inhabitation. Gameplay then starts in the chosen form and unlocks morph. Bird and dinosaur starters wait until those body types are active. See `DESIGN.md` section 3a.
+M1 includes a minimal setup scene: a short spirit intro (no gameplay), a starter picker with the two active starters (Wanderer for humanoid, Wolf for four-legged), and inhabitation. Gameplay then starts in the chosen form and unlocks morph. Bird and dinosaur starters wait until those body types are active. See `DESIGN.md` section 3a.
 
 ## Next tasks (need the editor)
 1. Compile and open the project.

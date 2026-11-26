@@ -17,22 +17,27 @@ OUT = ROOT / "Content" / "Data" / "Generated" / "Market.json"
 
 def listed(form):
     if form.get("limited"):
-        return "market_override" in form and "prisms" in form["market_override"]
+        return "market_override" in form
     return form["unlock"]["type"] in ("earn", "buy")
 
 
 def prices(form):
+    # Prism pricing is deferred (data/pricing.json). Only set prices are listed.
     if form.get("limited"):
-        return {"prisms": form["market_override"]["prisms"]}
+        return {k: v for k, v in form["market_override"].items() if k == "prisms"}
     unlock = form["unlock"]
     if unlock["type"] == "earn":
-        return unlock["skip"]
-    return {"prisms": unlock["cost"]}
+        return dict(unlock["skip"])
+    return {}
 
 
 def main():
     forms = [json.loads(p.read_text()) for p in sorted((ROOT / "data" / "forms").glob("*.json"))]
-    items = [{"form_id": f["id"], "starter": bool(f.get("starter")), "prices": prices(f)} for f in forms if listed(f)]
+    items = [
+        {"form_id": f["id"], "starter": bool(f.get("starter")), "prices": prices(f), "prism_price": "deferred"}
+        for f in forms
+        if listed(f)
+    ]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(items, indent=2) + "\n")
     print(f"Wrote {len(items)} market items to {OUT.relative_to(ROOT)}")

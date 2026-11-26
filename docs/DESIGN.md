@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.22)
+# Morphics: Design Doc (v0.23)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -8,6 +8,13 @@ See also: `ENGINE_AND_STEAM.md`.
 Morphics is a 3D game for Windows (sold on Steam) where the player changes into different **forms**.
 Each form has its own look, skills, and abilities.
 Forms and skins are the main product the studio sells. Visual quality is the key selling point.
+
+## 1b. Visual style
+- **Target look: realistic-stylized, similar in feel to ARK: Survival Ascended.** That means detailed creatures with believable anatomy, rich lighting, grounded materials, and strong atmosphere.
+- **A slightly cartoonier look, like Palworld, is acceptable.** For example, friendlier proportions, bolder shapes, and simpler materials. The final point between the two looks is decided with the first form (see `ART_PIPELINE.md`, quality test).
+- **All art is original.** We use these games only as a rough guide to quality and mood. We do not copy any creature, character, name, design, texture, or asset from them or from any other game.
+- Readability first: because skins are the product, every morph needs a clear silhouette and a distinct main color (section 4b).
+- Unreal fits this look: Nanite and Lumen for detail and light, Niagara for effects, material instances for skin variants.
 
 ## 2. Decisions and assumptions
 Decided by Ziyue:
@@ -26,6 +33,12 @@ Decided by Ziyue:
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
 - Opening: the player starts as an amorphic spirit. The spirit is for **game setup and storytelling only**, with no gameplay. The player picks a starter form during setup, so gameplay always starts in a form. Inhabiting the first form unlocks gaining more forms and morphing at will. See section 3a.
+- Visual style: **realistic-stylized, similar in feel to ARK: Survival Ascended** (detailed creatures, rich lighting, grounded materials). A **slightly cartoonier look, like Palworld, is acceptable**. All art is original (section 1b).
+- Starters are **very plain and basic archetypes**. Themed variants (such as Ember Fox) are farmable, not starters.
+- Roles come from a **skill tree**. Ziyue will detail it later (section 4c, pending).
+- Skins are **named after the morph** (section 4).
+- Skill points come from **many sources** (section 4d).
+- **Prism pricing is deferred.** No Prism prices are set now. Ziyue will cover it later in development (see `REMINDERS.md`).
 - Retention goal: a "continual playthrough" game. There is always something new to unlock or farm, so the player's investment feels worthwhile.
 
 Assumed (to confirm):
@@ -66,20 +79,21 @@ Target length: a few minutes. It is mostly presentation, so it is cheap to build
 - During setup, the player **picks a starter form**.
 - There is **one starter per top-level body type**. Each starter is a very basic form of that body type, so the choice shows the variety of the game on the first screen.
 - The starter the player picks is **granted free** in setup. All the other starters are **free to acquire through farming and gameplay** (decided). They are marked `starter: true` in their JSON.
-- Validator rule: **exactly one starter per top-level body type**. For a body type that is still `planned` (no art yet), zero starters are allowed until it becomes `active`, and at most one. A starter's unlock type is `free` or `earn`, never `buy`, `pass`, or `event`. It can still be skipped with Spectrum or Prisms like any earned form.
-- Starters should be plain, with no strong elemental or special theme. Special forms are for the store and for farming.
+- Validator rule: **exactly one starter per top-level body type**, planned types included. A starter's unlock type is `free` or `earn`, never `buy`, `pass`, or `event`. It can still be skipped with Spectrum or Prisms like any earned form.
+- **Starters look very plain and basic**: a plain archetype of the body type (a plain wolf, a plain hawk, a plain raptor, a plain human). No elemental or special theme. Themed morphs are variations that players **farm for**. Example: Ember Fox is a farmable variant of the four-legged beast, and a plain Wolf is the starter.
+- Bird and bipedal dinosaur starters are part of the plan now (Hawk and Raptor). Their body types are still `planned` until the art exists.
 
 Starter slots:
 
-| Slot | Top-level body type | Status | Starter (placeholder) |
-|---|---|---|---|
-| 1 | Humanoid (bipedal human) | active | Wanderer |
-| 2 | Four-legged beast | active | Ember Fox |
-| 3 | Bird | planned | Gale Heron |
-| 4 | Bipedal dinosaur | planned | not made yet |
+| Slot | Top-level body type | Status | Starter (plain) | Farmable variants (examples in data) |
+|---|---|---|---|---|
+| 1 | Humanoid (bipedal human) | active | Wanderer | none yet |
+| 2 | Four-legged beast | active | Wolf | Ember Fox, Stone Tortoise |
+| 3 | Bird | planned | Hawk | Gale Heron |
+| 4 | Bipedal dinosaur | planned | Raptor | none yet |
 
 Notes:
-- The starters are placeholders. In particular, Ember Fox and Gale Heron have a themed look and should be replaced with plain starters (for example a plain wolf and a plain hawk) before launch.
+- The starter names and stats are placeholders. Wanderer may become a plain "Human". Starters stay plain.
 - Adding a new top-level body type adds a new starter slot. The picker shows one card per top-level body type.
 - **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They come from missions: form fragments and Spectrum, like other earned forms. They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
 - **Skip farming with Spectrum or Prisms.** Players can always spend the form's own Spectrum (the soft currency earned in play) or Prisms (the premium currency) to skip the farming for a starter. This is the same rule as for every other morph (decided: every morph can be bought with Prisms to bypass farming).
@@ -122,7 +136,7 @@ This lets us add forms without code changes.
 |---|---|
 | id | Stable unique key |
 | name, lore | Display text |
-| role | Tank, Striker, Support, Scout, Controller |
+| role | Tank, Striker, Support, Scout, Controller. **Placeholder** until the skill tree is defined (section 4c). |
 | base | Body type: a node in the body-type tree (see section 4b). Sets skeleton and shared animations. |
 | extra_animations[] | Optional form-specific animations on top of the base set |
 | base_stats | HP, speed, power, defense |
@@ -149,6 +163,7 @@ A **Skin** is cosmetic only, and it is made for **one base** (body type):
 
 Rules:
 - **Skins never change stats, skills, or hitbox.**
+- **Skins are named after the morph.** A form's default skin has the same name as the form (the Wolf form has the "Wolf" skin). A form-exclusive skin name starts with the morph's name (for example "Ember Fox" or "Ember Fox: Frostbite"). The validator checks this. A skin for a body type (not tied to one form) is named after the morph look it shows.
 - A skin is made for one base and uses that base's skeleton, so all base animations work on it.
 - **A skin works on any form in its base, and never on a form in another base.** A skin made for a humanoid would look out of proportion on a four-legged body. The validator rejects it.
 
@@ -174,11 +189,11 @@ base.humanoid                  Humanoid
   base.humanoid.short          dwarf, gnome, halfling
   base.humanoid.large          ogre, giant
 base.quadruped                 Four-legged beast
-  base.quadruped.small         fox, lynx, small canine      <- Ember Fox
+  base.quadruped.small         fox, lynx, small canine      <- Ember Fox (farmable)
   base.quadruped.medium        large cat, large canine
   base.quadruped.large         bear, boar, tortoise         <- Stone Tortoise
 base.bird (planned)            Bird
-  base.bird.medium             heron, hawk                  <- Gale Heron
+  base.bird.medium             heron, hawk                  <- Gale Heron (farmable)
   base.bird.large              eagle, roc
 base.biped_dino (planned)      Bipedal dinosaur
   base.biped_dino.medium       raptor
@@ -226,6 +241,35 @@ Body-type cue (recommendation, for Ziyue to decide):
 - Ownership: a player owns skins and forms separately. Equipping checks the fit rule.
 - Art cost: a narrow skin is tested on one node only, which keeps each skin cheap to make and check. Many narrow variations are the main way we grow the skin catalog.
 
+## 4c. Roles and the skill tree (pending)
+**Pending: Ziyue will detail this soon.** Do not treat the current role list as final.
+- Roles come from a **skill tree**. A role is not a fixed label on a form. It comes from the skills a player picks in the tree.
+- The `role` field on a form (Tank, Striker, Support, Scout, Controller) is a **placeholder** until the tree is defined. It may be removed, or become a label that is derived from the tree.
+- Open questions for when Ziyue details it: Is there one tree for all morphs, or one per body type? How are points spent (section 4d)? Can a player respec? Do skills carry between morphs?
+- Until then, M1 uses the fixed skills in each form's JSON.
+
+## 4d. Skill points: sources
+Ziyue wants **many ways to earn skill points**, and to earn rewards by unlocking new morphs and other in-game gear. Skill points feed the skill tree (section 4c).
+
+Proposed sources (to confirm and tune):
+1. **Missions**: completing missions, first-time clears, and optional objectives.
+2. **Level-ups and form mastery**: each form gives points at mastery levels.
+3. **Unlocking a new morph**: the first time a player gets a morph (by farming, the market, or a pass).
+4. **In-game gear and unlocks**: unlocking a piece of gear, a new area, or a new feature can reward points.
+5. **First defeat of an enemy category**: the first time a player beats each category and each boss.
+6. **Discoveries and exploration**: finding landmarks, secrets, and collectibles.
+7. **Challenges and achievements**: skill-based goals (for example "win a fight without taking damage").
+8. **Daily and weekly goals**: a steady, fair stream for regular players.
+9. **Seasons and the pass**: reward tracks give points (the free track as well as the paid one).
+10. **Co-op milestones**: playing missions with teammates, reviving, and finishing group goals.
+11. **Collection milestones**: owning a set number of morphs or skins, or all morphs of a body type.
+12. **Events**: limited-time events give points.
+
+Rules:
+- Skill points are **earned in play**. Open question for Ziyue: can skill points ever be bought or skipped with currency? (Default: **no**. Skill points change power, so buying them would break the no-pay-to-win rule, section 5. Prisms and Spectrums stay for morphs and skins.)
+- Every source gives a fair amount, so no single source is required.
+- The point totals and the tree costs are set after Ziyue defines the tree.
+
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.
 - Counter-play over raw power. No form is best in all cases.
@@ -268,10 +312,11 @@ Rules:
 
 Skip farming (decided): **there is always an option to spend in-game currency to skip farming**, and **every morph in the game can be bought with Prisms to bypass farming**.
 - Every `earn` unlock has a `skip` price (the validator requires it).
-- **Every earned morph (form), starters included, has BOTH a Spectrum price and a Prisms price.** The validator requires both. Skins need at least one.
-- Data example: `"skip": { "spectrum": 1500, "prisms": 400 }`.
+- **Every earned morph (form), starters included, has a Spectrum skip price.** The validator requires it.
+- **Prism prices are deferred (decided).** Every morph can be bought with Prisms to bypass farming, but the Prism prices are not set now. The validator rejects any Prism price while `data/pricing.json` says `prism_pricing: deferred`. When Ziyue decides, we change that flag and add the prices. Reminder: `REMINDERS.md`.
+- Data example: `"skip": { "spectrum": 1500 }`.
 - Spectrums (earned in play) can skip farming for earned forms and skins, so a player who plays a lot can always shortcut a target.
-- Prisms can skip farming for any earned morph, starters included. A Prisms price is a convenience. Set it fair against the farming effort (check by playtest).
+- Prisms can skip farming for any earned morph, starters included. The Prisms price is **to be decided later** (not set now). When set, it should be a convenience, fair against the farming effort (check by playtest).
 - Skipping gives the same item as farming. It changes only how the player gets it, so it does not break the no-pay-to-win rule.
 - Price care: set skip prices so that farming is a real, fair path and skipping is a convenience. Show both options on the item. Check this with playtests.
 
@@ -349,7 +394,7 @@ Every morph, starters included, can be bought with Prisms to bypass farming. So 
 - **Pass and event exclusive morphs are limited.** They are **not available in the market unless Ziyue says so.**
 - Data: a form sets `limited: true`. The validator requires it for any `pass` or `event` unlock.
 - A limited morph is excluded from the market by default. The market list is built by `tools/build_market.py`, which skips limited forms.
-- To sell a limited morph in the market, the form needs a `market_override` with `approved_by: "Ziyue Li"` and a Prisms price. The validator rejects an override approved by anyone else, an override on a non-limited form, and an override with no price.
+- To sell a limited morph in the market, the form needs a `market_override` with `approved_by: "Ziyue Li"`. (The Prisms price is added later, when Prism pricing is decided.) The validator rejects an override approved by anyone else and an override on a non-limited form.
 - Process rule: Claude does not add a `market_override` on its own. It is added only after Ziyue says so for that morph.
 - Why: limited morphs keep their special value for the people who earned them in the pass or event. Selling them later is a business decision that stays with Ziyue.
 - Design care for teen+: say clearly on the pass or event screen that the morph is limited and how long it is available. No fake urgency.

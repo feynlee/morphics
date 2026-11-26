@@ -1,0 +1,31 @@
+{
+  "id": "form.hawk",
+  "name": "Hawk",
+  "lore": "A plain hawk. The starter bird.",
+  "role": "Scout",
+  "rarity": "Common",
+  "base": "base.bird.medium",
+  "base_stats": {
+    "hp": 80,
+    "speed": 10,
+    "power": 7,
+    "defense": 3
+  },
+  "skills": [
+    "skill.hawk.basic",
+    "skill.hawk.dive",
+    "skill.hawk.screech",
+    "skill.hawk.swoop"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.hawk.default",
+  "unlock": {
+    "type": "earn",
+    "cost": 600,
+    "skip": {
+      "spectrum": 1500
+    }
+  },
+  "starter": true
+}
