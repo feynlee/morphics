@@ -28,5 +28,5 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
 
 ## Open design questions (not needed for M1)
 Marked in `DESIGN.md` section 9. M1 does not need: free-to-play vs paid, art source, audience, minimum spec, budget.
-M1 does assume: third-person camera, solo play, morph = swap of the whole character for a short time.
-If Ziyue changes those, M1 tasks 3 and 4 change.
+Decided for M1: third-person camera, PvE, morph = swap of the whole character with no time limit (a short cooldown only).
+Co-op is NOT part of M1 (planned for M2).

@@ -1,6 +1,6 @@
-# Morphics: Design Doc (v0.3 draft)
+# Morphics: Design Doc (v0.4)
 
-Status: DRAFT. Not agreed. No code until this doc is agreed.
+Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
 See also: `ENGINE_AND_STEAM.md`.
 
@@ -13,25 +13,43 @@ Forms and skins are the main product the studio sells. Visual quality is the key
 Decided by Ziyue:
 - Platform: Windows PC, sold on Steam.
 - Visuals: 3D, high visual quality.
-- Engine: Unreal Engine.
+- Engine: Unreal Engine 5.8.4.
 - Form data: plain JSON files.
+- Camera: third-person, so players always see the skins they buy.
+- Mode: PvE with co-op. No PvP for now.
+- Morphs have **no time limit**. A player keeps a form until the player picks another.
+- Launch content: as many forms as possible. Ziyue and Claude design the forms together.
+- Monetization: forms are sold for an in-game currency. Currency bundles are sold on Steam.
+- Audience: teen and older (teen+).
+- Retention goal: a "continual playthrough" game. There is always something new to unlock or farm, so the player's investment feels worthwhile.
 
 Assumed (to confirm):
-- Genre: a session-based action game (short runs, 5 to 10 minutes).
-- Camera: third-person.
-- Players: solo play first. Online features come later.
-- Style: high-fidelity 3D with readable silhouettes. Each form must be easy to tell apart from far away.
+- Genre: action game with missions or runs (short, repeatable sessions).
+- Co-op size: 2 to 4 players.
 - Input: keyboard and mouse, plus gamepad support.
+- Style: high-fidelity 3D with readable silhouettes. Each form must be easy to tell apart from far away.
 
 ## 3. Core loop
-1. Start a run with one equipped form.
-2. Fight, explore, and collect **Essence** (a run currency).
-3. During a run, spend Essence to **morph** into a different owned form for a short time.
-4. Finish the run. Get rewards (soft currency, form XP, cosmetic fragments).
-5. Spend rewards in the Hub: level up forms, unlock skills, equip skins.
-6. Start the next run.
+1. Pick a mission (alone or with co-op friends). Choose a starting form.
+2. Fight and explore. Collect **Essence** and loot.
+3. **Morph** between owned forms at any time. A morph has no time limit. A short cooldown after a morph stops swap spam.
+4. Finish the mission. Get rewards: soft currency, form XP, materials, cosmetic fragments.
+5. Spend rewards in the Hub: level up forms, unlock skills, equip skins, craft or buy forms.
+6. Start the next mission.
 
-The "morph" action is the key moment. It must feel fast and good to watch. It is also the best showcase for the visuals we sell.
+Because morphs do not expire, **form choice is a build choice**. A player can stay in a favorite form, and the skin is on screen all the time. That is why the camera is third-person.
+
+The "morph" action is still the key moment. It must feel fast and good to watch.
+
+## 3b. Retention: always something to do
+Goal: a player at any level has a next target.
+- **Form mastery**: each form has levels, skill upgrades, and mastery rewards (titles, emotes, skin variants).
+- **Farm targets**: missions drop form fragments and materials. A set of fragments unlocks or upgrades a form.
+- **Rotating content**: weekly missions and daily goals.
+- **Seasons**: a new season every 8 to 12 weeks with new missions, new forms, and a new reward track.
+- **New forms on a schedule**: a new form every 2 to 4 weeks.
+- **Collection screen**: shows owned forms and skins, so gaps are easy to see.
+- Rules: respect the player's time. No fake scarcity and no dark patterns (audience is teen+).
 
 ## 4. Form data model
 A **Form** is data, not code. Forms live in plain JSON files in the repo.
@@ -78,52 +96,63 @@ A JSON schema checks every data file in CI before import.
 - Paid forms must be **equal in power** to earned forms (see section 6).
 - Rarity changes the look and the effects only.
 
-## 6. Monetization model (assumed)
-**Model: cosmetic-first, with purchasable forms. No pay-to-win.**
-Free-to-play or a paid base game is still open (see section 9).
+## 6. Monetization model
+**Model: two currencies. Forms and skins are bought with the in-game premium currency. Premium currency is sold in bundles on Steam.** No pay-to-win.
+
+Currencies (names are placeholders):
+- **Prisms** (premium): bought in Steam bundles. May also drop in small amounts from play (to confirm).
+- **Shards** (soft): earned only in play.
 
 | Item | How to get it |
 |---|---|
 | Starter forms (3 to 4) | Free for all players |
-| Standard forms | Earn in play (soft currency) OR buy directly |
-| Premium forms | Buy directly or from a seasonal pass |
-| Skins | Buy, earn from events, or from pass tiers |
-| Form XP and skill upgrades | Earned in play only |
+| Standard forms | Prisms, OR earn with form fragments from missions |
+| Premium forms | Prisms |
+| Skins | Prisms, event rewards, or pass tiers |
+| Form XP and skill upgrades | Earned in play only (Shards, materials) |
 
 Principles:
 1. Anything that changes power can be earned in play. Paid forms give variety, not advantage.
 2. Skins are cosmetic, so they can be sold without balance risk.
-3. Show the real price. No hidden odds. If loot boxes are ever added, show drop rates and check Steam rules.
+3. Show real prices: every Prism price also shows the cost in money (bundle value). No hidden odds. **No loot boxes** (recommended for a teen+ audience and for platform and legal safety).
 4. Offer a **preview** (3D try-on viewer) for every form and skin before purchase.
-5. Seasonal pass: one free track, one paid track. Both tracks give forms or skins.
+5. Seasonal pass (optional): one free track, one paid track. Both give forms or skins.
+6. Teen+ care: clear spending totals, a purchase confirmation step, and a refund policy that follows Steam rules.
+7. Bundle sizes should not leave odd Prism leftovers that push players to buy more.
 
 Revenue levers (in order of priority):
-1. Skins and form bundles.
-2. Seasonal pass.
-3. Premium forms.
-4. Optional supporter or starter packs.
+1. Currency bundles (to buy forms and skins).
+2. Skins and form bundles.
+3. Seasonal pass.
+4. Supporter or starter packs.
 
-Platform notes: Steam is the storefront. Steam takes a share of sales, so plan prices with that fee. See `ENGINE_AND_STEAM.md` for the integration plan.
+Platform notes: Steam is the storefront. Steam takes a share of sales, so plan bundle prices with that fee. See `ENGINE_AND_STEAM.md`. Currency sold on Steam must follow Steam's rules for virtual items. Check the current rules before the store page goes live.
 
 ## 7. Content pipeline
 - Forms and skins are JSON data plus 3D art assets.
+- **Forms are made together**: Ziyue sets the idea, and Claude drafts the form (role, stats, skills, lore, look brief) as JSON. The validator checks it. Ziyue approves.
+- **Goal: as many forms as possible at launch.** Plan a form "factory": a template, a stat budget per role, and a checklist per form (design, JSON, model, rig, animations, VFX, skin, test).
+- Set a per-form budget early (triangle count, texture size, material cost, animation count). 3D art and animation are the bottleneck, not design or data.
+- Reuse where it is cheap and still reads as different: shared skeletons per body type, shared animation sets, material-based skin variants.
 - New content can ship as DLC or store items, without a full game update where possible.
-- Set a per-form budget early (triangle count, texture size, material cost, animation count) so that many forms stay affordable.
-- Target: one new form every 2 to 4 weeks after launch. High-quality 3D art is the main cost, so check this against the art plan.
 
 ## 8. Milestones
 1. **M0 Design agreed** (this doc).
-2. **M1 Prototype**: one arena, 3 forms (placeholder models), the morph action, Steam login. No store.
-3. **M2 Vertical slice**: hub, progression, 6 forms, 2 skins each, JSON importer.
-4. **M3 Store and pass**: Steam purchase flow, 3D preview.
-5. **M4 Playtest and Steam page**, then tune balance and prices.
+2. **M1 Prototype**: one arena, 3 forms (placeholder models), the morph action (no timer), Steam login. No store.
+3. **M2 Vertical slice**: hub, progression, form mastery, 6 forms, 2 skins each, JSON importer, co-op for 2 players.
+4. **M3 Store**: Prism bundles on Steam, form and skin purchase, 3D preview.
+5. **M4 Content scale-up**: the form factory, seasonal structure, many forms.
+6. **M5 Playtest and Steam page**, then tune balance and prices.
 
 ## 9. Open questions for Ziyue
-1. Camera and genre: third-person action arena (assumed), top-down, or other?
-2. Solo, co-op, or PvP? PvP raises the cost of pay-to-win concerns.
-3. Is the morph a swap of the whole character, or a short temporary transformation during a run?
-4. Art: who makes the high-quality 3D art (in-house, contractor, marketplace)? How many forms at launch?
-5. Free-to-play on Steam, or a paid base game with paid cosmetics? Is a seasonal pass wanted? Are loot boxes ruled out?
-6. Target audience and age range?
-7. Minimum PC spec to target?
-8. Budget and timeline for M1?
+Decided questions were removed. Still open:
+1. **Art plan**: who makes the 3D art and animation (in-house, contractor, marketplace)? How is a "many forms" launch made affordable?
+2. **Budget and timeline**: total budget, and the target for M1 and for launch?
+3. **Storefront scope beyond Steam**: Steam only at launch, or also Epic, Microsoft Store, or consoles later? (This affects the ownership and currency design.)
+
+Smaller points, with a default if you do not answer:
+- Free-to-play or a paid base game? (Default: free-to-play, because currency bundles carry the revenue.)
+- Can Prisms drop from play? (Default: yes, in small amounts.)
+- Seasonal pass? (Default: add in M4.)
+- Co-op size? (Default: 2 to 4.)
+- Minimum PC spec? (Default: decide at M2.)
