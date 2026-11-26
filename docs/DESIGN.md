@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.41)
+# Morphics: Design Doc (v0.42)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -279,37 +279,42 @@ Species that would need their own subcategory (they do not fit the canine profil
 
 Cost: each profile is one rig and one animation set (12 required animations). More profiles mean more animation work but the animations fit every form in the group. Order of work: canine first (Wolf is the quality test), then the profile of the next form that ships.
 
-### 4b-2. Proposal: no overall categories; each rig and gait profile is the top-level body type (draft, not agreed)
-Idea (Ziyue, to confirm): skeleton and gait belong to the specific groups, not to broad families. So drop the broad family level (Beast, Winged creature). Each rig and gait profile becomes a top-level body type. Size stays a child node (a scale of that profile).
+### 4b-2. Proposal: top category for color, subcategories for skeleton and gait (draft, not applied)
+Idea (Ziyue): keep an overall top category, but only for Spectrum color and drops. Skeleton, gait and animations belong to each subcategory. Size is a scale within a subcategory.
 
-Proposed top-level body types and ids:
+Three levels:
+- **Top category (family).** Sets the Spectrum color and the wild drop. It has no skeleton and no animations. Examples: Humanoid (Red), Beast (Green), Winged creature (Blue), Dinosaur (Amber, see the question below).
+- **Subcategory (rig profile).** Owns the rig (skeleton), the gait set and the required animations. Examples: Canine, Feline, Heavy beast, Hoofed, Shelled, Flier, Wader.
+- **Size.** A scale of the profile (small, medium, large), with optional animation overrides, as now.
 
-| Body type | Proposed id | Today's id | Forms today |
+Proposed tree and ids (family > profile > size). Existing ids that change are marked:
+
+| Family (id) | Profile (id) | Sizes | Forms today |
 |---|---|---|---|
-| Humanoid | `base.humanoid` | same | Wanderer |
-| Canine | `base.canine` | `base.quadruped` (part) | Wolf, Ember Fox |
-| Feline | `base.feline` | new | none |
-| Heavy beast (bear, boar) | `base.heavy` | new | none |
-| Hoofed | `base.hoofed` | `base.quadruped` (part) | Prism Stag |
-| Shelled | `base.shelled` | `base.quadruped` (part) | Stone Tortoise |
-| Four-legged dinosaur | `base.quadruped_dino` | new | none |
-| Flier | `base.flier` | `base.bird` (part) | Hawk |
-| Wader | `base.wader` | `base.bird` (part) | Gale Heron |
-| Bipedal dinosaur | `base.biped_dino` | same | Raptor |
+| Humanoid `base.humanoid` | Standard `base.humanoid.standard` (new level, ids of sizes change) | short, medium, large | Wanderer |
+| Beast `base.quadruped` | Canine `base.quadruped.canine` | small, medium | Ember Fox, Wolf |
+| | Feline `base.quadruped.feline` (planned) | small, medium | none |
+| | Heavy `base.quadruped.heavy` (planned) | large | none |
+| | Hoofed `base.quadruped.hoofed` | medium | Prism Stag |
+| | Shelled `base.quadruped.shelled` | large | Stone Tortoise |
+| | Four-legged dinosaur `base.quadruped.dino` (planned) | large | none |
+| Winged creature `base.bird` (planned) | Flier `base.bird.flier` | medium, large | Hawk |
+| | Wader `base.bird.wader` | medium | Gale Heron |
+| Bipedal dinosaur `base.biped_dino` (planned) | Raptor `base.biped_dino.raptor` | medium | Raptor |
+| | Tyrant `base.biped_dino.tyrant` | large | none |
 
-Sizes keep the pattern: `base.canine.small`, `base.canine.medium`. Ids that stay: `base.humanoid*` and `base.biped_dino*`. Ids that change: everything under `base.quadruped*` and `base.bird*`. Forms, skins, skill tree nodes and `Forms.json` (BaseId) would change, so the Unreal Data Table needs a re-import.
+Family ids stay. Sizes of Beast and Winged creature move under a profile, for example `base.quadruped.small` becomes `base.quadruped.canine.small`. Humanoid and Bipedal dinosaur sizes also gain a profile segment, because the family no longer holds a skeleton.
 
-Spectrum rule without a family level:
-- Every top-level body type names one Spectrum (`spectrum` field). A wild enemy of that type, and of its size nodes, drops it. This is the same rule as today, one level lower.
-- Open point: today each color belongs to one family. With about ten body types, either related types share a color (for example canine, feline, heavy, hoofed and shelled share Green; flier and wader share Blue; both dinosaurs share Amber) or every type gets its own color. A decision card asks Ziyue. Recommended: shared colors, so there are still four colors and farming stays simple.
-- Craft recipes still use the form's own body-type Spectrum. Prisms and the no-conversion rule do not change.
+Spectrum rule (unchanged in effect): the family names the Spectrum. A wild enemy of any profile or size under the family drops it. Drop entries stay one per active family (`base.humanoid`, `base.quadruped`, and so on), and the validator check "a size drops its family's Spectrum" stays. Craft recipes use the Spectrum of the form's family. Four colors stay in use.
 
-Validator and data changes if confirmed:
-- A root is any base without a parent. Every root needs `rig`, `gait`, `skeleton`, `required_animations` and `spectrum`. A size node needs a parent and adds one id segment.
-- Remove the rule that no two roots share a Spectrum, if colors are shared. Keep the rule that every root has a valid Spectrum.
-- `data/drops.json` gets one entry per active root (canine, hoofed, shelled, humanoid today), keyed by the new ids. The check that a size node drops its root's Spectrum stays.
-- Add negative tests: a root with no rig or gait, a size node under a size node, and a drop entry for a size node.
-- The skill tree base-variant nodes and the Wolf rig name (`base.quadruped` skeleton in the art README) move to the new ids.
+Open question: Dinosaur placement. Ziyue decided four-legged dinosaurs are large beasts, so they sit under Beast (Green) as the Four-legged dinosaur profile. Bipedal dinosaurs stay their own family (Amber).
+
+Validator and data changes when applied:
+- A family (no parent) has `spectrum` and `status`. It must not have `rig`, `gait` or `required_animations`.
+- A profile (child of a family) needs `rig`, `gait`, `skeleton` and `required_animations`.
+- A size (child of a profile) has no rig fields. It may list `animation_overrides` from its profile's list.
+- A size under a family, or a profile under a profile, is an error. Add negative tests for each rule.
+- Forms, skins and skill tree base-variant nodes move to the new ids. `Forms.json` BaseId changes, so the Unreal Data Table needs a re-import by the build thread. The art README names the Wolf rig `rig.quadruped.canine`.
 
 Data rules (`data/bases/*.json`, checked by the validator):
 - A node has `id`, `name`, `status` (active or planned), and an optional `parent`.
