@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.45)
+# Morphics: Design Doc (v0.46)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -279,57 +279,49 @@ Species that would need their own subcategory (they do not fit the canine profil
 
 Cost: each profile is one rig and one animation set (12 required animations). More profiles mean more animation work but the animations fit every form in the group. Order of work: canine first (Wolf is the quality test), then the profile of the next form that ships.
 
-### 4b-2. Proposal: top category for color, subcategories for skeleton and gait (draft, not applied)
-Idea (Ziyue): keep an overall top category, but only for Spectrum color and drops. Skeleton, gait and animations belong to each subcategory. Size is a scale within a subcategory.
+### 4b-2. Proposal: Walkers, Swimmers and Flyers on top; subcategories own skeleton, gait and mesh (draft, not applied)
+Decision (Ziyue): the overall categories are **Walkers, Swimmers and Flyers**. From there we create subcategories. Each subcategory is a unique **skeleton, gait set and base mesh**. Skins attach to that mesh, and different morphs are made by putting a skin and skills on a subcategory.
 
-Three levels:
-- **Top category (family).** Sets the Spectrum color and the wild drop. It has no skeleton and no animations. Examples: Humanoid (Red), Beast (Green), Winged creature (Blue), Dinosaur (Amber, see the question below).
-- **Subcategory (rig profile).** Owns the rig (skeleton), the gait set and the required animations. Examples: Canine, Feline, Heavy beast, Hoofed, Shelled, Flier, Wader.
-- **Size.** A scale of the profile (small, medium, large), with optional animation overrides, as now.
+Levels:
+- **Top category (movement domain):** Walker, Swimmer or Flyer. It has no skeleton, no gait and no mesh. It only groups subcategories.
+- **Subcategory:** owns the `rig` (skeleton), the `gait` set, the required animations and the base mesh (`mesh`). Skins fit a subcategory mesh. A new morph under a subcategory is a new skin plus skills, with no new animation work.
+- **Size:** a scale of the subcategory mesh (small, medium, large), with optional animation overrides.
 
-Proposed tree and ids (family > profile > size). Existing ids that change are marked:
+Mapping of the existing groups under the three top categories (new ids are proposed; every existing body-type id would change):
 
-| Family (id) | Profile (id) | Sizes | Forms today |
-|---|---|---|---|
-| Humanoid `base.humanoid` | Standard `base.humanoid.standard` (new level, ids of sizes change) | short, medium, large | Wanderer |
-| Beast `base.quadruped` | Canine `base.quadruped.canine` | small, medium | Ember Fox, Wolf |
-| | Feline `base.quadruped.feline` (planned) | small, medium | none |
-| | Heavy `base.quadruped.heavy` (planned) | large | none |
-| | Hoofed `base.quadruped.hoofed` | medium | Prism Stag |
-| | Shelled `base.quadruped.shelled` | large | Stone Tortoise |
-| | Four-legged dinosaur `base.quadruped.dino` (planned) | large | none |
-| Winged creature `base.bird` (planned) | Flier `base.bird.flier` | medium, large | Hawk |
-| | Wader `base.bird.wader` | medium | Gale Heron |
-| Bipedal dinosaur `base.biped_dino` (planned) | Raptor `base.biped_dino.raptor` | medium | Raptor |
-| | Tyrant `base.biped_dino.tyrant` | large | none |
+| Top category | Subcategory | Old id | Proposed id | Forms today |
+|---|---|---|---|---|
+| Walker | Humanoid | `base.humanoid.*` | `base.walker.humanoid` (sizes: short, medium, large) | Wanderer |
+| Walker | Canine | `base.quadruped.small`, `.medium` | `base.walker.canine` (small, medium) | Ember Fox, Wolf |
+| Walker | Hoofed | `base.quadruped.medium` | `base.walker.hoofed` (medium) | Prism Stag |
+| Walker | Shelled | `base.quadruped.large` | `base.walker.shelled` (large) | Stone Tortoise |
+| Walker | Feline, Heavy beast | new | `base.walker.feline`, `base.walker.heavy` | none (planned) |
+| Walker | Four-legged dinosaur | new | `base.walker.quadruped_dino` | none (planned) |
+| Walker | Raptor, Tyrant | `base.biped_dino.*` | `base.walker.raptor`, `base.walker.tyrant` | Raptor (planned) |
+| Flyer | Flier | `base.bird.medium`, `.large` | `base.flyer.flier` (medium, large) | Hawk (planned) |
+| Flyer | Wader (heron) | `base.bird.medium` | `base.flyer.wader` (medium) | Gale Heron (planned) |
+| Swimmer | none yet | none | `base.swimmer.*` | none |
 
-Family ids stay. Sizes of Beast and Winged creature move under a profile, for example `base.quadruped.small` becomes `base.quadruped.canine.small`. Humanoid and Bipedal dinosaur sizes also gain a profile segment, because the family no longer holds a skeleton.
+Open points for Ziyue:
+- Gale Heron is a wading bird. It sits under Flyer because it flies. It could be a Walker instead.
+- Swimmers have no forms yet. Fish, sea creatures and other swimmers would each need their own subcategory.
+- Dragons, winged humanoids and centaurs mix movement types. A new hybrid subcategory goes under the domain its main gait belongs to.
 
-Spectrum rule (unchanged in effect): the family names the Spectrum. A wild enemy of any profile or size under the family drops it. Drop entries stay one per active family (`base.humanoid`, `base.quadruped`, and so on), and the validator check "a size drops its family's Spectrum" stays. Craft recipes use the Spectrum of the form's family. 
-
-Six Spectrum colors, one per family (Ziyue: start from red, orange, yellow, green, blue and purple). The color set in `data/spectrums.json` is the source of truth, and each family names exactly one color.
-
-Decided by Ziyue:
-- **Red is Humanoid.**
-- **Green is Beast.** Four-legged dinosaurs stay here as the Four-legged dinosaur subcategory.
-
-Not decided (Ziyue will choose, and may remove or change some families): **Orange, Yellow, Blue and Purple stay unassigned.** No family is tied to them in this proposal. The existing Winged creature and Bipedal dinosaur families are not assigned a color for now.
-
-Data change planned for the color set, when applied:
-- `amber` is renamed `orange`. Hex `#F5A524` becomes a clearer orange, for example `#F76B15` (placeholder).
-- `violet` is renamed `purple`. Same hex `#8E4EC6`.
-- `yellow` is new. Hex for example `#E5B800` (placeholder).
-- Orange, Yellow, Blue and Purple are defined colors with no family.
-
-Spectrum rule: unchanged. The family names its color, and a wild enemy of any subcategory or size under the family drops it. With one family per color, no two families share a color.
+Spectrum colors (plan kept as is, unassigned colors left open):
+- Six colors: red, orange, yellow, green, blue, purple. `data/spectrums.json` stays the source of truth.
+- **Red is Humanoid. Green is Beast.** Orange, Yellow, Blue and Purple stay unassigned.
+- Humanoid and Beast are no longer top categories, because both are Walkers. They stay as **color groups**: a label on each subcategory that names its Spectrum. The Humanoid group holds the Humanoid subcategory. The Beast group holds Canine, Feline, Heavy, Hoofed, Shelled and Four-legged dinosaur.
+- Wild drops follow the color group: an enemy of any subcategory in the group drops the group's color. Drop entries are one per color group with a color.
+- Open: whether color groups stay as a separate label like this, or each top category gets its own color. Ziyue has not decided. Nothing is applied until then.
 
 Validator and data changes when applied:
-- A family (no parent) has `spectrum` and `status`. It must not have `rig`, `gait` or `required_animations`.
-- `data/spectrums.json` holds exactly six colors: red, orange, yellow, green, blue, purple. Every family names one of them, no two families share one, and a color may have no family yet. Ids `amber` and `violet` are removed. Raptor's craft Spectrum and the Bipedal dinosaur drop entry change from `amber` to `orange`.
-- A profile (child of a family) needs `rig`, `gait`, `skeleton` and `required_animations`.
-- A size (child of a profile) has no rig fields. It may list `animation_overrides` from its profile's list.
-- A size under a family, or a profile under a profile, is an error. Add negative tests for each rule.
-- Forms, skins and skill tree base-variant nodes move to the new ids. `Forms.json` BaseId changes, so the Unreal Data Table needs a re-import by the build thread. The art README names the Wolf rig `rig.quadruped.canine`.
+- A top category has `status` only. It must not have `rig`, `gait`, `mesh`, `required_animations` or `spectrum`.
+- A subcategory (child of a top category) needs `rig`, `gait`, `mesh`, `skeleton`, `required_animations` and a `group`. A size (child of a subcategory) has no rig fields.
+- A group that names a Spectrum uses a color from `data/spectrums.json`. No two groups share a color. A color may have no group.
+- A size under a top category, or a subcategory under a subcategory, is an error. Add negative tests for each rule.
+- Skins fit a subcategory mesh or one of its sizes. The existing skin rule (narrow by default) stays.
+- Forms, skins, skill tree base-variant nodes and drops move to the new ids. `Forms.json` BaseId changes, so the Unreal Data Table needs a re-import by the build thread. The Wolf rig is `rig.walker.canine`.
+- `amber` becomes `orange` and `violet` becomes `purple` in the color set.
 
 Data rules (`data/bases/*.json`, checked by the validator):
 - A node has `id`, `name`, `status` (active or planned), and an optional `parent`.
