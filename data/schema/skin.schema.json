@@ -17,7 +17,7 @@
     "base": {
       "type": "string",
       "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
-      "description": "Body-type node this skin is made for. It fits this node and all nodes below it. It never fits another branch."
+      "description": "Body-type node this skin is made for. By default (fit: node) it fits this node only."
     },
     "form_id": {
       "type": "string",
@@ -53,6 +53,14 @@
           "minimum": 0
         }
       }
+    },
+    "fit": {
+      "enum": [
+        "node",
+        "subtree"
+      ],
+      "default": "node",
+      "description": "node (default, narrow): fits forms whose body type is exactly `base`. subtree (broad, opt-in): fits `base` and every node below it. Use subtree only for shared patterns."
     }
   }
 }

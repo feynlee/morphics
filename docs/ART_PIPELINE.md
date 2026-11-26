@@ -32,7 +32,7 @@ Animation is made **per top-level body type, not per form**. See `DESIGN.md` sec
 6. **Animation**: use the base animation set (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death) for the form's node (retargeted to its proportions). Add only form-specific `extra_animations`.
 7. **Import to Unreal**: FBX import, material instances, Niagara effects for the morph and skills.
 8. **Review**: Ziyue checks it in the editor and in game camera (third-person).
-9. **Skins**: a skin is made for a body-type node, not for one form. It fits that node and all nodes below it. Build it on the root skeleton and test it on every form it fits. It must never be used on another branch (the validator checks this).
+9. **Skins**: a skin is made for one body-type node, not for one form. **Narrow is the default**: it fits that node only, and we tune it to those proportions. Make many narrow variations per node, because each one is a separate product. A broad skin (`fit: subtree`) is an exception for shared patterns and needs Ziyue's approval. Build on the root skeleton and test on every form the skin fits. It must never be used on another branch (the validator checks this).
 
 ## Making it scale ("many forms at launch")
 - Body-type tree: one skeleton and one animation set per top-level body type, with size subcategories.

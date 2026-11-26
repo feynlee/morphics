@@ -8,8 +8,9 @@ Needs the `jsonschema` package. Cross checks:
 - a form's base exists
 - a skin's base exists
 - a form's skills exist
-- a form's default_skin exists and fits the form: the skin's base must be the form's base
-  or one of its ancestors (a skin never works on another branch of the tree)
+- a form's default_skin exists and fits the form. Narrow is the default: a skin fits its
+  node only. A skin with fit="subtree" (broad, opt-in) also fits every node below it.
+  A skin never works on another branch of the tree
 - an exclusive skin (form_id) names a real form that it fits
 Exit code 0 means OK. Exit code 1 means errors.
 """
@@ -45,6 +46,13 @@ def chain(bases, base_id):
         out.append(base_id)
         base_id = bases[base_id].get("parent")
     return out
+
+
+def skin_fits(bases, skin, form_base):
+    """Narrow by default: exact node. fit="subtree" also allows descendants."""
+    if skin.get("fit", "node") == "subtree":
+        return skin.get("base") in chain(bases, form_base)
+    return skin.get("base") == form_base
 
 
 def check_bases(bases):
@@ -89,7 +97,7 @@ def main():
             owner = forms.get(skin["form_id"])
             if owner is None:
                 errors.append(f"{skin['id']}: unknown form_id {skin['form_id']}")
-            elif skin.get("base") not in chain(bases, owner.get("base")):
+            elif not skin_fits(bases, skin, owner.get("base")):
                 errors.append(f"{skin['id']}: base {skin['base']} does not fit {owner['id']} ({owner.get('base')})")
 
     for form in forms.values():
@@ -103,7 +111,7 @@ def main():
         if skin is None:
             errors.append(f"{form['id']}: unknown default_skin {sid}")
             continue
-        if skin.get("base") not in chain(bases, form.get("base")):
+        if not skin_fits(bases, skin, form.get("base")):
             errors.append(f"{sid}: made for {skin.get('base')}, which does not fit {form['id']} ({form.get('base')})")
         if skin.get("form_id") not in (None, form["id"]):
             errors.append(f"{sid}: is exclusive to {skin['form_id']}, not {form['id']}")

@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.10)
+# Morphics: Design Doc (v0.11)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -82,7 +82,8 @@ A **Skin** is cosmetic only, and it is made for **one base** (body type):
 | Field | Meaning |
 |---|---|
 | id | Stable unique key |
-| base | The body-type node the skin is made for (required). It fits that node and every node below it. |
+| base | The body-type node the skin is made for (required) |
+| fit | `node` (default, narrow): fits only forms of exactly that node. `subtree` (broad, opt-in): also fits every node below it. |
 | form_id | Optional: makes the skin exclusive to one form (for example a form's default look) |
 | look | Material instance, textures, optional mesh parts, VFX set |
 | sfx_pack | Optional sound set |
@@ -153,20 +154,19 @@ Body-type cue (recommendation, for Ziyue to decide):
 - The nameplate is hidden or small by default, so the skin stays the main identity. Players can show or hide nameplates.
 - Optional: ping or highlight outline on a teammate when they are off screen or behind cover.
 
-### Skins are sold per body type (decided)
-- A skin declares the body-type node it is made for. **It fits that node and every node below it. It never fits another branch.**
+### Skins are sold per body type, and narrow by default (decided)
+- Each skin is made for one body-type node. **Narrow is the default: a skin fits forms of exactly that node.** It never fits another branch of the tree.
+- Why narrow: skins are the product. A narrow skin is made for exact proportions, so it looks its best. It also lets us make many separate variations and sell each one. For example, a different fox skin, lynx skin, and small-canine skin can each be sold on their own.
 - Examples:
-  - A skin made for `base.quadruped.small` fits fox-sized forms only.
-  - A skin made for `base.quadruped` fits every four-legged beast (small, medium, large).
-  - Neither fits a humanoid or a bird.
-- The skin's level is the artist's choice: a broad skin must look right at every size below it. Use a broad level for patterns and materials (fur, armor plates), and a narrow level for skins that depend on exact proportions.
-- A player who owns a skin can wear it on any owned form whose body type it fits.
-- This makes each skin more valuable: one purchase covers many forms.
-- Store UI: show the skin on every owned form it fits in the preview, and show which body types it fits.
-- A skin can be exclusive to one form (`form_id`). Default looks work this way. Premium forms can also have a form-exclusive skin.
+  - A narrow skin for `base.quadruped.small` fits every small four-legged beast (fox, lynx, small canine). It does not fit a medium or large beast.
+  - A narrow skin for `base.humanoid.short` fits dwarf, gnome, and halfling forms, and no medium humanoid.
+- **Broad skins are an option** (`fit: subtree`): the skin fits its node and every node below it. Use this only for shared patterns and materials (for example a fur pattern or an armor-plate set) that look right at every size. A broad skin is the exception, and Ziyue approves each one.
+- A skin can also be exclusive to one form (`form_id`). Default looks work this way. This is the narrowest option.
+- A player who owns a skin can wear it on any owned form it fits.
+- Store UI: show the skin on every owned form it fits, and show which body type it fits.
 - Each form has a `default_skin` that fits its body type, so a form always has a look.
-- Ownership: a player owns skins and forms separately. Equipping checks the body-type rule.
-- Art cost: a skin at a broad level means more fit testing. Plan skin art per node and test it on every form it fits.
+- Ownership: a player owns skins and forms separately. Equipping checks the fit rule.
+- Art cost: a narrow skin is tested on one node only, which keeps each skin cheap to make and check. Many narrow variations are the main way we grow the skin catalog.
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.
