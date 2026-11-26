@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.50)
+# Morphics: Design Doc (v0.51)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -582,6 +582,18 @@ Milestone note: the market is built in M3. M1 has no market.
 
 ## 9. Open questions for Ziyue
 Decided questions were removed. Still open:
+
+**Design questions (body types), first priority.** The first build is a proof of concept with three forms: a human, a canine (Wolf) and a hawk.
+- **Swimmer order:** which swimmer subcategories come first, and in what order (fish, sea mammals, sharks, crustaceans, eels)? Each needs its own rig and gait.
+- **Swim and walk:** a flier stays a Flyer even if it walks. Is a swimmer that also walks on land (otter, seal) a Swimmer or a Walker?
+- **Hybrids:** does a dragon (four legs plus wings) need its own Flyer subcategory? Same question for winged humanoids and centaurs.
+- **Beast-people:** is a wolf-person under the humanoid subcategory or canine?
+- **Raptor and Tyrant:** Green for now. Orange or Purple later, or stay Green?
+- **Size ranges:** real heights in meters for small, medium and large, so hitboxes and skins can be checked.
+- **Build order after the proof of concept:** hoofed and shelled (they have forms), feline, or a first swimmer?
+- **Limited morphs:** can a pass morph use a subcategory nobody can farm yet (Prism Stag under hoofed)?
+
+Other open questions:
 1. **Art quality bar**: Claude's art is made with scripts and tools (see `ART_PIPELINE.md`). Visual quality is the product, so Ziyue should judge the first form and set the bar. If it is not enough, we change the plan (for example: add a human artist for hero forms, or use licensed assets).
 2. **Epic Games Store**: ownership and currency use one interface, so adding Epic later is planned. When should Epic be added (after launch, or at launch)?
 
