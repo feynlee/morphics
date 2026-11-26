@@ -16,6 +16,9 @@ Animation is made **per top-level body type, not per form**. See `DESIGN.md` sec
 - Each subcategory (small, medium, large, and so on) reuses the animations through retargeting (Unreal IK Retargeter) with its proportion settings.
 - A form picks a node. An orc and a human both use `base.humanoid.medium`. A dwarf uses `base.humanoid.short`.
 - Cost effect: a new form in an existing node needs a model, textures, a default skin, and VFX. It needs no new skeleton and no new animation set.
+- **Inherit first, override only what changes.** A subcategory starts with every parent animation, retargeted. After a test pass, the artist lists the few that need changes (for example the run and jump of a small beast) in `animation_overrides` and makes those.
+- Lookup order for an animation: form extra, then subcategory override, then parent, then root.
+- Fix a problem shared by all children in the parent set. Fix a size-specific problem as an override. This keeps the work small.
 - A new subcategory needs a retarget setup and a test pass.
 - A new top-level body type is the expensive step: new skeleton, full animation set, and retarget tests.
 - Build order: humanoid and four-legged first (they are `active`). Bird and bipedal dinosaur after the first two work in game.

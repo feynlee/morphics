@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.9)
+# Morphics: Design Doc (v0.10)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -105,7 +105,7 @@ This lets us make many forms: a new form is a new look plus skills, not a new an
 
 Structure: **top-level body type > subcategory > form**. Example: Four-legged beast > Small four-legged beast > Ember Fox.
 - The **top level** (root) sets the skeleton and the required animation list.
-- A **subcategory** sets size and build (small, medium, large). It inherits the skeleton and animations and retargets them to its proportions.
+- A **subcategory** sets size and build (small, medium, large). It **inherits the skeleton and all animations** from its parent and retargets them to its proportions.
 - A **form** declares the node it uses. Usually that is a subcategory.
 - Deeper levels are allowed when needed (for example: Large four-legged beast > Heavy large four-legged beast). One more segment per level.
 
@@ -130,6 +130,9 @@ Data rules (`data/bases/*.json`, checked by the validator):
 - A node has `id`, `name`, `status` (active or planned), and an optional `parent`.
 - A child id is its parent's id plus one segment (`base.quadruped` > `base.quadruped.small`).
 - A root has `required_animations` (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death) and a `skeleton`.
+- **Inheritance**: a subcategory reuses the parent's animations by default. It lists only the animations it changes in `animation_overrides` (for example, a small beast has its own run and jump). An override must name an animation from the root's required list. Everything not listed is inherited.
+- Expect some tuning: retargeted animations may need small fixes per subcategory. Fix a shared problem at the parent, so all children gain. Fix a size-specific problem as an override.
+- A form may add `extra_animations` on top, for its own signature moves. Order of lookup: form extra, then subcategory override, then parent, then root.
 - A node cannot be `active` under a `planned` parent.
 - Every form declares `base`. The validator rejects an unknown node.
 - A form may add `extra_animations` for its own signature moves.

@@ -3,5 +3,10 @@
   "name": "Small four-legged beast",
   "parent": "base.quadruped",
   "status": "active",
-  "examples": "Fox, lynx, small canine"
+  "examples": "Fox, lynx, small canine",
+  "animation_overrides": [
+    "run",
+    "jump"
+  ],
+  "proportion_notes": "Light and quick. Own run and jump."
 }

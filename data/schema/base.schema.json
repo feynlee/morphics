@@ -47,6 +47,14 @@
     "proportion_notes": {
       "type": "string",
       "description": "Optional. How this subcategory differs from its parent (size, build)."
+    },
+    "animation_overrides": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Animations this subcategory replaces. Every other animation is inherited from the parent. Names must be in the root's required_animations."
     }
   }
 }

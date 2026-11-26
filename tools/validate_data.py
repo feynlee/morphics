@@ -4,6 +4,7 @@
 Needs the `jsonschema` package. Cross checks:
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
   a root has required_animations, a child is not "active" under a "planned" parent
+- animation_overrides only name animations that the root requires
 - a form's base exists
 - a skin's base exists
 - a form's skills exist
@@ -62,6 +63,11 @@ def check_bases(bases):
             errors.append(f"{b['id']}: id must start with parent id {parent_id}.")
         if b["id"].count(".") != parent_id.count(".") + 1:
             errors.append(f"{b['id']}: id must add exactly one segment to {parent_id}")
+        root_id = chain(bases, parent_id)[-1]
+        required = bases[root_id].get("required_animations", [])
+        for anim in b.get("animation_overrides", []):
+            if anim not in required:
+                errors.append(f"{b['id']}: override {anim} is not in the required animations of {root_id}")
         if parent["status"] == "planned" and b["status"] == "active":
             errors.append(f"{b['id']}: cannot be active under planned parent {parent_id}")
         if parent_id not in chain(bases, parent_id) or b["id"] in chain(bases, parent_id):
