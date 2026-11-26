@@ -1,18 +1,20 @@
-"""Build the Wolf (form.wolf) in Blender: mesh, fur, rig, and a preview render.
+"""Build the stylized low-poly Wolf (form.wolf): mesh, painted textures, rig, animations, preview render.
 
-Run:  python3 art/wolf/build_wolf.py [--render] [--out DIR]
+Run:  python3 art/wolf/build_wolf.py [--render] [--strip] [--fbx] [--out DIR]
 Needs the `bpy` Python module (pip install bpy). Units are meters. The wolf faces +Y, Z is up.
-This is the first pass of the quality test. See docs/art/WOLF_BRIEF.md.
+Style: Palworld-like, low poly (about 10,000 triangles), detail painted into textures.
+See docs/art/WOLF_BRIEF.md. The earlier realistic version is in build_wolf_realistic.py.
 """
 import math
 import os
 import sys
 
 import bpy
-import bmesh
 from mathutils import Vector
 
 OUT = "art/wolf/out"
+TARGET_TRIS = int(os.environ.get("TARGET_TRIS", "10000"))
+TEX = int(os.environ.get("TEX", "2048"))
 for i, a in enumerate(sys.argv):
     if a == "--out":
         OUT = sys.argv[i + 1]
@@ -22,34 +24,34 @@ bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
 
 # ---------------------------------------------------------------- body graph (skin modifier)
-# name: (x, y, z, radius_x, radius_y). Left side is +X. Mirror pairs are built from L entries.
+# name: (x, y, z, radius_x, radius_y). Friendly proportions: big head, chunky body, thick legs, big tail.
 CENTER = {
-    "tail_tip": (0, -1.12, 0.50, 0.035, 0.05),
-    "tail_4": (0, -1.03, 0.54, 0.080, 0.09),
-    "tail_3": (0, -0.90, 0.62, 0.105, 0.10),
-    "tail_2": (0, -0.77, 0.69, 0.085, 0.09),
-    "tail_1": (0, -0.64, 0.76, 0.055, 0.07),
-    "pelvis": (0, -0.50, 0.82, 0.160, 0.17),
-    "spine_2": (0, -0.15, 0.82, 0.120, 0.17),
-    "chest": (0, 0.20, 0.76, 0.150, 0.21),
-    "withers": (0, 0.42, 0.88, 0.125, 0.16),
-    "neck_1": (0, 0.58, 0.94, 0.100, 0.13),
-    "neck_2": (0, 0.72, 0.99, 0.090, 0.11),
-    "skull": (0, 0.88, 1.01, 0.118, 0.120),
-    "muzzle_1": (0, 1.02, 0.965, 0.068, 0.070),
-    "muzzle_2": (0, 1.10, 0.945, 0.050, 0.052),
-    "nose": (0, 1.15, 0.940, 0.034, 0.034),
+    "tail_tip": (0, -0.76, 0.52, 0.060, 0.070),
+    "tail_4": (0, -0.69, 0.60, 0.100, 0.110),
+    "tail_3": (0, -0.59, 0.64, 0.130, 0.130),
+    "tail_2": (0, -0.49, 0.64, 0.120, 0.120),
+    "tail_1": (0, -0.40, 0.63, 0.090, 0.100),
+    "pelvis": (0, -0.24, 0.58, 0.180, 0.200),
+    "spine_2": (0, -0.01, 0.58, 0.180, 0.200),
+    "chest": (0, 0.17, 0.60, 0.190, 0.220),
+    "withers": (0, 0.32, 0.66, 0.170, 0.180),
+    "neck_1": (0, 0.42, 0.74, 0.150, 0.150),
+    "neck_2": (0, 0.50, 0.82, 0.140, 0.140),
+    "skull": (0, 0.58, 0.88, 0.190, 0.170),
+    "muzzle_1": (0, 0.76, 0.82, 0.095, 0.100),
+    "muzzle_2": (0, 0.85, 0.80, 0.075, 0.070),
+    "nose": (0, 0.90, 0.80, 0.045, 0.040),
 }
 LEG_L = {
-    "f_shoulder": (0.105, 0.30, 0.66, 0.095, 0.115),
-    "f_elbow": (0.100, 0.26, 0.45, 0.062, 0.065),
-    "f_wrist": (0.100, 0.31, 0.24, 0.038, 0.042),
-    "f_paw": (0.100, 0.37, 0.045, 0.050, 0.070),
-    "h_hip": (0.125, -0.47, 0.66, 0.130, 0.150),
-    "h_thigh": (0.125, -0.40, 0.56, 0.105, 0.125),
-    "h_knee": (0.125, -0.30, 0.44, 0.070, 0.080),
-    "h_hock": (0.105, -0.56, 0.30, 0.042, 0.048),
-    "h_paw": (0.105, -0.50, 0.045, 0.048, 0.068),
+    "f_shoulder": (0.110, 0.20, 0.52, 0.100, 0.110),
+    "f_elbow": (0.110, 0.20, 0.34, 0.085, 0.090),
+    "f_wrist": (0.115, 0.22, 0.17, 0.075, 0.080),
+    "f_paw": (0.115, 0.27, 0.05, 0.085, 0.110),
+    "h_hip": (0.135, -0.26, 0.50, 0.140, 0.150),
+    "h_thigh": (0.145, -0.22, 0.40, 0.125, 0.135),
+    "h_knee": (0.145, -0.15, 0.30, 0.095, 0.105),
+    "h_hock": (0.125, -0.33, 0.20, 0.075, 0.080),
+    "h_paw": (0.125, -0.29, 0.05, 0.085, 0.110),
 }
 EDGES = [
     ("nose", "muzzle_2"), ("muzzle_2", "muzzle_1"), ("muzzle_1", "skull"), ("skull", "neck_2"),
@@ -59,9 +61,7 @@ EDGES = [
     ("f_shoulder", "f_elbow"), ("f_elbow", "f_wrist"), ("f_wrist", "f_paw"),
     ("h_hip", "h_thigh"), ("h_thigh", "h_knee"), ("h_knee", "h_hock"), ("h_hock", "h_paw"),
 ]
-P = {}
-for k, v in CENTER.items():
-    P[k] = v
+P = dict(CENTER)
 for k, v in LEG_L.items():
     P["L_" + k] = v
     P["R_" + k] = (-v[0], v[1], v[2], v[3], v[4])
@@ -84,233 +84,251 @@ bpy.context.view_layer.objects.active = body
 body.select_set(True)
 sk = body.modifiers.new("Skin", "SKIN")
 sk.use_smooth_shade = True
-sk.branch_smoothing = 0.6
+sk.branch_smoothing = 0.8
 for n in names:
     v = me.skin_vertices[0].data[idx[n]]
     v.radius = (P[n][3], P[n][4])
     v.use_root = n == "pelvis"
 sub = body.modifiers.new("Sub", "SUBSURF")
-sub.levels = 2
-sub.render_levels = 2
+sub.levels = 3
 bpy.ops.object.modifier_apply(modifier="Skin")
 bpy.ops.object.modifier_apply(modifier="Sub")
-bpy.ops.object.shade_smooth()
 
-# Remesh to clean quad topology, then re-subdivide lightly for smoothness.
-rm = body.modifiers.new("Remesh", "REMESH")
-rm.mode = "VOXEL"
-rm.voxel_size = 0.018
-bpy.ops.object.modifier_apply(modifier="Remesh")
-sm = body.modifiers.new("Smooth", "CORRECTIVE_SMOOTH")
-sm.iterations = 12
-sm.factor = 0.8
-bpy.ops.object.modifier_apply(modifier="Smooth")
-bpy.ops.object.shade_smooth()
-
-# ---------------------------------------------------------------- extra parts
-def add_part(name, prim, loc, scale, rot=(0, 0, 0)):
-    getattr(bpy.ops.mesh, prim)()
-    o = bpy.context.active_object
-    o.name = name
-    o.location = loc
-    o.scale = scale
-    o.rotation_euler = rot
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-    bpy.ops.object.shade_smooth()
-    return o
-
-
-parts = []
-for s, side in ((1, "L"), (-1, "R")):
-    bpy.ops.mesh.primitive_cone_add(vertices=24, radius1=0.068, radius2=0.012, depth=0.18,
-                                    location=(s * 0.090, 0.84, 1.13), rotation=(math.radians(-8), math.radians(s * 12), 0))
+# ---------------------------------------------------------------- ears (joined into the body mesh)
+def add_ear(side, s):
+    bpy.ops.mesh.primitive_cone_add(vertices=10, radius1=0.10, radius2=0.02, depth=0.23,
+                                    location=(s * 0.12, 0.56, 1.06), rotation=(math.radians(-6), math.radians(s * 16), 0))
     ear = bpy.context.active_object
     ear.name = f"Ear_{side}"
-    ear.scale = (1, 0.45, 1)
+    ear.scale = (1, 0.5, 1)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-    sub_e = ear.modifiers.new("s", "SUBSURF"); sub_e.levels = 2
-    bpy.ops.object.modifier_apply(modifier="s")
-    bpy.ops.object.shade_smooth()
-    parts.append(ear)
-    eye = add_part(f"Eye_{side}", "primitive_uv_sphere_add", (s * 0.066, 0.97, 1.045), (0.019, 0.013, 0.015))
-    parts.append(eye)
-nose = add_part("Nose", "primitive_uv_sphere_add", (0, 1.172, 0.945), (0.032, 0.028, 0.024))
-parts.append(nose)
+    return ear
 
-# ---------------------------------------------------------------- materials
+ears = [add_ear("L", 1), add_ear("R", -1)]
+bpy.ops.object.select_all(action="DESELECT")
+for e in ears:
+    e.select_set(True)
+body.select_set(True)
+bpy.context.view_layer.objects.active = body
+bpy.ops.object.join()
+
+# ---------------------------------------------------------------- clean mesh to the triangle budget
+bpy.ops.object.mode_set(mode="EDIT")
+bpy.ops.mesh.select_all(action="SELECT")
+bpy.ops.mesh.remove_doubles(threshold=0.002)
+bpy.ops.mesh.normals_make_consistent(inside=False)
+bpy.ops.object.mode_set(mode="OBJECT")
+sm = body.modifiers.new("Smooth", "CORRECTIVE_SMOOTH")
+sm.iterations = 6
+sm.factor = 0.6
+bpy.ops.object.modifier_apply(modifier="Smooth")
+tri = body.modifiers.new("Tri", "TRIANGULATE")
+bpy.ops.object.modifier_apply(modifier="Tri")
+cur = len(body.data.polygons)
+dec = body.modifiers.new("Decimate", "DECIMATE")
+dec.ratio = min(1.0, TARGET_TRIS / max(1, cur))
+bpy.ops.object.modifier_apply(modifier="Decimate")
+bpy.ops.object.shade_smooth()
+TRIS = len(body.data.polygons)
+print("TRIANGLES", TRIS)
+
+# ---------------------------------------------------------------- vertex-color zones (smooth painted regions)
+def smooth(x, a, b):
+    t = max(0.0, min(1.0, (x - a) / (b - a)))
+    return t * t * (3 - 2 * t)
+
+def lin(c):
+    return tuple(v ** 2.2 for v in c)
+
+
+COAT, DARK, LIGHT, GREY = lin((0.55, 0.47, 0.40)), lin((0.27, 0.22, 0.19)), lin((0.93, 0.87, 0.76)), lin((0.65, 0.60, 0.55))
+PINK = lin((0.70, 0.52, 0.50))
+
+
+def mix(a, b, t):
+    return tuple(a[i] * (1 - t) + b[i] * t for i in range(3))
+
+attr = body.data.color_attributes.new(name="Col", type="FLOAT_COLOR", domain="POINT")
+for v in body.data.vertices:
+    x, y, z = v.co
+    c = COAT
+    c = mix(c, GREY, smooth(0.5 - abs(x) * 2.0, 0, 0.5) * 0.35)                 # lighter flanks
+    saddle = smooth(z, 0.62, 0.76) * smooth(0.40 - y, -0.1, 0.35) * smooth(y, -0.55, -0.35)
+    c = mix(c, DARK, saddle * 0.9)
+    c = mix(c, DARK, smooth(z, 0.93, 1.02) * 0.8)                                 # top of head and ears
+    ear = smooth(z, 0.97, 1.0)
+    belly = (1 - smooth(z, 0.42, 0.55)) * smooth(0.30 - abs(x), 0.02, 0.2)
+    c = mix(c, LIGHT, belly * smooth(y, -0.3, -0.1) * smooth(0.45 - y, -0.05, 0.2) * 0.9)
+    chest = smooth(y, 0.12, 0.3) * (1 - smooth(z, 0.55, 0.74)) * smooth(0.2 - abs(x), 0.0, 0.14)
+    c = mix(c, LIGHT, chest)
+    muzzle = smooth(y, 0.70, 0.78) * (1 - smooth(z, 0.80, 0.88))
+    c = mix(c, LIGHT, muzzle)
+    cheek = smooth(y, 0.50, 0.62) * smooth(abs(x), 0.06, 0.14) * (1 - smooth(z, 0.82, 0.9))
+    c = mix(c, LIGHT, cheek * 0.8)
+    c = mix(c, LIGHT, (1 - smooth(z, 0.07, 0.14)) * 0.9)                          # light paws
+    c = mix(c, DARK, smooth(-0.70 - y, 0.0, 0.08))                                # dark tail tip
+    if ear > 0.0 and y > 0.552:
+        c = mix(c, PINK, ear)                                                       # inner ear
+    attr.data[v.index].color = (*c, 1.0)
+
 def new_mat(name):
     m = bpy.data.materials.new(name)
     m.use_nodes = True
     return m
 
 
-skin_mat = new_mat("WolfSkin")
-nt = skin_mat.node_tree
-bsdf = nt.nodes["Principled BSDF"]
-bsdf.inputs["Base Color"].default_value = (0.30, 0.25, 0.21, 1)
-bsdf.inputs["Roughness"].default_value = 0.8
-body.data.materials.append(skin_mat)
+# ---------------------------------------------------------------- UV unwrap
+bpy.ops.object.mode_set(mode="EDIT")
+bpy.ops.mesh.select_all(action="SELECT")
+bpy.ops.uv.smart_project(angle_limit=math.radians(66), island_margin=0.006)
+bpy.ops.object.mode_set(mode="OBJECT")
 
-fur_mat = new_mat("WolfFur")
-nt = fur_mat.node_tree
-for n in list(nt.nodes):
-    nt.nodes.remove(n)
-out = nt.nodes.new("ShaderNodeOutputMaterial")
-hair = nt.nodes.new("ShaderNodeBsdfHairPrincipled")
-hair.parametrization = "COLOR"
-hair.inputs["Roughness"].default_value = 0.45
-hair.inputs["Coat"].default_value = 0.1
-hair.inputs["Random Roughness"].default_value = 0.2
-nt.links.new(hair.outputs[0], out.inputs[0])
-pos = nt.nodes.new("ShaderNodeNewGeometry")
-sep = nt.nodes.new("ShaderNodeSeparateXYZ")
-nt.links.new(pos.outputs["Position"], sep.inputs[0])
-# Coat zones in object space: z (height) and |x|, y.
-def ramp(nodes, lo, hi, name):
-    mr = nodes.new("ShaderNodeMapRange")
+# ---------------------------------------------------------------- materials and baking
+def stroke_noise(nt, pos_out, scale=(34, 9, 34), detail=5):
+    mp = nt.nodes.new("ShaderNodeMapping")
+    mp.inputs["Scale"].default_value = scale
+    nt.links.new(pos_out, mp.inputs["Vector"])
+    nz = nt.nodes.new("ShaderNodeTexNoise")
+    nz.inputs["Scale"].default_value = 1.0
+    nz.inputs["Detail"].default_value = detail
+    nz.inputs["Roughness"].default_value = 0.6
+    nt.links.new(mp.outputs[0], nz.inputs["Vector"])
+    return nz.outputs["Fac"]
+
+def maprange(nt, value_out, lo, hi, clamp=True):
+    mr = nt.nodes.new("ShaderNodeMapRange")
+    mr.clamp = clamp
     mr.inputs["From Min"].default_value = lo
     mr.inputs["From Max"].default_value = hi
-    mr.clamp = True
-    return mr
+    nt.links.new(value_out, mr.inputs["Value"])
+    return mr.outputs[0]
 
+def dist_to(nt, xyz_out, center):
+    sub = nt.nodes.new("ShaderNodeVectorMath")
+    sub.operation = "SUBTRACT"
+    nt.links.new(xyz_out, sub.inputs[0])
+    sub.inputs[1].default_value = center
+    ln = nt.nodes.new("ShaderNodeVectorMath")
+    ln.operation = "LENGTH"
+    nt.links.new(sub.outputs[0], ln.inputs[0])
+    return ln.outputs["Value"]
 
-belly = ramp(nt.nodes, 0.50, 0.72, "belly")            # 0 at belly, 1 on back
-nt.links.new(sep.outputs["Z"], belly.inputs["Value"])
-spine = ramp(nt.nodes, 0.80, 1.00, "spine")            # darker toward the top line
-nt.links.new(sep.outputs["Z"], spine.inputs["Value"])
-noise = nt.nodes.new("ShaderNodeTexNoise")
-noise.inputs["Scale"].default_value = 28
-noise.inputs["Detail"].default_value = 6
-nt.links.new(pos.outputs["Position"], noise.inputs["Vector"])
-hinfo = nt.nodes.new("ShaderNodeHairInfo")
-cols = {
-    "light": (0.72, 0.62, 0.48, 1),
-    "coat": (0.17, 0.135, 0.105, 1),
-    "dark": (0.045, 0.037, 0.032, 1),
-    "grey": (0.30, 0.27, 0.24, 1),
-}
-def rgb(v):
-    n = nt.nodes.new("ShaderNodeRGB")
-    n.outputs[0].default_value = v
-    return n
-c_light, c_coat, c_dark, c_grey = (rgb(cols[k]) for k in ("light", "coat", "dark", "grey"))
-mix1 = nt.nodes.new("ShaderNodeMix"); mix1.data_type = "RGBA"
-nt.links.new(belly.outputs[0], mix1.inputs["Factor"])
-nt.links.new(c_light.outputs[0], mix1.inputs["A"])
-# coat vs grey salt-and-pepper by noise
-mixg = nt.nodes.new("ShaderNodeMix"); mixg.data_type = "RGBA"
-nt.links.new(noise.outputs["Fac"], mixg.inputs["Factor"])
-nt.links.new(c_coat.outputs[0], mixg.inputs["A"])
-nt.links.new(c_grey.outputs[0], mixg.inputs["B"])
-nt.links.new(mixg.outputs[2], mix1.inputs["B"])
-mix2 = nt.nodes.new("ShaderNodeMix"); mix2.data_type = "RGBA"
-nt.links.new(spine.outputs[0], mix2.inputs["Factor"])
-nt.links.new(mix1.outputs[2], mix2.inputs["A"])
-nt.links.new(c_dark.outputs[0], mix2.inputs["B"])
-# root darker than tip
-mix3 = nt.nodes.new("ShaderNodeMix"); mix3.data_type = "RGBA"; mix3.inputs["Factor"].default_value = 0.0
-nt.links.new(hinfo.outputs["Intercept"], mix3.inputs["Factor"])
-nt.links.new(mix2.outputs[2], mix3.inputs["A"])
-tip = rgb((0.30, 0.25, 0.20, 1))
-nt.links.new(tip.outputs[0], mix3.inputs["B"])
-mixt = nt.nodes.new("ShaderNodeMix"); mixt.data_type = "RGBA"; mixt.inputs["Factor"].default_value = 0.25
-nt.links.new(mix2.outputs[2], mixt.inputs["A"]); nt.links.new(mix3.outputs[2], mixt.inputs["B"])
-nt.links.new(mixt.outputs[2], hair.inputs["Color"])
-# tail tip dark: y < -0.95
-tailt = ramp(nt.nodes, -1.0, -0.88, "tailtip")
-nt.links.new(sep.outputs["Y"], tailt.inputs["Value"])
-mixtail = nt.nodes.new("ShaderNodeMix"); mixtail.data_type = "RGBA"
-nt.links.new(tailt.outputs[0], mixtail.inputs["Factor"])
-nt.links.new(c_dark.outputs[0], mixtail.inputs["A"])
-nt.links.new(mixt.outputs[2], mixtail.inputs["B"])
-nt.links.new(mixtail.outputs[2], hair.inputs["Color"])
+def paint_material():
+    m = bpy.data.materials.new("WolfPaint")
+    m.use_nodes = True
+    nt = m.node_tree
+    for n in list(nt.nodes):
+        nt.nodes.remove(n)
+    out = nt.nodes.new("ShaderNodeOutputMaterial")
+    em = nt.nodes.new("ShaderNodeEmission")
+    nt.links.new(em.outputs[0], out.inputs[0])
+    geo = nt.nodes.new("ShaderNodeNewGeometry")
+    col = nt.nodes.new("ShaderNodeVertexColor")
+    col.layer_name = "Col"
+    # fur strokes darken and lighten the base color
+    st = stroke_noise(nt, geo.outputs["Position"])
+    k = maprange(nt, st, 0.3, 0.7)
+    mixn = nt.nodes.new("ShaderNodeMix"); mixn.data_type = "RGBA"
+    mixn.blend_type = "MULTIPLY"
+    mixn.inputs["Factor"].default_value = 1.0
+    nt.links.new(col.outputs["Color"], mixn.inputs["A"])
+    shade = nt.nodes.new("ShaderNodeMapRange")
+    nt.links.new(k, shade.inputs["Value"])
+    shade.inputs["To Min"].default_value = 0.78
+    shade.inputs["To Max"].default_value = 1.12
+    gray = nt.nodes.new("ShaderNodeCombineColor")
+    for i in range(3):
+        nt.links.new(shade.outputs[0], gray.inputs[i])
+    nt.links.new(gray.outputs[0], mixn.inputs["B"])
+    cur_col = mixn.outputs[2]
+    # facial features by distance from object-space points
+    sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+    nt.links.new(geo.outputs["Position"], sep.inputs[0])
+    absx = nt.nodes.new("ShaderNodeMath"); absx.operation = "ABSOLUTE"
+    nt.links.new(sep.outputs["X"], absx.inputs[0])
+    comb = nt.nodes.new("ShaderNodeCombineXYZ")
+    nt.links.new(absx.outputs[0], comb.inputs["X"])
+    nt.links.new(sep.outputs["Y"], comb.inputs["Y"])
+    nt.links.new(sep.outputs["Z"], comb.inputs["Z"])
+    def layer(prev, mask, color):
+        mx = nt.nodes.new("ShaderNodeMix"); mx.data_type = "RGBA"
+        nt.links.new(mask, mx.inputs["Factor"])
+        nt.links.new(prev, mx.inputs["A"])
+        mx.inputs["B"].default_value = (*color, 1)
+        return mx.outputs[2]
+    EYE = (0.105, 0.735, 0.925)
+    d_eye = dist_to(nt, comb.outputs[0], EYE)
+    cur_col = layer(cur_col, maprange(nt, d_eye, 0.056, 0.048), lin((0.12, 0.09, 0.07)))      # dark outline
+    cur_col = layer(cur_col, maprange(nt, d_eye, 0.046, 0.038), lin((0.98, 0.70, 0.22)))       # amber iris
+    cur_col = layer(cur_col, maprange(nt, d_eye, 0.027, 0.022), lin((0.04, 0.03, 0.025)))     # pupil
+    d_hi = dist_to(nt, comb.outputs[0], (0.098, 0.742, 0.948))
+    cur_col = layer(cur_col, maprange(nt, d_hi, 0.012, 0.008), (1, 1, 1))                 # highlight
+    d_nose = dist_to(nt, comb.outputs[0], (0.0, 0.91, 0.81))
+    cur_col = layer(cur_col, maprange(nt, d_nose, 0.036, 0.030), lin((0.10, 0.08, 0.075)))
+    # inner ears: pink-grey in a band near the front of the ear
+    nt.links.new(cur_col, em.inputs["Color"])
+    return m
 
-for o, col, rough in ((parts[2], (0.03, 0.025, 0.02), 0.5),):
-    pass
-eye_mat = new_mat("WolfEye")
-eb = eye_mat.node_tree.nodes["Principled BSDF"]
-eb.inputs["Base Color"].default_value = (0.75, 0.48, 0.10, 1)
-eb.inputs["Roughness"].default_value = 0.05
-nose_mat = new_mat("WolfNose")
-nb = nose_mat.node_tree.nodes["Principled BSDF"]
-nb.inputs["Base Color"].default_value = (0.02, 0.018, 0.016, 1)
-nb.inputs["Roughness"].default_value = 0.25
-ear_mat = new_mat("WolfEarSkin")
-ear_mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.2, 0.15, 0.12, 1)
-# Materials of the small parts are set first, then all parts are joined into the body mesh so that
-# one weight pass rigs everything. Each part gets a "nofur" vertex group so fur skips eyes, nose, ears.
-body.data.materials.append(fur_mat)
-for o in parts:
-    key_mat = eye_mat if o.name.startswith("Eye") else nose_mat if o.name == "Nose" else ear_mat
-    o.data.materials.clear()
-    o.data.materials.append(key_mat)
-    g = o.vertex_groups.new(name="nofur")
-    g.add([v.index for v in o.data.vertices], 1.0, "REPLACE")
-    if o.name.startswith("Ear"):
-        eg = o.vertex_groups.new(name="ear")
-        eg.add([v.index for v in o.data.vertices], 1.0, "REPLACE")
-bpy.ops.object.select_all(action="DESELECT")
-for o in parts:
-    o.select_set(True)
-body.select_set(True)
-bpy.context.view_layer.objects.active = body
-bpy.ops.object.join()
-
-# ---------------------------------------------------------------- fur (hair particles, preview only)
-vg = body.vertex_groups.new(name="fur")
-vg_ruff = body.vertex_groups.new(name="ruff")
-vg_tail = body.vertex_groups.new(name="tail")
-vg_short = body.vertex_groups.new(name="short")
-ear_idx = body.vertex_groups["ear"].index
-nofur_idx = body.vertex_groups["nofur"].index
-for v in body.data.vertices:
-    x, y, z = v.co
-    w = 1.0
-    if any(g.group == nofur_idx for g in v.groups):
-        w = 0.0
-    elif z < 0.16:
-        w = 0.0                       # paws get short fur instead
-    elif y > 0.98:
-        w = 0.0                       # muzzle gets short fur instead
-    vg.add([v.index], w, "REPLACE")
-    is_ear = any(g.group == ear_idx for g in v.groups)
-    is_part = any(g.group == nofur_idx for g in v.groups)
-    short = 1.0 if (is_ear or (not is_part and (v.co[2] < 0.16 or v.co[1] > 0.98))) else 0.0
-    vg_short.add([v.index], short, "REPLACE")
-    ruff = max(0.0, 1 - abs(y - 0.55) / 0.28) if z > 0.7 else 0.0
-    vg_ruff.add([v.index], ruff, "REPLACE")
-    vg_tail.add([v.index], 1.0 if y < -0.55 else 0.0, "REPLACE")
-
-def add_fur(name, count, length, vgroup, rough=0.01, children=8, spread=0.012):
+def bake(mat, kind, size, path, setup=None):
+    img = bpy.data.images.new(os.path.basename(path), size, size, alpha=False, float_buffer=False)
+    img.colorspace_settings.name = "sRGB" if kind == "DIFFUSE" else "Non-Color"
+    nt = mat.node_tree
+    tex = nt.nodes.new("ShaderNodeTexImage")
+    tex.image = img
+    nt.nodes.active = tex
+    body.data.materials.clear()
+    body.data.materials.append(mat)
+    scene.render.engine = "CYCLES"
+    scene.cycles.device = "CPU"
+    scene.cycles.samples = 4
+    scene.render.bake.margin = 8
+    scene.render.bake.use_selected_to_active = False
+    bpy.ops.object.select_all(action="DESELECT")
+    body.select_set(True)
     bpy.context.view_layer.objects.active = body
-    bpy.ops.object.particle_system_add()
-    ps = body.particle_systems[-1]
-    ps.name = name
-    s = ps.settings
-    s.type = "HAIR"
-    s.count = count
-    s.hair_length = length
-    s.child_type = "INTERPOLATED"
-    s.rendered_child_count = children
-    s.child_percent = max(2, children // 3)
-    s.child_radius = spread
-    s.child_roundness = 1.0
-    s.roughness_1 = rough
-    s.roughness_endpoint = 0.04
-    s.clump_factor = 0.3
-    s.hair_step = 4
-    s.material_slot = "WolfFur"
-    s.root_radius = 0.10
-    s.tip_radius = 0.02
-    ps.vertex_group_density = vgroup
-    s.use_advanced_hair = False
-    return ps
+    if kind == "DIFFUSE":
+        scene.cycles.bake_type = "EMIT"
+        bpy.ops.object.bake(type="EMIT")
+    else:
+        bpy.ops.object.bake(type="NORMAL")
+    img.filepath_raw = path
+    img.file_format = "PNG"
+    img.save()
+    return img
 
+paint = paint_material()
+base_path = os.path.join(OUT, "wolf_basecolor.png")
+base_img = bake(paint, "DIFFUSE", TEX, base_path)
 
-add_fur("fur_body", 14000, 0.05, "fur", rough=0.012, children=10)
-add_fur("fur_short", 26000, 0.018, "short", rough=0.01, children=6, spread=0.006)
-add_fur("fur_ruff", 3500, 0.10, "ruff", rough=0.02, children=10, spread=0.02)
-add_fur("fur_tail", 3500, 0.10, "tail", rough=0.015, children=10, spread=0.02)
+# normal map: bump from the fur stroke noise
+nm = bpy.data.materials.new("WolfNormalBake")
+nm.use_nodes = True
+nt = nm.node_tree
+bsdf = nt.nodes["Principled BSDF"]
+geo = nt.nodes.new("ShaderNodeNewGeometry")
+st = stroke_noise(nt, geo.outputs["Position"], scale=(46, 11, 46), detail=6)
+bump = nt.nodes.new("ShaderNodeBump")
+bump.inputs["Strength"].default_value = 0.7
+bump.inputs["Distance"].default_value = 0.01
+nt.links.new(st, bump.inputs["Height"])
+nt.links.new(bump.outputs[0], bsdf.inputs["Normal"])
+normal_path = os.path.join(OUT, "wolf_normal.png")
+normal_img = bake(nm, "NORMAL", TEX // 2, normal_path)
+
+# final single material: base color + normal map
+final = bpy.data.materials.new("WolfMat")
+final.use_nodes = True
+nt = final.node_tree
+bs = nt.nodes["Principled BSDF"]
+bs.inputs["Roughness"].default_value = 0.85
+ti = nt.nodes.new("ShaderNodeTexImage"); ti.image = base_img
+nt.links.new(ti.outputs["Color"], bs.inputs["Base Color"])
+tn = nt.nodes.new("ShaderNodeTexImage"); tn.image = normal_img
+nmn = nt.nodes.new("ShaderNodeNormalMap"); nmn.inputs["Strength"].default_value = 0.8
+nt.links.new(tn.outputs["Color"], nmn.inputs["Color"])
+nt.links.new(nmn.outputs[0], bs.inputs["Normal"])
+body.data.materials.clear()
+body.data.materials.append(final)
 
 # ---------------------------------------------------------------- armature
 bpy.ops.object.armature_add(enter_editmode=True, location=(0, 0, 0))
@@ -334,23 +352,22 @@ def bone(name, head, tail, parent=None, connect=False):
 def p(n):
     return P[n][:3]
 
-bone("root", (0, -0.5, 0.0), (0, -0.3, 0.0))
+bone("root", (0, -0.2, 0.0), (0, 0.0, 0.0))
 bone("pelvis", p("pelvis"), p("spine_2"), "root")
 bone("spine_1", p("spine_2"), p("chest"), "pelvis", True)
 bone("spine_2", p("chest"), p("withers"), "spine_1", True)
 bone("neck_1", p("withers"), p("neck_2"), "spine_2", True)
 bone("neck_2", p("neck_2"), p("skull"), "neck_1", True)
 bone("head", p("skull"), p("muzzle_2"), "neck_2", True)
-bone("jaw", (0, 1.00, 0.93), (0, 1.10, 0.915), "head")
+bone("jaw", (0, 0.80, 0.77), (0, 0.88, 0.76), "head")
 for s, side in ((1, "L"), (-1, "R")):
-    bone(f"ear_{side}", (s * 0.075, 0.82, 1.07), (s * 0.085, 0.80, 1.17), "head")
-tail_pts = [(0, -0.58, 0.78)] + [p(n) for n in ("tail_2", "tail_3", "tail_4", "tail_tip")]
-tail_pts.insert(1, p("tail_1"))
+    bone(f"ear_{side}", (s * 0.115, 0.56, 1.0), (s * 0.13, 0.55, 1.13), "head")
+tail_pts = [(0, -0.38, 0.60), p("tail_1"), p("tail_2"), p("tail_3"), p("tail_4"), p("tail_tip")]
 prev = "pelvis"
 for i in range(len(tail_pts) - 1):
-    nm = f"tail_{i + 1}"
-    bone(nm, tail_pts[i], tail_pts[i + 1], prev)
-    prev = nm
+    nm_ = f"tail_{i + 1}"
+    bone(nm_, tail_pts[i], tail_pts[i + 1], prev)
+    prev = nm_
 for s, side in ((1, "L"), (-1, "R")):
     pre = side + "_"
     bone(f"{side}_f_upper", P[pre + "f_shoulder"][:3], P[pre + "f_elbow"][:3], "spine_2")
@@ -360,13 +377,10 @@ for s, side in ((1, "L"), (-1, "R")):
     bone(f"{side}_h_lower", P[pre + "h_knee"][:3], P[pre + "h_hock"][:3], f"{side}_h_upper", True)
     bone(f"{side}_h_paw", P[pre + "h_hock"][:3], P[pre + "h_paw"][:3], f"{side}_h_lower", True)
 bpy.ops.object.mode_set(mode="OBJECT")
-
-# parent meshes to the armature with automatic weights
 bpy.ops.object.select_all(action="DESELECT")
 body.select_set(True)
 arm_obj.select_set(True)
 bpy.context.view_layer.objects.active = arm_obj
-# fur particle systems must be removed from weight calc: automatic weights uses the mesh only
 bpy.ops.object.parent_set(type="ARMATURE_AUTO")
 
 # ---------------------------------------------------------------- animation
@@ -497,10 +511,10 @@ if "--render" in sys.argv:
     scene.render.resolution_x, scene.render.resolution_y = 960, 600
     scene.render.film_transparent = False
     views = {
-        "side": ((6.2, 0.1, 0.95), (0, 0.05, 0.62)),
-        "front34": ((3.6, 4.4, 1.5), (0, 0.1, 0.65)),
-        "back34": ((-2.8, -4.6, 1.8), (0, -0.1, 0.7)),
-        "head": ((1.3, 2.7, 1.3), (0, 0.9, 0.97)),
+        "side": ((5.6, 0.1, 0.75), (0, 0.05, 0.55)),
+        "front34": ((3.2, 4.0, 1.3), (0, 0.1, 0.52)),
+        "back34": ((-2.6, -4.2, 1.5), (0, -0.05, 0.55)),
+        "head": ((1.2, 2.5, 1.2), (0, 0.65, 0.85)),
     }
     only = os.environ.get("VIEWS")
     for name, (loc, tgt) in views.items():
@@ -519,7 +533,7 @@ if "--strip" in sys.argv:
     scene.render.engine = "CYCLES"
     scene.cycles.samples = 12
     scene.render.resolution_x, scene.render.resolution_y = 480, 300
-    co = cam((6.2, 0.1, 0.95), (0, 0.05, 0.62), "strip", lens=85)
+    co = cam((5.6, 0.1, 0.75), (0, 0.05, 0.55), "strip", lens=85)
     scene.camera = co
     arm_obj.animation_data.action = acts["walk"]
     for i, fr in enumerate((1, 7, 13, 19, 25, 31)):
@@ -547,4 +561,4 @@ if "--fbx" in sys.argv:
     print("exported fbx")
 
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "wolf.blend"))
-print("saved")
+print("saved", "TRIANGLES", TRIS)
