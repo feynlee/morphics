@@ -413,7 +413,7 @@ Rules:
 - A skin uses the spectrum of its body type's top level. All forms and skins under one top level share a spectrum.
 - A new top-level body type needs a new spectrum (the validator requires one, and no two share). This is one more reason a new top-level type is a big step.
 - **Prisms are market-only (confirmed).** They are not used for respec, skill points, or any in-game cost. In the market they can buy any morph, starters included, to bypass farming (section 6).
-- Spectrums are earned as **rare drops from battle** against enemies of that category (section 6c). Enemies never drop another category's spectrum.
+- Spectrums are earned as **rare drops from wild enemies** of that category (bosses never drop them) (section 6c). Enemies never drop another category's spectrum.
 - **No conversion (decided): players cannot convert one spectrum into another.** There is no exchange, trade, or swap item, in the market or anywhere else. Each spectrum is only earned by play and only spent on its own form type. Prisms are the one currency that works across types, and they are bought with money, not made from spectrums. The validator rejects any data file that defines a conversion.
 - Consequence: a player must fight enemies of a category to earn that category's spectrum. This pushes players to try many form types. It also means a player with a lot of one spectrum cannot spend it on another type, so Prisms are the way to skip farming.
 ### Currency scope (resolved)
