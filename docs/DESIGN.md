@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.13)
+# Morphics: Design Doc (v0.14)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -25,7 +25,7 @@ Decided by Ziyue:
 - Art: Claude makes the 3D art and animations (models, rigs, animations, VFX briefs), with Ziyue's direction and approval.
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
-- Opening: the player starts as an amorphic spirit with no body. The goal is to inhabit a first form. Inhabiting it unlocks the ability to gain more forms and morph into them at will. See section 3a.
+- Opening: the player starts as an amorphic spirit. The spirit is for **game setup and storytelling only**, with no gameplay. The player picks a starter form during setup, so gameplay always starts in a form. Inhabiting the first form unlocks gaining more forms and morphing at will. See section 3a.
 - Retention goal: a "continual playthrough" game. There is always something new to unlock or farm, so the player's investment feels worthwhile.
 
 Assumed (to confirm):
@@ -34,29 +34,37 @@ Assumed (to confirm):
 - Input: keyboard and mouse, plus gamepad support.
 - Style: high-fidelity 3D with readable silhouettes. Each form must be easy to tell apart from far away.
 
-## 3a. Opening: the spirit
+## 3a. Opening: the spirit (setup and story only)
+The spirit is a **setup and storytelling state, not a gameplay state.** By the time the player is playing, they have already picked a starting form. Gameplay always starts in a form.
+
 **Spirit state**
 - The player starts as an **amorphic spirit**: a formless, glowing presence with no body, no skin, and no body type.
-- The spirit can float and look around, and it can reach the world, but it cannot fight. It has no skills.
-- The spirit is not a form. It is a special state outside the body-type tree. (No skeleton or animation set from the tree. It needs its own light visual and movement.)
-- In co-op, every player starts as a spirit. Spirits are tinted with the player's color so players can find each other, until each one takes a form.
+- It exists only in the setup and story sequence at the start of a new game. It has no combat, no skills, no threats, and no fail state.
+- The spirit is not a form. It is a presentation state outside the body-type tree. It needs a light visual and simple camera or movement for the sequence, but no skeleton or animation set from the tree, and no balance work.
+- The player can never return to spirit state during play. (This answers the earlier question. If the story needs a spirit scene later, it is a cutscene, not a playable state.)
 
-**First inhabitation**
-- The opening goal is to **inhabit a first form**: find a vessel in the world and enter it.
-- A short guided sequence (about 10 to 15 minutes): learn to move, find the vessel, face a small threat that the spirit cannot beat, then inhabit.
-- Inhabiting is a strong moment. It uses the morph-in effect, and it is the first time the player sees their skin. It must look great, because it shows what the game sells.
-- The first form is free. Starter forms are marked `starter: true` in their JSON, and the validator requires them to be free.
+**Setup sequence (short)**
+1. Story intro: the spirit, the world, and why it needs a body. Short, skippable on later playthroughs.
+2. Game setup in the same scene: the player name, and settings such as co-op or solo, if needed.
+3. **Starter pick**: the spirit meets one vessel for each top-level body type. The player picks one.
+4. **First inhabitation**: the spirit enters the chosen vessel. This uses the morph-in effect and it is the first time the player sees their skin. It must look great, because it shows what the game sells.
+5. Gameplay begins in the chosen form.
+
+Target length: a few minutes. It is mostly presentation, so it is cheap to build, but it needs quality visuals and writing.
 
 **Unlock of morphing**
 - Inhabiting the first form **unlocks the ability to gain more forms**. It also unlocks the morph action: change into any owned form at will (no time limit, short cooldown only, see section 3).
-- The collection screen, the Hub, and the form store open at this moment, in steps, so the first session is not overwhelming.
+- The collection screen, the Hub, and the form store open in steps after inhabitation, so the first mission is not overwhelming. The first gameplay teaches movement, combat, and then morphing, all as a form.
 - Story idea (placeholder): the spirit "remembers" how to take forms as it learns each body. Each new form adds to the collection.
-- Returning players and new co-op joiners skip the opening after they have done it once. A joining player who has not done it plays it as a short solo part, then joins.
+
+**Co-op and repeat play**
+- Setup is per player. Each player does the setup once per save and picks their own starter. A player who joins a co-op game with a finished save skips it.
+- A new player joining a friend's game does the setup in their own short scene, then joins in their chosen form.
+- The spirit is never shown to other players during gameplay, because it is not a playable state.
 
 **How the first form is chosen (decided)**
-- At the start of a new game, the player **picks a starter form**.
+- During setup, the player **picks a starter form**.
 - There is **one starter per top-level body type**. Each starter is a very basic form of that body type, so the choice shows the variety of the game on the first screen.
-- The starter picker is part of the opening, just before inhabitation: the spirit meets the vessels and picks one.
 - Starters are free. They are marked `starter: true` in their JSON.
 - Validator rule: **exactly one starter per top-level body type**. For a body type that is still `planned` (no art yet), zero starters are allowed until it becomes `active`, and at most one. A starter must be free.
 - Starters should be plain, with no strong elemental or special theme. Special forms are for the store and for farming.
@@ -77,9 +85,8 @@ Notes:
 - Skins for a starter are sold like any other skin. Starters are a good first target for early skin sales, because every player owns one.
 
 Open questions for Ziyue:
-- Do all starters stay free for everyone, or can a player who picks one get the other starters only by earning them in play? (Default: all starters are free to unlock in the opening hub, in any order.)
-- Can the player return to spirit state later (for example to rest, to escape, or as a free "form")? (Default: no, to keep the game simple.)
-- Does the spirit get cosmetics (aura, trail) that are sold? (Default: not yet. It is a later option and it would be cosmetic only.)
+- Do all starters stay free for everyone, or can a player who picks one get the other starters only by earning them in play? (Default: all starters are free to unlock in the hub, in any order.)
+- Does the spirit get cosmetics (aura, trail) that are sold? (Default: no. The spirit is setup-only and not seen in play, so it would not sell.)
 
 ## 3. Core loop
 1. Pick a mission (alone or with co-op friends). Choose a starting form.
