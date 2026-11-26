@@ -28,7 +28,7 @@
           "enum": [
             "morph_own"
           ],
-          "description": "Assumption: the respecced morph's own Spectrum. To confirm."
+          "description": "Confirmed by Ziyue: the respecced morph's own Spectrum."
         },
         "amount": {
           "type": [

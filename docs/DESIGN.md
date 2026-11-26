@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.28)
+# Morphics: Design Doc (v0.29)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -259,9 +259,9 @@ Body-type cue (recommendation, for Ziyue to decide):
 **Respec (decided: it has a cost)**
 - A player can respec a morph's tree (undo node choices and spend the points again), and **respec costs Spectrums**. (Ziyue said "likely": Spectrums is the working decision.)
 - **Amount and rules are pending.** They will be set later. Not decided yet: the amount, whether the first respec is free, whether the cost scales or is per node or for the whole tree, and any cooldown.
-- Assumption to confirm: the cost is paid in the respecced morph's own Spectrum (the color of its body type).
+- **Confirmed by Ziyue:** the cost is the respecced morph's own Spectrum color (the color of its body type). Respec is an in-game use of Spectrums. It is not paid in Prisms (see "Currency scope" in section 6).
 - Respec returns the points that were spent on that morph's tree. It never changes the spirit balance, which is shared (section 4d).
-- Prisms are not used for respec for now. (The validator allows only Spectrums. It can change if Ziyue decides otherwise.)
+- Prisms are never used for respec, because Prisms are a market resource and not an in-game cost (confirmed). The validator allows only Spectrums.
 - Data: `data/respec.json` holds the cost with `status: pending` and no amount. The validator requires that a respec cost is declared, that it is in Spectrums, that a pending cost has a null amount, and that a cost marked `set` has a whole-number amount.
 - Reminder: set the respec cost and rules before M2 (`REMINDERS.md`).
 
@@ -355,7 +355,7 @@ Skill points feed the skill tree (section 4c). They are not sold in the market, 
 
 Currencies (theme: light and the spectrum of light):
 - **Spectrums** (soft): earned only in play. There are several, each with its own color. **Each spectrum is the currency for one type of form**, set by the form's top-level body type. A form's farming and its Spectrum skip price use its own spectrum.
-- **Prisms** (premium): a combination of all spectrums, so Prisms can be used for anything. They are bought in Steam bundles. They may also drop in small amounts from play (to confirm).
+- **Prisms** (premium): a combination of all spectrums, so in the market they can buy any morph or skin. **Prisms are a market resource and nothing else (confirmed by Ziyue): they are not an in-game cost.** They are bought in Steam bundles. They may also drop in small amounts from play (to confirm).
 
 Spectrum colors (placeholders, set in `data/spectrums.json`; each top-level body type names its spectrum in its JSON):
 
@@ -370,10 +370,16 @@ Spectrum colors (placeholders, set in `data/spectrums.json`; each top-level body
 Rules:
 - A skin uses the spectrum of its body type's top level. All forms and skins under one top level share a spectrum.
 - A new top-level body type needs a new spectrum (the validator requires one, and no two share). This is one more reason a new top-level type is a big step.
-- Prisms work for anything. There is no exception: every morph, starters included, can be bought with Prisms to bypass farming (section 6).
+- **Prisms are market-only (confirmed).** They are not used for respec, skill points, or any in-game cost. In the market they can buy any morph, starters included, to bypass farming (section 6).
 - Spectrums are earned as **rare drops from battle** against enemies of that category (section 6c), and from mission rewards of that type (to tune). Enemies never drop another category's spectrum.
 - **No conversion (decided): players cannot convert one spectrum into another.** There is no exchange, trade, or swap item, in the market or anywhere else. Each spectrum is only earned by play and only spent on its own form type. Prisms are the one currency that works across types, and they are bought with money, not made from spectrums. The validator rejects any data file that defines a conversion.
 - Consequence: a player must fight enemies of a category to earn that category's spectrum. This pushes players to try many form types. It also means a player with a lot of one spectrum cannot spend it on another type, so Prisms are the way to skip farming across types.
+### Currency scope (resolved)
+Confirmed by Ziyue:
+- **Prisms are only used to buy things in the market** (morphs, skins, and skipping farming). They are never a cost for respec, skill points, upgrades, or any other in-game action. `data/pricing.json` records `prisms_use: market_only`. The validator rejects Prisms anywhere except a market price.
+- **Spectrums are in-game currency.** Uses: respec (the respecced morph's own Spectrum color), skipping farming, and market purchases.
+- Spectrums are earned only by play (battle drops and missions) and cannot be converted.
+
 - UI: each spectrum shows as a colored bar or gem. Prisms show as a white prism that splits into all the colors.
 
 | Item | How to get it |
@@ -382,7 +388,7 @@ Rules:
 | Standard forms | Earn with form fragments from missions, OR skip the farming with Spectrum or Prisms, OR buy with Prisms |
 | Premium forms | Prisms |
 | Skins | Prisms, event rewards, or pass tiers |
-| Form XP and skill upgrades | Earned in play only (Spectrums, materials) |
+| Form XP and skill upgrades | Earned in play only (never bought) |
 
 Skip farming (decided): **there is always an option to spend in-game currency to skip farming**, and **every morph in the game can be bought with Prisms to bypass farming**.
 - Every `earn` unlock has a `skip` price (the validator requires it).

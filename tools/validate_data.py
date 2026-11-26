@@ -12,6 +12,9 @@ Needs the `jsonschema` package. Cross checks:
   on the morph that earned them)
 - no cap on spirit points or morph points (data/skill_point_rules.json); spirit points are shared by
   every morph; base-variant tree nodes name a real body type and every form has one it can invest in
+- Prisms are market-only (data/pricing.json prisms_use is market_only): the word prisms may appear in
+  data only as a market price (unlock.skip.prisms or market_override.prisms on a form or skin). Any other
+  use, such as in respec, drops, skills, the skill tree, or skill points, is rejected
 - respec cost (data/respec.json): a respec cost is declared, in Spectrums. While pending the amount is
   null. Once set it must be a whole number of at least 1
 - skill tree (data/skill_tree.json): edges name real nodes, the tree is connected (every node can be
@@ -158,6 +161,34 @@ def check_skill_points():
     return errors
 
 
+PRISMS_OK = ("unlock.skip.prisms", "market_override.prisms")
+
+
+def find_prisms_outside_market(node, path):
+    """Yield paths where Prisms appear outside a market price."""
+    if isinstance(node, dict):
+        for key, value in node.items():
+            here = f"{path}.{key}"
+            if str(key).lower() == "prisms" and not here.endswith(PRISMS_OK):
+                yield here
+            yield from find_prisms_outside_market(value, here)
+    elif isinstance(node, list):
+        for i, value in enumerate(node):
+            yield from find_prisms_outside_market(value, f"{path}[{i}]")
+    elif isinstance(node, str) and node.lower() in ("prisms", "prism"):
+        yield f"{path} = {node}"
+
+
+def check_prisms_market_only():
+    errors = []
+    for file in sorted(DATA.rglob("*.json")):
+        if "schema" in file.parts or file.name == "pricing.json":
+            continue
+        for hit in find_prisms_outside_market(json.loads(file.read_text()), file.relative_to(ROOT).as_posix()):
+            errors.append(f"{hit}: Prisms are only used to buy things from the market")
+    return errors
+
+
 def check_bases(bases):
     errors = []
     for b in bases.values():
@@ -191,7 +222,7 @@ def main():
     forms, e1 = load("forms")
     skills, e2 = load("skills")
     skins, e3 = load("skins")
-    errors = e0 + e1 + e2 + e3 + check_bases(bases) + check_no_conversion() + check_skill_points()
+    errors = e0 + e1 + e2 + e3 + check_bases(bases) + check_no_conversion() + check_skill_points() + check_prisms_market_only()
 
     spectrums = json.loads((DATA / "spectrums.json").read_text())
     spectrum_schema = json.loads((DATA / "schema" / "spectrum.schema.json").read_text())
@@ -290,6 +321,8 @@ def main():
         if "parent" not in b and b.get("status") == "active" and b["id"] not in seen_drop:
             errors.append(f"data/drops.json: active body type {b['id']} needs a drop entry")
 
+    if pricing.get("prisms_use") != "market_only":
+        errors.append("data/pricing.json: prisms_use must be market_only (Prisms are a market resource, not an in-game cost)")
     respec = json.loads((DATA / "respec.json").read_text())
     respec_schema = json.loads((DATA / "schema" / "respec.schema.json").read_text())
     for err in Draft202012Validator(respec_schema).iter_errors(respec):
