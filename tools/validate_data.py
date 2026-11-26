@@ -27,7 +27,8 @@ Needs the `jsonschema` package. Cross checks:
 - a starter form is never sold: its unlock type is "free" or "earn"
 - exactly one starter form per top-level body type (planned types included)
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
-- every earned form (morph), starters included, has a spectrum skip price
+- every earned form (morph), starters included, has a Prisms skip price (the value is "deferred" until
+  Prism pricing is set), and no unlock or market price uses Spectrums (Spectrums are in-game currency only)
 - Prism pricing is deferred (data/pricing.json): no Prism price may be set until Ziyue decides
 - skins are named after the morph: a default skin has its form's name; a form-exclusive skin
   name starts with its form's name
@@ -292,10 +293,12 @@ def main():
             errors.append(f"{item['id']}: an earn unlock needs a skip price")
         if unlock.get("type") != "earn" and "skip" in unlock:
             errors.append(f"{item['id']}: skip is only for earn unlocks")
-        if unlock.get("type") == "earn" and item["id"] in forms and "spectrum" not in unlock.get("skip", {}):
-            errors.append(f"{item['id']}: an earned form needs a spectrum skip price")
+        if "spectrum" in unlock.get("skip", {}) or "spectrum" in item.get("market_override", {}):
+            errors.append(f"{item['id']}: Spectrums are not a market or skip price. Use Prisms")
+        if unlock.get("type") == "earn" and "prisms" not in unlock.get("skip", {}):
+            errors.append(f"{item['id']}: an earned item needs a Prisms skip price")
         if pricing.get("prism_pricing") == "deferred":
-            if "prisms" in unlock.get("skip", {}):
+            if unlock.get("skip", {}).get("prisms", "deferred") != "deferred":
                 errors.append(f"{item['id']}: Prism pricing is deferred. Do not set a Prism price yet")
             if "prisms" in item.get("market_override", {}):
                 errors.append(f"{item['id']}: Prism pricing is deferred. Do not set a market Prism price yet")

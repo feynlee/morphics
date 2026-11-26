@@ -4,7 +4,7 @@
 Rules:
 - A limited morph (pass or event exclusive) is NOT listed, unless it has a market_override
   approved by Ziyue Li. The override sets its Prisms price.
-- Only forms with unlock type earn or buy are sold. Earned forms list their skip prices
+- Only forms with unlock type earn or buy are sold. Earned forms list their Prisms skip price
   (Spectrum and Prisms). A bought form lists its Prisms price.
 Run tools/validate_data.py first.
 """

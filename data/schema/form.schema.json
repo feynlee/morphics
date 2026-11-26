@@ -114,20 +114,24 @@
         "skip": {
           "type": "object",
           "additionalProperties": false,
-          "minProperties": 1,
+          "required": [
+            "prisms"
+          ],
           "properties": {
-            "spectrum": {
-              "type": "integer",
-              "minimum": 1,
-              "description": "Price in the item's own Spectrum (soft currency earned in play)."
-            },
             "prisms": {
-              "type": "integer",
-              "minimum": 1,
-              "description": "Price in Prisms (premium currency, a mix of all spectrums)."
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "const": "deferred"
+                }
+              ],
+              "description": "Prisms price to skip farming (market purchase). 'deferred' until Prism pricing is set. Spectrums never skip farming."
             }
           },
-          "description": "Prices to skip farming. Required when type is earn. Every form (morph) that is earned must have both prices."
+          "description": "Market price to skip farming. Required when type is earn. Prisms only."
         }
       }
     },

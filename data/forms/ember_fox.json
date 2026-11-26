@@ -24,7 +24,7 @@
     "type": "earn",
     "cost": 800,
     "skip": {
-      "spectrum": 1400
+      "prisms": "deferred"
     }
   },
   "starter": false,
