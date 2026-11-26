@@ -24,7 +24,7 @@
     "type": "earn",
     "cost": 600,
     "skip": {
-      "currency": "shards",
+      "currency": "spectrum",
       "amount": 1500
     }
   },

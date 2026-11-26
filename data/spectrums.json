@@ -1,0 +1,27 @@
+[
+  {
+    "id": "red",
+    "name": "Red Spectrum",
+    "color": "#E5484D"
+  },
+  {
+    "id": "amber",
+    "name": "Amber Spectrum",
+    "color": "#F5A524"
+  },
+  {
+    "id": "green",
+    "name": "Green Spectrum",
+    "color": "#30A46C"
+  },
+  {
+    "id": "blue",
+    "name": "Blue Spectrum",
+    "color": "#3E63DD"
+  },
+  {
+    "id": "violet",
+    "name": "Violet Spectrum",
+    "color": "#8E4EC6"
+  }
+]

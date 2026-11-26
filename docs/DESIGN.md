@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.17)
+# Morphics: Design Doc (v0.18)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -81,9 +81,9 @@ Starter slots:
 Notes:
 - The starters are placeholders. In particular, Ember Fox and Gale Heron have a themed look and should be replaced with plain starters (for example a plain wolf and a plain hawk) before launch.
 - Adding a new top-level body type adds a new starter slot. The picker shows one card per top-level body type.
-- **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They come from missions: form fragments and Shards, like other earned forms. They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
-- **Skip farming with Shards.** Players can always spend Shards (the soft currency earned in play) to skip the farming for a starter. Prisms never buy a starter directly. (Prisms stay out of starters, so the basic forms are never a paid product.)
-- Data: starters use unlock type `earn` with a farming target (`cost`) and a Shard skip price (`skip`). The picked starter is granted by the setup rule and does not use that cost.
+- **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They come from missions: form fragments and Spectrum, like other earned forms. They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
+- **Skip farming with Spectrum.** Players can always spend the form's own Spectrum (the soft currency earned in play) to skip the farming for a starter. Prisms never buy a starter directly. (Prisms stay out of starters, so the basic forms are never a paid product.)
+- Data: starters use unlock type `earn` with a farming target (`cost`) and a Spectrum skip price (`skip`). The picked starter is granted by the setup rule and does not use that cost.
 - Farming goal: the unpicked starters are an early target for new players, and they give a reason to play missions in the first sessions.
 - Skins for a starter are sold like any other skin. Starters are a good first target for early skin sales, because every player owns one.
 
@@ -233,23 +233,40 @@ Body-type cue (recommendation, for Ziyue to decide):
 - Rarity changes the look and the effects only.
 
 ## 6. Monetization model
-**Model: two currencies. Forms and skins are bought with the in-game premium currency. Premium currency is sold in bundles on Steam.** No pay-to-win.
+**Model: Prisms (premium, sold on Steam) and Spectrums (soft, earned in play). Forms and skins are bought with in-game currency.** No pay-to-win.
 
-Currencies (names are placeholders):
-- **Prisms** (premium): bought in Steam bundles. May also drop in small amounts from play (to confirm).
-- **Shards** (soft): earned only in play.
+Currencies (theme: light and the spectrum of light):
+- **Spectrums** (soft): earned only in play. There are several, each with its own color. **Each spectrum is the currency for one type of form**, set by the form's top-level body type. A form's farming and its Spectrum skip price use its own spectrum.
+- **Prisms** (premium): a combination of all spectrums, so Prisms can be used for anything. They are bought in Steam bundles. They may also drop in small amounts from play (to confirm).
+
+Spectrum colors (placeholders, set in `data/spectrums.json`; each top-level body type names its spectrum in its JSON):
+
+| Spectrum | Color | Top-level body type (form type) |
+|---|---|---|
+| Red | `#E5484D` | Humanoid |
+| Green | `#30A46C` | Four-legged beast |
+| Blue | `#3E63DD` | Bird (planned) |
+| Amber | `#F5A524` | Bipedal dinosaur (planned) |
+| Violet | `#8E4EC6` | unused, reserved for a fifth body type |
+
+Rules:
+- A skin uses the spectrum of its body type's top level. All forms and skins under one top level share a spectrum.
+- A new top-level body type needs a new spectrum (the validator requires one, and no two share). This is one more reason a new top-level type is a big step.
+- Prisms work for anything, with one open exception: starters (see section 6b).
+- Spectrums are earned by playing forms of that type and by missions that favor it (to tune). A small share of other spectrums may drop too. Open question: can players convert one spectrum into another? (Default: no conversion at first.)
+- UI: each spectrum shows as a colored bar or gem. Prisms show as a white prism that splits into all the colors.
 
 | Item | How to get it |
 |---|---|
 | Starter forms (3 to 4) | Free for all players |
-| Standard forms | Earn with form fragments from missions, OR skip the farming with Shards or Prisms, OR buy with Prisms |
+| Standard forms | Earn with form fragments from missions, OR skip the farming with Spectrum or Prisms, OR buy with Prisms |
 | Premium forms | Prisms |
 | Skins | Prisms, event rewards, or pass tiers |
-| Form XP and skill upgrades | Earned in play only (Shards, materials) |
+| Form XP and skill upgrades | Earned in play only (Spectrums, materials) |
 
 Skip farming (decided): **there is always an option to spend in-game currency to skip farming** for any earned form or skin.
-- Every `earn` unlock has a `skip` price (the validator requires it). The skip price is in Shards or in Prisms.
-- Shards (earned in play) can skip farming for earned forms and skins, so a player who plays a lot can always shortcut a target.
+- Every `earn` unlock has a `skip` price (the validator requires it). The skip price is in Spectrum or in Prisms.
+- Spectrums (earned in play) can skip farming for earned forms and skins, so a player who plays a lot can always shortcut a target.
 - Prisms can skip farming for non-starter earned forms. Prisms never skip farming for starters.
 - Skipping gives the same item as farming. It changes only how the player gets it, so it does not break the no-pay-to-win rule.
 - Price care: set skip prices so that farming is a real, fair path and skipping is a convenience. Show both options on the item. Check this with playtests.
@@ -275,8 +292,8 @@ Platform notes: Steam is the storefront. Steam takes a share of sales, so plan b
 Decided by Ziyue: there is an **in-game market that players can use from the beginning**, where they can buy any morph they like.
 
 **What it sells**
-- **Any non-starter morph**, for **Shards** (earned in play) or **Prisms** (bought on Steam). Each item shows both prices when both are allowed.
-- **Skins**, for Shards or Prisms, with the fit rule shown (which body types the skin fits).
+- **Any non-starter morph**, for **Spectrum** (earned in play, the item's own color) or **Prisms** (bought on Steam). Each item shows both prices when both are allowed.
+- **Skins**, for Spectrum or Prisms, with the fit rule shown (which body types the skin fits).
 - **Currency**: a "Get Prisms" button opens the Steam bundle purchase. All real-money purchases go through Steam.
 - Items that are currently limited-time (for example a seasonal pass reward or an event reward) are listed with their rule. See the open question below.
 
@@ -287,15 +304,16 @@ Decided by Ziyue: there is an **in-game market that players can use from the beg
 
 **How it fits the other rules**
 - Buying an earned form in the market is the same as skipping farming (section 6). The same price rules apply: every `earn` item has a `skip` price. A `buy` item has a Prisms price.
-- Shards prices must be high enough that farming and the market both make sense. Set them by playtest. A new player should not be able to buy the best forms in the first hour with only starter Shards.
+- Spectrum prices must be high enough that farming and the market both make sense. Set them by playtest. A new player should not be able to buy the best forms in the first hour with only starting Spectrum.
 - No pay-to-win: the market sells variety, not power. Bought forms equal earned forms in power (section 5).
 - Teen+ care: show the real price, ask for confirmation, and show total Prisms spent on request.
 - No loot boxes and no random offers. The market shows fixed prices.
 
 **Starters in the market: open question for Ziyue (not changed yet)**
 Today the rule is: starters are earn-only, and Prisms never buy a starter directly (section 3a and the validator). "Buy any morph" conflicts with that. Options:
-1. **Keep the rule**: the market sells every non-starter morph. Starters can only be earned, or skipped with Shards. This is how it is written now.
-2. **Starters for Shards only**: the market sells starters for Shards, never Prisms. This matches the current skip rule and gives "any morph" for free currency.
+1. **Keep the rule**: the market sells every non-starter morph. Starters can only be earned, or skipped with Spectrum. This is how it is written now.
+2. **Starters for Spectrum only**: the market sells starters for Spectrum, never Prisms. This matches the current skip rule and gives "any morph" for free currency.
+   Note: Ziyue also said Prisms "can be used for anything". That is in tension with the starter rule too. The validator still rejects a Prisms price on starters until Ziyue decides.
 3. **Starters for Prisms too**: the market sells every morph for Prisms. The validator rule on starters would be removed. The basic forms become a paid product, which is a bigger change.
 Recommendation: option 2. It keeps the promise that the basic forms are never a paid product, and it still lets players buy any morph with in-game currency.
 

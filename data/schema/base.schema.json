@@ -55,6 +55,10 @@
         "type": "string"
       },
       "description": "Animations this subcategory replaces. Every other animation is inherited from the parent. Names must be in the root's required_animations."
+    },
+    "spectrum": {
+      "type": "string",
+      "description": "Spectrum id: the soft currency for forms under this root. Set on roots only. Unique per root."
     }
   }
 }

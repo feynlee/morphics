@@ -2,13 +2,14 @@
 """Validate data/bases, forms, skills, skins against data/schema.
 
 Needs the `jsonschema` package. Cross checks:
+- every top-level body type has a spectrum from data/spectrums.json, and no two share one
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
   a root has required_animations, a child is not "active" under a "planned" parent
 - animation_overrides only name animations that the root requires
 - a starter form is never sold: its unlock type is "free" or "earn"
 - exactly one starter form per active top-level body type; at most one per planned one
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
-- a starter's skip price is in shards only (prisms never buy starters)
+- a starter's skip price is in spectrum only (prisms never buy starters)
 - a form's base exists
 - a skin's base exists
 - a form's skills exist
@@ -94,6 +95,25 @@ def main():
     skins, e3 = load("skins")
     errors = e0 + e1 + e2 + e3 + check_bases(bases)
 
+    spectrums = json.loads((DATA / "spectrums.json").read_text())
+    spectrum_schema = json.loads((DATA / "schema" / "spectrum.schema.json").read_text())
+    for err in Draft202012Validator(spectrum_schema).iter_errors(spectrums):
+        errors.append(f"data/spectrums.json: {err.message}")
+    spectrum_ids = [s["id"] for s in spectrums]
+    used = {}
+    for b in bases.values():
+        if "parent" in b:
+            if "spectrum" in b:
+                errors.append(f"{b['id']}: only a top-level body type sets a spectrum")
+            continue
+        sp = b.get("spectrum")
+        if sp not in spectrum_ids:
+            errors.append(f"{b['id']}: unknown or missing spectrum {sp}")
+        elif sp in used:
+            errors.append(f"{b['id']}: spectrum {sp} is already used by {used[sp]}")
+        else:
+            used[sp] = b["id"]
+
     for skin in skins.values():
         if skin.get("base") not in bases:
             errors.append(f"{skin['id']}: unknown base {skin.get('base')}")
@@ -129,7 +149,7 @@ def main():
         if unlock.get("type") != "earn" and "skip" in unlock:
             errors.append(f"{item['id']}: skip is only for earn unlocks")
         if item.get("starter") and unlock.get("skip", {}).get("currency") == "prisms":
-            errors.append(f"{item['id']}: prisms cannot skip a starter; use shards")
+            errors.append(f"{item['id']}: prisms cannot skip a starter; use spectrum")
 
     starters = {}
     for form in forms.values():

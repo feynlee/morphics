@@ -109,7 +109,7 @@
         "cost": {
           "type": "integer",
           "minimum": 0,
-          "description": "For earn: the farming target (fragments or Shards to collect)."
+          "description": "For earn: the farming target (fragments or spectrum to collect)."
         },
         "skip": {
           "type": "object",
@@ -121,17 +121,17 @@
           "properties": {
             "currency": {
               "enum": [
-                "shards",
+                "spectrum",
                 "prisms"
               ],
-              "description": "shards = soft currency earned in play. prisms = premium currency bought on Steam."
+              "description": "spectrum = the soft currency of the item's own spectrum (set by its top-level body type), earned in play. prisms = premium currency (a mix of all spectrums), bought on Steam."
             },
             "amount": {
               "type": "integer",
               "minimum": 1
             }
           },
-          "description": "Price to skip farming. Required when type is earn. Starters may only use shards."
+          "description": "Price to skip farming. Required when type is earn. Starters may only use spectrum."
         }
       }
     },
