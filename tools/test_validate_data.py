@@ -96,6 +96,8 @@ def main():
         lambda d: edit(d / "forms/hawk.json", lambda f: f["unlock"]["craft"]["spectrum"].update(id="red"))))
     results.append(case("two starters in one subcategory", "more than one starter",
         lambda d: edit(d / "forms/ember_fox.json", lambda f: f.update(starter=True, base="base.walker.canine.medium"))))
+    results.append(case("active color with no starter", "has no starter form",
+        lambda d: edit(d / "forms/wanderer.json", lambda f: f.update(starter=False))))
     bad = results.count(False)
     print(f"{len(results) - bad} passed, {bad} failed")
     return 1 if bad else 0

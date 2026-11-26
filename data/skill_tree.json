@@ -152,6 +152,18 @@
       "name": "Body type: large tyrant",
       "region": "base",
       "restricted_to_base": "base.walker.tyrant.large"
+    },
+    {
+      "id": "node.base_swimmer_shark_medium",
+      "name": "Body type: medium shark",
+      "region": "base",
+      "restricted_to_base": "base.swimmer.shark.medium"
+    },
+    {
+      "id": "node.base_swimmer_shark_large",
+      "name": "Body type: large shark",
+      "region": "base",
+      "restricted_to_base": "base.swimmer.shark.large"
     }
   ],
   "edges": [
@@ -278,6 +290,14 @@
     [
       "node.origin",
       "node.base_walker_tyrant_large"
+    ],
+    [
+      "node.origin",
+      "node.base_swimmer_shark_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_swimmer_shark_large"
     ]
   ]
 }

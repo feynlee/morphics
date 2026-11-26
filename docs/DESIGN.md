@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.51)
+# Morphics: Design Doc (v0.52)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -80,7 +80,7 @@ Target length: a few minutes. It is mostly presentation, so it is cheap to build
 - During setup, the player **picks a starter form**.
 - There is **one starter per starter slot**. Each starter is a very basic form of its subcategory, so the choice shows the variety of the game on the first screen.
 - The starter the player picks is **granted free** in setup. All the other starters are **free to acquire through farming and gameplay** (decided). They are marked `starter: true` in their JSON.
-- Validator rule: **at most one starter per subcategory, and every Spectrum color in use has at least one starter**, planned subcategories included. A starter's unlock type is `free` or `earn`, never `buy`, `pass`, or `event`. It can still be skipped with Prisms like any earned form.
+- Validator rule: **at most one starter per subcategory, and every Spectrum color used by an active subcategory has at least one starter**. A starter's unlock type is `free` or `earn`, never `buy`, `pass`, or `event`. It can still be skipped with Prisms like any earned form.
 - **Starters look very plain and basic**: a plain archetype of the body type (a plain wolf, a plain hawk, a plain raptor, a plain human). No elemental or special theme. Themed morphs are variations that players **farm for**. Example: Ember Fox is a farmable variant of the beast, and a plain Wolf is the starter.
 - Flier and Raptor starters are part of the plan now (Hawk and Raptor). Their subcategories are still `planned` until the art exists.
 
@@ -256,7 +256,9 @@ base.walker                       Walker (active)
     .medium
   base.walker.tyrant (planned)    Tyrant, Green
     .large                        rex type
-base.swimmer (planned)            Swimmer. Blue. No subcategories yet.
+base.swimmer (planned)            Swimmer
+  base.swimmer.shark (planned)    Shark, Blue
+    .medium .large                reef shark, great white
 base.flyer (planned)              Flyer
   base.flyer.flier (planned)      Flier, Yellow        <- Hawk
     .medium .large                hawk, eagle, roc
@@ -270,7 +272,7 @@ Why this split: if one animation set had to suit very different animals, a wolf,
 
 Old ids (before v0.50) and where they went: `base.humanoid.*` became `base.walker.humanoid.*`. `base.quadruped.small` and `.medium` became `base.walker.canine.small` and `.medium`, except Prism Stag (`base.walker.hoofed.medium`). `base.quadruped.large` became `base.walker.shelled.large`. `base.bird.medium` became `base.flyer.flier.medium` (Hawk) and `base.flyer.wader.medium` (Gale Heron). `base.biped_dino.*` became `base.walker.raptor.medium` and `base.walker.tyrant.large`.
 
-Spectrum colors are set per subcategory (section 6). Several subcategories can share a color. Swimmer is Blue by decision, but it has no subcategories yet, so Blue has no node in the data.
+Spectrum colors are set per subcategory (section 6). Several subcategories can share a color. Swimmer is Blue by decision. The first Swimmer subcategory is the **Shark** (Ziyue), `base.swimmer.shark`, with medium and large sizes. More swimmer subcategories come later.
 
 Data rules (`data/bases/*.json`, checked by `tools/validate_data.py`, with negative tests in `tools/test_validate_data.py`):
 - A node has `id`, `name` and `status` (active or planned). A subcategory and a size also have `parent` and `examples`.
@@ -438,7 +440,7 @@ Spectrum colors (placeholders, set in `data/spectrums.json`; each subcategory na
 | Orange | `#F76B15` | reserved for expansion, unused |
 | Yellow | `#E5B800` | Flyers (Flier, Wader) |
 | Green | `#30A46C` | Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur, Raptor, Tyrant) |
-| Blue | `#3E63DD` | Swimmers (no subcategory yet) |
+| Blue | `#3E63DD` | Swimmers (Shark first) |
 | Purple | `#8E4EC6` | reserved for expansion, unused |
 
 Rules:
@@ -497,7 +499,7 @@ Decided by Ziyue: players **earn Spectrums as rare drops by defeating regular en
 
 **Rules**
 - Enemies belong to a **subcategory** in the body-type tree (for example canine, flier). Enemy design follows the same tree.
-- Defeating an enemy of a subcategory can drop **that subcategory's Spectrum color**. Humanoid enemies drop Red, beast enemies (canine, feline, heavy, hoofed, shelled, dinosaurs) drop Green, flyers drop Yellow, and swimmers will drop Blue.
+- Defeating an enemy of a subcategory can drop **that subcategory's Spectrum color**. Humanoid enemies drop Red, beast enemies (canine, feline, heavy, hoofed, shelled, dinosaurs) drop Green, flyers drop Yellow, and swimmers (the Shark first) will drop Blue.
 - **Subcategory decides the color (confirmed by Ziyue).** The match is on the color of the enemy's subcategory, and every size under it inherits it. A wild canine drops Green, including a small canine (for example a regular Ember Fox) and a medium canine. A new size needs no new drop entry. A new subcategory with an existing color needs none either. A new color needs its own drop entry.
 - Drops are **rare**. The validator caps the drop chance at 10 percent per defeated enemy.
 - Enemies never drop another category's Spectrum. (Spectrums cannot be converted, so battle is the way to earn each one.)
@@ -584,7 +586,7 @@ Milestone note: the market is built in M3. M1 has no market.
 Decided questions were removed. Still open:
 
 **Design questions (body types), first priority.** The first build is a proof of concept with three forms: a human, a canine (Wolf) and a hawk.
-- **Swimmer order:** which swimmer subcategories come first, and in what order (fish, sea mammals, sharks, crustaceans, eels)? Each needs its own rig and gait.
+- **Swimmer order:** decided. The first swimmer is the Shark. Which swimmer subcategory comes next (fish, sea mammals, crustaceans, eels) is open and not urgent.
 - **Swim and walk:** a flier stays a Flyer even if it walks. Is a swimmer that also walks on land (otter, seal) a Swimmer or a Walker?
 - **Hybrids:** does a dragon (four legs plus wings) need its own Flyer subcategory? Same question for winged humanoids and centaurs.
 - **Beast-people:** is a wolf-person under the humanoid subcategory or canine?
