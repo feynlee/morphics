@@ -147,6 +147,33 @@
       "type": "boolean",
       "default": false,
       "description": "True if the player can inhabit this form as the first form (the opening). Starter forms are never sold. The one the player picks is granted in setup. The others are earned in play (unlock type earn)."
+    },
+    "limited": {
+      "type": "boolean",
+      "default": false,
+      "description": "Limited morphs (pass or event exclusives) are NOT sold in the market by default."
+    },
+    "market_override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_by"
+      ],
+      "properties": {
+        "approved_by": {
+          "type": "string",
+          "description": "Only Ziyue Li may approve selling a limited morph in the market."
+        },
+        "note": {
+          "type": "string"
+        },
+        "prisms": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Market price in Prisms for a limited morph that Ziyue allows in the market."
+        }
+      },
+      "description": "Allows a limited morph in the market. Needs Ziyue's approval."
     }
   }
 }

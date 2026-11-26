@@ -15,6 +15,7 @@ Forms, skills, and skins are plain JSON in `data/`.
 pip install jsonschema
 python tools/validate_data.py
 python tools/build_datatable.py
+python tools/build_market.py
 ```
 
 ## Open the project

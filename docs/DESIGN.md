@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.21)
+# Morphics: Design Doc (v0.22)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -326,7 +326,7 @@ Decided by Ziyue: there is an **in-game market that players can use from the beg
 - **Any morph, starters included**, for **Spectrum** (earned in play, the item's own color) or **Prisms** (bought on Steam). Each item shows both prices when both are allowed.
 - **Skins**, for Spectrum or Prisms, with the fit rule shown (which body types the skin fits).
 - **Currency**: a "Get Prisms" button opens the Steam bundle purchase. All real-money purchases go through Steam.
-- Items that are currently limited-time (for example a seasonal pass reward or an event reward) are listed with their rule. See the open question below.
+- **Limited morphs are not sold here** (see below).
 
 **Access**
 - Open from the start of gameplay: the first mission ends, or the player walks into the Hub, and the market is there. It is not locked behind progress.
@@ -345,8 +345,19 @@ Every morph, starters included, can be bought with Prisms to bypass farming. So 
 - The picked starter is granted free in setup. Unpicked starters are earned in play, or bought in the market.
 - Note for pricing: a starter is a very basic form, so its price should be low. Players may feel that a paid basic form is a bad deal. Keep starter prices modest, and show that they can also be earned for free.
 
+**Limited morphs (decided)**
+- **Pass and event exclusive morphs are limited.** They are **not available in the market unless Ziyue says so.**
+- Data: a form sets `limited: true`. The validator requires it for any `pass` or `event` unlock.
+- A limited morph is excluded from the market by default. The market list is built by `tools/build_market.py`, which skips limited forms.
+- To sell a limited morph in the market, the form needs a `market_override` with `approved_by: "Ziyue Li"` and a Prisms price. The validator rejects an override approved by anyone else, an override on a non-limited form, and an override with no price.
+- Process rule: Claude does not add a `market_override` on its own. It is added only after Ziyue says so for that morph.
+- Why: limited morphs keep their special value for the people who earned them in the pass or event. Selling them later is a business decision that stays with Ziyue.
+- Design care for teen+: say clearly on the pass or event screen that the morph is limited and how long it is available. No fake urgency.
+- Limited morphs are still balanced like any other morph (section 5). Limited means availability, not power.
+- Limited morphs cannot be farmed or skipped. They are not `earn` unlocks, so they have no skip price.
+- Sample data: Prism Stag is a placeholder pass-exclusive morph.
+
 Other open questions for the market:
-- Are pass or event exclusive forms sold in the market while the event or pass is active? (Default: no, only after the event ends. Then they join the market.)
 - Rotating sales or discounts? (Default: none at first. If used, they must be honest and not fake scarcity.)
 
 Milestone note: the market is built in M3. M1 has no market.

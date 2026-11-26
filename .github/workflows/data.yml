@@ -14,3 +14,4 @@ jobs:
       - run: pip install jsonschema
       - run: python tools/validate_data.py
       - run: python tools/build_datatable.py
+      - run: python tools/build_market.py

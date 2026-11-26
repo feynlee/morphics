@@ -13,6 +13,8 @@ Needs the `jsonschema` package. Cross checks:
 - exactly one starter form per active top-level body type; at most one per planned one
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
 - every earned form (morph), starters included, has BOTH a spectrum and a prisms skip price
+- limited morphs: a pass or event unlock must set limited true; market_override needs limited true
+  and approval by Ziyue Li (a limited morph is not sold in the market unless Ziyue says so)
 - a form's base exists
 - a skin's base exists
 - a form's skills exist
@@ -163,6 +165,16 @@ def main():
                 errors.append(f"{form['id']}: unknown skill {sid}")
         if form.get("starter") and form["unlock"]["type"] not in ("free", "earn"):
             errors.append(f"{form['id']}: a starter form must be free or earned, not {form['unlock']['type']}")
+        utype = form["unlock"]["type"]
+        if utype in ("pass", "event") and not form.get("limited"):
+            errors.append(f"{form['id']}: a {utype} exclusive must set limited: true")
+        if "market_override" in form:
+            if not form.get("limited"):
+                errors.append(f"{form['id']}: market_override is only for limited morphs")
+            if "prisms" not in form["market_override"]:
+                errors.append(f"{form['id']}: market_override needs a prisms price")
+            if form["market_override"].get("approved_by") != "Ziyue Li":
+                errors.append(f"{form['id']}: market_override must be approved by Ziyue Li")
         sid = form.get("default_skin")
         skin = skins.get(sid)
         if skin is None:

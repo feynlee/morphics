@@ -1,0 +1,14 @@
+{
+  "id": "skill.prism_stag.dawn_veil",
+  "name": "Dawn Veil",
+  "type": "buff",
+  "cooldown": 42,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "status",
+      "amount": 8
+    }
+  ],
+  "vfx": ""
+}

@@ -1,0 +1,13 @@
+{
+  "id": "skin.prism_stag.default",
+  "base": "base.quadruped.medium",
+  "name": "Prism Stag Default",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "pass",
+    "cost": 0
+  }
+}
