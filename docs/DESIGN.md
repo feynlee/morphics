@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.56)
+# Morphics: Design Doc (v0.57)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -266,6 +266,11 @@ base.flyer (planned)              Flyer
   base.flyer.wader (planned)      Wader, Yellow        <- Gale Heron
     .medium                       heron
 ```
+
+Size ranges (`height` on a size node, in meters):
+- A size can set the real height it stands for, with `reference_m` averages, a `variation_pct` and the resulting `min_m` and `max_m`. Hitboxes and skins are checked against it.
+- **Medium humanoid (Ziyue):** males average 6 ft (1.83 m) and females average 5 ft 6 in (1.68 m). Variation of plus or minus 10 percent is allowed. So the medium humanoid range is **1.51 m to 2.01 m** (standing height).
+- The other sizes have no range yet. The validator checks that `min_m` and `max_m` match the references and the variation.
 
 Why this split: if one animation set had to suit very different animals, a wolf, a bear and a tortoise would not all walk well. A subcategory groups morphs that can share a good gait. A new species that fits an existing subcategory costs no animation work. A species with a different gait or spine needs its own subcategory.
 - Test for a new species: its bones map to the subcategory rig, and the shared animations play with only a scale change.
@@ -590,7 +595,7 @@ Decided questions were removed. Still open:
 - **Swimmer order:** decided. The first swimmer is the Shark. Which swimmer subcategory comes next (fish, sea mammals, crustaceans, eels) is open and not urgent.
 - **Otter subcategory:** decided that an otter is a Beast. Which subcategory? Canine is the nearest, but an otter's bounding gait may need its own (mustelid) subcategory. For now it is listed as a provisional canine example.
 - **Hybrids:** a dragon is a Flyer for now (decided). Does it need its own Flyer subcategory later, since no flier rig has four legs? Winged humanoids and centaurs are on hold: Ziyue will say when he decides.
-- **Size ranges:** a real height in meters for each size of each subcategory (for example, a small canine's shoulder height), so hitboxes and skins can be checked.
+- **Size ranges:** the medium humanoid is set (1.51 m to 2.01 m). The other sizes still need a real height in meters (for example, a small canine's shoulder height), so hitboxes and skins can be checked.
 - **Build order after the proof of concept:** hoofed and shelled (they have forms), feline, or a first swimmer?
 - **Limited morphs:** can a pass morph use a subcategory nobody can farm yet (Prism Stag under hoofed)?
 

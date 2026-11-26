@@ -3,5 +3,15 @@
   "name": "Medium humanoid",
   "parent": "base.walker.humanoid",
   "status": "active",
-  "examples": "Human, orc, elf"
+  "examples": "Human, orc, elf",
+  "height": {
+    "basis": "standing",
+    "reference_m": {
+      "male": 1.83,
+      "female": 1.68
+    },
+    "variation_pct": 10,
+    "min_m": 1.51,
+    "max_m": 2.01
+  }
 }

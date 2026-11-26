@@ -98,6 +98,10 @@ def main():
         lambda d: edit(d / "forms/ember_fox.json", lambda f: f.update(starter=True, base="base.walker.canine.medium"))))
     results.append(case("active color with no starter", "has no starter form",
         lambda d: edit(d / "forms/wanderer.json", lambda f: f.update(starter=False))))
+    results.append(case("height range does not match the variation", "height min_m should be",
+        lambda d: edit(d / "bases/walker.humanoid.medium.json", lambda b: b["height"].update(min_m=1.2))))
+    results.append(case("height on a subcategory", "only a size has a height range",
+        lambda d: edit(d / "bases/walker.canine.json", lambda b: b.update(height={"basis": "shoulder", "reference_m": {"avg": 0.5}, "variation_pct": 0, "min_m": 0.5, "max_m": 0.5}))))
     bad = results.count(False)
     print(f"{len(results) - bad} passed, {bad} failed")
     return 1 if bad else 0

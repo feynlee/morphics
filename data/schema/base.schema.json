@@ -73,6 +73,51 @@
     "gait": {
       "type": "string",
       "description": "The gait set of this subcategory. Set on a subcategory only."
+    },
+    "height": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis",
+        "reference_m",
+        "variation_pct",
+        "min_m",
+        "max_m"
+      ],
+      "description": "Optional. Set on a size. The real height range, in meters, that the size represents. Hitboxes and skins are checked against it.",
+      "properties": {
+        "basis": {
+          "enum": [
+            "standing",
+            "shoulder",
+            "length",
+            "wingspan"
+          ]
+        },
+        "reference_m": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "description": "Average heights, for example male and female."
+        },
+        "variation_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50,
+          "description": "Allowed variation around the references, plus or minus, in percent."
+        },
+        "min_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
     }
   }
 }
