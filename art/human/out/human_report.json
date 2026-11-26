@@ -1,0 +1,47 @@
+{
+  "form": "Human",
+  "base": "base.walker.humanoid.medium",
+  "rig": "rig.walker.humanoid",
+  "mesh": "mesh.walker.humanoid",
+  "triangles": 9020,
+  "body_triangles": 8200,
+  "bones": 22,
+  "texture": 2048,
+  "animations": {
+    "idle": {
+      "frames": 91,
+      "fps": 30,
+      "loop": true
+    },
+    "walk": {
+      "frames": 33,
+      "fps": 30,
+      "loop": true
+    },
+    "run": {
+      "frames": 21,
+      "fps": 30,
+      "loop": true
+    },
+    "jump": {
+      "frames": 37,
+      "fps": 30,
+      "loop": false
+    },
+    "attack_basic": {
+      "frames": 25,
+      "fps": 30,
+      "loop": false
+    },
+    "hit": {
+      "frames": 19,
+      "fps": 30,
+      "loop": false
+    },
+    "death": {
+      "frames": 49,
+      "fps": 30,
+      "loop": false
+    }
+  }
+}

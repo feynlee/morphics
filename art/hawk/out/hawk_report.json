@@ -1,0 +1,57 @@
+{
+  "form": "Hawk",
+  "base": "base.flyer.flier.medium",
+  "rig": "rig.flyer.flier",
+  "mesh": "mesh.flyer.flier",
+  "triangles": 8772,
+  "body_triangles": 6200,
+  "bones": 19,
+  "texture": 2048,
+  "animations": {
+    "idle": {
+      "frames": 91,
+      "fps": 30,
+      "loop": true
+    },
+    "walk": {
+      "frames": 37,
+      "fps": 30,
+      "loop": true
+    },
+    "run": {
+      "frames": 21,
+      "fps": 30,
+      "loop": true
+    },
+    "fly": {
+      "frames": 25,
+      "fps": 30,
+      "loop": true
+    },
+    "glide": {
+      "frames": 61,
+      "fps": 30,
+      "loop": true
+    },
+    "jump": {
+      "frames": 31,
+      "fps": 30,
+      "loop": false
+    },
+    "attack_basic": {
+      "frames": 25,
+      "fps": 30,
+      "loop": false
+    },
+    "hit": {
+      "frames": 19,
+      "fps": 30,
+      "loop": false
+    },
+    "death": {
+      "frames": 61,
+      "fps": 30,
+      "loop": false
+    }
+  }
+}
