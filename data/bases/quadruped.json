@@ -2,7 +2,7 @@
   "id": "base.quadruped",
   "name": "Beast",
   "status": "active",
-  "description": "Four legs. Covers cats, canines, bears, foxes and other beasts.",
+  "description": "Four legs. Covers cats, canines, bears, foxes and other beasts. It can include four-legged dinosaurs.",
   "skeleton": "",
   "required_animations": [
     "idle",

@@ -2,7 +2,7 @@
   "id": "base.bird",
   "name": "Winged creature",
   "status": "planned",
-  "description": "Winged flier. Covers birds and other winged creatures.",
+  "description": "A winged creature that usually stands and walks on two legs. It has two wings. Covers birds and other winged creatures.",
   "skeleton": "",
   "required_animations": [
     "idle",

@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.37)
+# Morphics: Design Doc (v0.38)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -229,7 +229,7 @@ A JSON schema checks every data file in CI before import.
 A **body type** is a node in a tree. Forms under one top-level body type share a skeleton and one animation set.
 This lets us make many forms: a new form is a new look plus skills, not a new animation set.
 
-Naming (Ziyue): the family "Four-legged beast" is now **Beast**, and "Bird" is now **Winged creature**. Ids stay `base.quadruped*` and `base.bird*` so data and saves do not break. Winged creature covers birds and may later cover other winged shapes.
+Naming (Ziyue): the family "Four-legged beast" is now **Beast**, and "Bird" is now **Winged creature**. Ids stay `base.quadruped*` and `base.bird*` so data and saves do not break. Winged creature is a winged creature that usually stands and walks on two legs and has two wings. It covers birds and may later cover other winged shapes. Beast has four legs and can include four-legged dinosaurs.
 
 Structure: **top-level body type > subcategory > form**. Example: Beast > Small beast > Ember Fox.
 - The **top level** (root) sets the skeleton and the required animation list.
