@@ -4,6 +4,8 @@
 Needs the `jsonschema` package. Cross checks:
 - spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
   category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
+- skill tree (data/skill_tree.json): edges name real nodes, the tree is connected (every node can be
+  reached from every other, so players can move anywhere), and every form has a tree_start node
 - no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
 - every top-level body type has a spectrum from data/spectrums.json, and no two share one
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
@@ -227,6 +229,34 @@ def main():
     for b in bases.values():
         if "parent" not in b and b.get("status") == "active" and b["id"] not in seen_drop:
             errors.append(f"data/drops.json: active body type {b['id']} needs a drop entry")
+
+    tree = json.loads((DATA / "skill_tree.json").read_text())
+    tree_schema = json.loads((DATA / "schema" / "skill_tree.schema.json").read_text())
+    for err in Draft202012Validator(tree_schema).iter_errors(tree):
+        errors.append(f"data/skill_tree.json: {err.message}")
+    node_ids = {n["id"] for n in tree["nodes"]}
+    if len(node_ids) != len(tree["nodes"]):
+        errors.append("data/skill_tree.json: duplicate node id")
+    graph = {n: set() for n in node_ids}
+    for a, b in tree["edges"]:
+        if a not in node_ids or b not in node_ids:
+            errors.append(f"data/skill_tree.json: edge {a} - {b} names an unknown node")
+        else:
+            graph[a].add(b)
+            graph[b].add(a)
+    if node_ids:
+        start = next(iter(sorted(node_ids)))
+        reached, todo = {start}, [start]
+        while todo:
+            for nxt in graph[todo.pop()]:
+                if nxt not in reached:
+                    reached.add(nxt)
+                    todo.append(nxt)
+        for lost in sorted(node_ids - reached):
+            errors.append(f"data/skill_tree.json: {lost} cannot be reached. The tree must be connected")
+    for form in forms.values():
+        if form.get("tree_start") not in node_ids:
+            errors.append(f"{form['id']}: tree_start {form.get('tree_start')} is not a node in the skill tree")
 
     starters = {}
     for form in forms.values():

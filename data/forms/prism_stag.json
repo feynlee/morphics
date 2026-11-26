@@ -24,5 +24,6 @@
     "type": "pass",
     "cost": 0
   },
-  "limited": true
+  "limited": true,
+  "tree_start": "node.support_1"
 }

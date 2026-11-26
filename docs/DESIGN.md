@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.23)
+# Morphics: Design Doc (v0.24)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -241,12 +241,37 @@ Body-type cue (recommendation, for Ziyue to decide):
 - Ownership: a player owns skins and forms separately. Equipping checks the fit rule.
 - Art cost: a narrow skin is tested on one node only, which keeps each skin cheap to make and check. Many narrow variations are the main way we grow the skin catalog.
 
-## 4c. Roles and the skill tree (pending)
-**Pending: Ziyue will detail this soon.** Do not treat the current role list as final.
-- Roles come from a **skill tree**. A role is not a fixed label on a form. It comes from the skills a player picks in the tree.
-- The `role` field on a form (Tank, Striker, Support, Scout, Controller) is a **placeholder** until the tree is defined. It may be removed, or become a label that is derived from the tree.
-- Open questions for when Ziyue details it: Is there one tree for all morphs, or one per body type? How are points spent (section 4d)? Can a player respec? Do skills carry between morphs?
-- Until then, M1 uses the fixed skills in each form's JSON.
+## 4c. Roles and the skill tree
+**Direction decided by Ziyue. The detailed tree layout is pending Ziyue's design.**
+
+**One shared tree, with a different start for each form**
+- There is **one overall skill tree**, like the ones in Path of Exile or Final Fantasy X: a large map of connected nodes.
+- **Each form starts at its own node** on the tree. Forms start in different places, so some forms **reach certain skills faster**. That gives each form a natural role: a form that starts near the guard area reaches guard skills quickly.
+- **Players can move anywhere.** Every node can be reached from every start. So a form can **veer away** from its natural role and the player **defines the role they want**.
+- Result: roles are not fixed labels. A role is what a player builds on the tree. The start node is a head start, not a limit.
+
+**How it works with the other systems**
+- Players spend **skill points** on nodes (sources in section 4d).
+- Assumption to confirm: **each form has its own progress** on the shared tree, starting at that form's node. Switching morph switches to that form's build. (Open: or is there one build per player?)
+- The `role` field on a form is a **placeholder** and may become a label derived from where the player has gone on the tree. Do not rely on it for gameplay.
+- Nodes will grant skills, stat changes, and passives. Which skills attach to which nodes is pending.
+- Balance: because a paid morph and an earned morph start at different nodes but can reach the same places, power stays equal (section 5). The start node must not give an unfair head start to paid forms.
+- Co-op: a team can mix builds. Each player's build is visible to them. (Open: do teammates see each other's build?)
+
+**Data** (`data/skill_tree.json`, `tree_start` on each form)
+- A graph of nodes and edges. Each node has an id, a name, and a region. Regions suggest roles (guard, strike, support, scout, control) but do not block anyone.
+- Each form names its `tree_start` node.
+- **Validator rules:** every edge names real nodes; the tree is **connected**, so every node can be reached from every start (this is what lets players move anywhere); every form has a valid start node.
+- **The current tree is a placeholder** (one center node and five 2-node regions in a ring). The layout is pending Ziyue's detailed design. Only the rules above are real.
+
+**Pending: Ziyue's detailed tree design.** Open questions for when Ziyue details it:
+1. Node types and sizes (small, notable, keystone), like Path of Exile? Or a grid like Final Fantasy X's Sphere Grid?
+2. Is progress per form (assumed) or per player?
+3. Can a player respec, and does it cost something? (Default: respec is free or cheap in the early game.)
+4. Are there locked areas that need a gate (a level or an item)?
+5. How many nodes, and how many points to fill the tree? (Decides how long the "always something to earn" loop lasts.)
+6. Do skills carry between morphs? (Default: no, each morph has its own skills from its own build.)
+7. Does each skill on the tree stay in a body type, or can any form learn any skill? (Body types change animations. A skill needs an animation that fits the body.)
 
 ## 4d. Skill points: sources
 Ziyue wants **many ways to earn skill points**, and to earn rewards by unlocking new morphs and other in-game gear. Skill points feed the skill tree (section 4c).

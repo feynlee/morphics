@@ -1,0 +1,123 @@
+{
+  "status": "placeholder",
+  "note": "Placeholder layout. Ziyue will give the detailed tree design. Only the rules are real: one shared tree, each form has its own start node, and every node can be reached from every start.",
+  "nodes": [
+    {
+      "id": "node.origin",
+      "name": "Origin",
+      "region": "center"
+    },
+    {
+      "id": "node.guard_1",
+      "name": "Guard 1",
+      "region": "guard"
+    },
+    {
+      "id": "node.guard_2",
+      "name": "Guard 2",
+      "region": "guard"
+    },
+    {
+      "id": "node.strike_1",
+      "name": "Strike 1",
+      "region": "strike"
+    },
+    {
+      "id": "node.strike_2",
+      "name": "Strike 2",
+      "region": "strike"
+    },
+    {
+      "id": "node.support_1",
+      "name": "Support 1",
+      "region": "support"
+    },
+    {
+      "id": "node.support_2",
+      "name": "Support 2",
+      "region": "support"
+    },
+    {
+      "id": "node.scout_1",
+      "name": "Scout 1",
+      "region": "scout"
+    },
+    {
+      "id": "node.scout_2",
+      "name": "Scout 2",
+      "region": "scout"
+    },
+    {
+      "id": "node.control_1",
+      "name": "Control 1",
+      "region": "control"
+    },
+    {
+      "id": "node.control_2",
+      "name": "Control 2",
+      "region": "control"
+    }
+  ],
+  "edges": [
+    [
+      "node.origin",
+      "node.guard_1"
+    ],
+    [
+      "node.origin",
+      "node.strike_1"
+    ],
+    [
+      "node.origin",
+      "node.support_1"
+    ],
+    [
+      "node.origin",
+      "node.scout_1"
+    ],
+    [
+      "node.origin",
+      "node.control_1"
+    ],
+    [
+      "node.guard_1",
+      "node.guard_2"
+    ],
+    [
+      "node.strike_1",
+      "node.strike_2"
+    ],
+    [
+      "node.support_1",
+      "node.support_2"
+    ],
+    [
+      "node.scout_1",
+      "node.scout_2"
+    ],
+    [
+      "node.control_1",
+      "node.control_2"
+    ],
+    [
+      "node.guard_2",
+      "node.strike_2"
+    ],
+    [
+      "node.strike_2",
+      "node.scout_2"
+    ],
+    [
+      "node.scout_2",
+      "node.control_2"
+    ],
+    [
+      "node.control_2",
+      "node.support_2"
+    ],
+    [
+      "node.support_2",
+      "node.guard_2"
+    ]
+  ]
+}

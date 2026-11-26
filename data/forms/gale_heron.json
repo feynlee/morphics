@@ -27,5 +27,6 @@
       "spectrum": 1400
     }
   },
-  "starter": false
+  "starter": false,
+  "tree_start": "node.scout_2"
 }

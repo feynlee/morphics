@@ -27,5 +27,6 @@
       "spectrum": 1500
     }
   },
-  "starter": true
+  "starter": true,
+  "tree_start": "node.strike_1"
 }
