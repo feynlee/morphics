@@ -2,8 +2,9 @@
 """Validate data/bases, forms, skills, skins against data/schema.
 
 Needs the `jsonschema` package. Cross checks:
-- boss drops (data/boss_drops.json): every earned morph has one boss entry that matches its recipe. A boss
-  drops only that recipe's components (all of them can drop), never the Morphic, never a Spectrum
+- boss drops (data/boss_drops.json): every earned morph has one boss entry. A boss rolls (solo chance) on a
+  crafting material loot table (data/loot_tables.json). Loot table weights sum to 100, the table holds exactly
+  the recipe's components, never a Morphic, never a Spectrum, and each table belongs to one boss
 - Spectrums drop only from wild enemies (data/drops.json, source wild_enemy), never from bosses
 - spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
   category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
@@ -331,21 +332,43 @@ def main():
             if "prisms" in item.get("market_override", {}):
                 errors.append(f"{item['id']}: Prism pricing is deferred. Do not set a market Prism price yet")
 
+    loot = json.loads((DATA / "loot_tables.json").read_text())
+    loot_schema = json.loads((DATA / "schema" / "loot_table.schema.json").read_text())
+    for err in Draft202012Validator(loot_schema).iter_errors(loot):
+        errors.append(f"data/loot_tables.json: {err.message}")
+    tables = {}
+    for table in loot:
+        if table.get("id") in tables:
+            errors.append(f"data/loot_tables.json: duplicate table {table.get('id')}")
+        tables[table.get("id")] = table
+        total = sum(e.get("weight", 0) for e in table.get("entries", []))
+        if total != 100:
+            errors.append(f"data/loot_tables.json: {table.get('id')} weights sum to {total}, not 100")
+        names = [e.get("item") for e in table.get("entries", [])]
+        if len(names) != len(set(names)):
+            errors.append(f"data/loot_tables.json: {table.get('id')} lists an item twice")
+        for item in names:
+            low = str(item).lower()
+            if "morphic" in low:
+                errors.append(f"data/loot_tables.json: {table.get('id')} holds {item}. A loot table never holds a Morphic (it would skip farming)")
+            if "spectrum" in low:
+                errors.append(f"data/loot_tables.json: {table.get('id')} holds {item}. Spectrums drop only from wild enemies")
+
     boss_drops = json.loads((DATA / "boss_drops.json").read_text())
     boss_schema = json.loads((DATA / "schema" / "boss_drops.schema.json").read_text())
     for err in Draft202012Validator(boss_schema).iter_errors(boss_drops):
         errors.append(f"data/boss_drops.json: {err.message}")
     by_boss = {}
+    used_tables = set()
     for entry in boss_drops:
         if entry.get("boss") in by_boss:
             errors.append(f"data/boss_drops.json: more than one entry for {entry.get('boss')}")
         by_boss[entry.get("boss")] = entry
-        for item in entry.get("drops", []):
-            low = str(item).lower()
-            if "morphic" in low:
-                errors.append(f"data/boss_drops.json: {entry.get('boss')} drops {item}. A boss never drops a Morphic (it would skip farming)")
-            if "spectrum" in low:
-                errors.append(f"data/boss_drops.json: {entry.get('boss')} drops {item}. Spectrums drop only from wild enemies")
+        if entry.get("loot_table") not in tables:
+            errors.append(f"data/boss_drops.json: {entry.get('boss')} names unknown loot table {entry.get('loot_table')}")
+        elif entry["loot_table"] in used_tables:
+            errors.append(f"data/boss_drops.json: loot table {entry['loot_table']} is used by more than one boss")
+        used_tables.add(entry.get("loot_table"))
     needed = set()
     for form in forms.values():
         craft = form["unlock"].get("craft")
@@ -358,12 +381,18 @@ def main():
             continue
         if entry.get("form_id") != form["id"]:
             errors.append(f"data/boss_drops.json: {entry.get('boss')} must name {form['id']}")
-        parts = {c.get("item") for c in craft.get("components", [])}
-        if set(entry.get("drops", [])) != parts:
-            errors.append(f"data/boss_drops.json: {entry.get('boss')} must drop exactly the components of {form['id']}")
+        table = tables.get(entry.get("loot_table"))
+        if table is not None:
+            parts = {c.get("item") for c in craft.get("components", [])}
+            held = {e.get("item") for e in table.get("entries", [])}
+            if held != parts:
+                errors.append(f"data/loot_tables.json: {table.get('id')} must hold exactly the components of {form['id']}")
     for boss in by_boss:
         if boss not in needed:
             errors.append(f"data/boss_drops.json: {boss} is not the source boss of any earned morph")
+    for tid in tables:
+        if tid not in used_tables:
+            errors.append(f"data/loot_tables.json: {tid} is not used by any boss")
 
     drops = json.loads((DATA / "drops.json").read_text())
     drop_schema = json.loads((DATA / "schema" / "drop.schema.json").read_text())

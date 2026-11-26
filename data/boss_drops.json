@@ -2,71 +2,43 @@
   {
     "boss": "boss.ember_fox",
     "form_id": "form.ember_fox",
-    "chance_solo": 0.2,
-    "drops": [
-      "item.ember_fox.ear",
-      "item.ember_fox.tail",
-      "item.ember_fox.essence"
-    ]
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.ember_fox.materials"
   },
   {
     "boss": "boss.gale_heron",
     "form_id": "form.gale_heron",
-    "chance_solo": 0.2,
-    "drops": [
-      "item.gale_heron.plume",
-      "item.gale_heron.beak",
-      "item.gale_heron.essence"
-    ]
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.gale_heron.materials"
   },
   {
     "boss": "boss.hawk",
     "form_id": "form.hawk",
-    "chance_solo": 0.2,
-    "drops": [
-      "item.hawk.feather",
-      "item.hawk.talon",
-      "item.hawk.essence"
-    ]
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.hawk.materials"
   },
   {
     "boss": "boss.raptor",
     "form_id": "form.raptor",
-    "chance_solo": 0.2,
-    "drops": [
-      "item.raptor.claw",
-      "item.raptor.tooth",
-      "item.raptor.essence"
-    ]
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.raptor.materials"
   },
   {
     "boss": "boss.stone_tortoise",
     "form_id": "form.stone_tortoise",
-    "chance_solo": 0.2,
-    "drops": [
-      "item.stone_tortoise.shell_shard",
-      "item.stone_tortoise.claw",
-      "item.stone_tortoise.essence"
-    ]
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.stone_tortoise.materials"
   },
   {
     "boss": "boss.wanderer",
     "form_id": "form.wanderer",
-    "chance_solo": 0.2,
-    "drops": [
-      "item.wanderer.charm",
-      "item.wanderer.cloth",
-      "item.wanderer.essence"
-    ]
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.wanderer.materials"
   },
   {
     "boss": "boss.wolf",
     "form_id": "form.wolf",
-    "chance_solo": 0.2,
-    "drops": [
-      "item.wolf.fang",
-      "item.wolf.pelt",
-      "item.wolf.essence"
-    ]
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.wolf.materials"
   }
 ]
