@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.26)
+# Morphics: Design Doc (v0.27)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -250,28 +250,32 @@ Body-type cue (recommendation, for Ziyue to decide):
 - **Players can move anywhere.** Every node can be reached from every start. So a form can **veer away** from its natural role and the player **defines the role they want**.
 - Result: roles are not fixed labels. A role is what a player builds on the tree. The start node is a head start, not a limit.
 
+**Base-variant nodes at the start of every tree**
+- Every morph's tree begins with **base-variant nodes**: nodes made for a body type, such as small beast.
+- **Only a morph of that body type can invest in them.** A small beast can invest in the small-beast nodes. A large beast or a humanoid cannot. A node made for a broader body type (such as four-legged beast) can be used by every morph under it.
+- **Any points can buy these nodes**: spirit points or morph points. There is no special currency for them.
+- The validator checks that each of these nodes names a real body type, that every form has base-variant nodes it can invest in, and that the rules file keeps them payable with any points.
+
 **How it works with the other systems**
 - Players spend **skill points** on nodes: spirit points on any owned morph, and each morph's own morph points on that morph only (section 4d).
-- Assumption to confirm: **each form has its own progress** on the shared tree, starting at that form's node. Switching morph switches to that form's build. (Open: or is there one build per player?)
+- **Each morph has its own build** on the shared tree, starting at that morph's node. Switching morph switches to that morph's build. The spirit points are shared, so every morph's build can use the full spirit balance.
 - The `role` field on a form is a **placeholder** and may become a label derived from where the player has gone on the tree. Do not rely on it for gameplay.
 - Nodes will grant skills, stat changes, and passives. Which skills attach to which nodes is pending.
 - Balance: because a paid morph and an earned morph start at different nodes but can reach the same places, power stays equal (section 5). The start node must not give an unfair head start to paid forms.
 - Co-op: a team can mix builds. Each player's build is visible to them. (Open: do teammates see each other's build?)
 
 **Data** (`data/skill_tree.json`, `tree_start` on each form)
-- A graph of nodes and edges. Each node has an id, a name, and a region. Regions suggest roles (guard, strike, support, scout, control) but do not block anyone.
+- A graph of nodes and edges. Each node has an id, a name, and a region. Base-variant nodes also name the body type that may invest in them (`restricted_to_base`). Regions suggest roles (guard, strike, support, scout, control) but do not block anyone.
 - Each form names its `tree_start` node.
 - **Validator rules:** every edge names real nodes; the tree is **connected**, so every node can be reached from every start (this is what lets players move anywhere); every form has a valid start node.
 - **The current tree is a placeholder** (one center node and five 2-node regions in a ring). The layout is pending Ziyue's detailed design. Only the rules above are real.
 
 **Pending: Ziyue's detailed tree design.** Open questions for when Ziyue details it:
 1. Node types and sizes (small, notable, keystone), like Path of Exile? Or a grid like Final Fantasy X's Sphere Grid?
-2. Is progress per form (assumed) or per player?
-3. Can a player respec, and does it cost something? (Default: respec is free or cheap in the early game.)
-4. Are there locked areas that need a gate (a level or an item)?
-5. How many nodes, and how many points to fill the tree? (Decides how long the "always something to earn" loop lasts.)
-6. Do skills carry between morphs? (Default: no, each morph has its own skills from its own build.)
-7. Does each skill on the tree stay in a body type, or can any form learn any skill? (Body types change animations. A skill needs an animation that fits the body.)
+2. Respec: can a player undo node choices on one morph's tree, and does it cost anything? (See section 4d. Default: free or cheap early on.)
+3. Are there locked areas that need a gate (a level or an item)?
+4. How many nodes, and how much does each cost? (There is no point cap, so tree size and costs decide how long the "always something to earn" loop lasts.)
+5. Does each skill stay within a body type, or can any form learn any skill? (Body types change animations. A skill needs an animation that fits the body.)
 
 ## 4d. Experience tracks and skill points
 **Decided by Ziyue:**
@@ -287,18 +291,20 @@ Skill points feed the skill tree (section 4c). They are not sold in the market, 
 | Experience | Player level | Morph level |
 | Skill points | **Spirit points** | **Morph points** |
 | Earned | In any form, in any mission | **Only while playing that morph** |
-| Spent on | **Any morph the player owns**, including a newly gained one | **Only the morph that earned them** |
+| Spent on | **Every morph the player owns**, each one using the full balance | **Only the morph that earned them** |
 
 **What this means**
-- The spirit track is the player's overall progress. The spirit points are a pool that the player can spend on **any morph they have**.
-- When the player **gains a new morph, all their spirit points can be spent on it right away.** The new morph is playable and buildable from the first minute.
+- The spirit track is the player's overall progress. **Spirit points are shared by every morph.** Each owned morph can spend the **full spirit balance** on its own upgrade track. So a player with 10 spirit points can put 10 points into the upgrade track of **every** morph they own. Spending on one morph does **not** reduce what another morph can spend.
+- When the player **gains a new morph, all their spirit points can be spent on it right away**, because the spirit already earned them. The new morph is playable and buildable from the first minute.
+- Spirit points are **not moved or respec'd between morphs.** They are shared, so there is nothing to move: every morph already has access to the whole balance.
 - The **morph-specific experience and morph points must be earned** in that morph. A new morph starts at morph level 1 with no morph points. So every morph has its own growth to look forward to, and mastery cannot be skipped.
 - Morph points never come from the spirit track, and spirit points are never turned into morph points. The two stay separate.
 
 **Rules (enforced by the validator)**
 - Every skill point source belongs to one track. A spirit-track source grants spirit points only. A morph-track source grants morph points only, and it requires that the player is playing that morph.
 - Morph points are **never granted or spent through the player track.**
-- Spirit points can be spent on any owned morph. Morph points can be spent only on the morph that earned them. These are fixed in `data/skill_point_rules.json`, and the validator rejects any change.
+- Spirit points are shared by every owned morph (each can spend the full balance). Morph points can be spent only on the morph that earned them. These are fixed in `data/skill_point_rules.json`, and the validator rejects any change.
+- **There is no cap** on spirit points, morph points, or skill points in general. The only limit is how fast a player can earn them. The validator rejects any cap in the rules.
 - No price, skip price, or purchase can be attached to spirit points or morph points.
 
 ### Sources (`data/skill_point_sources.json`; amounts are pending the tree design)
@@ -327,10 +333,8 @@ Skill points feed the skill tree (section 4c). They are not sold in the market, 
 - Every source gives a fair amount, so no single source is required.
 - The point totals and the tree costs are set after Ziyue defines the tree.
 
-**Open questions for Ziyue**
-1. Are spirit points assigned to a morph for good, or can the player move them between morphs? (Default: assigned per morph and movable only with a respec, once respec is defined.)
-2. How are spirit points and morph points mixed on the tree? (Default: either kind can pay for any node of the morph that holds them. Some nodes may need morph points only, to be decided with the tree.)
-3. Is there a cap on how many spirit points one morph can hold? (Default: no cap.)
+**Open question for Ziyue**
+- **Respec:** can a player undo node choices on a morph's tree (a respec), and does it cost anything? Spirit points do not move between morphs (they are shared), so this is only about undoing choices inside one morph's tree. (Default: free or cheap respec early on. Needs Ziyue's rule.)
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.

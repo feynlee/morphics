@@ -2,11 +2,19 @@
   "spirit_points": {
     "track": "spirit",
     "spendable_on": "any_owned_morph",
-    "note": "Earned by the player (the spirit). A newly gained morph can use them at once."
+    "shared_across_morphs": true,
+    "cap": "none",
+    "note": "Earned by the player (the spirit). Shared: every owned morph can spend the full balance, so 10 spirit points can go into every owned morph. Spending on one morph never reduces another. They are not moved or respec'd between morphs."
   },
   "morph_points": {
     "track": "morph",
     "spendable_on": "earning_morph_only",
+    "cap": "none",
     "note": "Earned only while playing that morph. Never granted or spent through the spirit track."
+  },
+  "base_variant_nodes": {
+    "investable_by": "matching_body_type_only",
+    "payable_with": "any_points",
+    "note": "Each tree starts with nodes for a body-type node (for example small beast). Only a morph of that body type can invest in them, but spirit points or morph points can pay for them."
   }
 }

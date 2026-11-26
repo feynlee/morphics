@@ -1,6 +1,6 @@
 {
   "status": "placeholder",
-  "note": "Placeholder layout. Ziyue will give the detailed tree design. Only the rules are real: one shared tree, each form has its own start node, and every node can be reached from every start.",
+  "note": "Placeholder layout. Ziyue will give the detailed tree design. Only the rules are real: one shared tree, each form has its own start node, every node can be reached from every start, and the tree begins with body-type nodes that only a matching body type can invest in (any points can buy them).",
   "nodes": [
     {
       "id": "node.origin",
@@ -56,6 +56,66 @@
       "id": "node.control_2",
       "name": "Control 2",
       "region": "control"
+    },
+    {
+      "id": "node.base_humanoid_medium",
+      "name": "Body type: humanoid medium",
+      "region": "base",
+      "restricted_to_base": "base.humanoid.medium"
+    },
+    {
+      "id": "node.base_humanoid_short",
+      "name": "Body type: humanoid short",
+      "region": "base",
+      "restricted_to_base": "base.humanoid.short"
+    },
+    {
+      "id": "node.base_humanoid_large",
+      "name": "Body type: humanoid large",
+      "region": "base",
+      "restricted_to_base": "base.humanoid.large"
+    },
+    {
+      "id": "node.base_quadruped_small",
+      "name": "Body type: quadruped small",
+      "region": "base",
+      "restricted_to_base": "base.quadruped.small"
+    },
+    {
+      "id": "node.base_quadruped_medium",
+      "name": "Body type: quadruped medium",
+      "region": "base",
+      "restricted_to_base": "base.quadruped.medium"
+    },
+    {
+      "id": "node.base_quadruped_large",
+      "name": "Body type: quadruped large",
+      "region": "base",
+      "restricted_to_base": "base.quadruped.large"
+    },
+    {
+      "id": "node.base_bird_medium",
+      "name": "Body type: bird medium",
+      "region": "base",
+      "restricted_to_base": "base.bird.medium"
+    },
+    {
+      "id": "node.base_bird_large",
+      "name": "Body type: bird large",
+      "region": "base",
+      "restricted_to_base": "base.bird.large"
+    },
+    {
+      "id": "node.base_biped_dino_medium",
+      "name": "Body type: biped_dino medium",
+      "region": "base",
+      "restricted_to_base": "base.biped_dino.medium"
+    },
+    {
+      "id": "node.base_biped_dino_large",
+      "name": "Body type: biped_dino large",
+      "region": "base",
+      "restricted_to_base": "base.biped_dino.large"
     }
   ],
   "edges": [
@@ -118,6 +178,46 @@
     [
       "node.support_2",
       "node.guard_2"
+    ],
+    [
+      "node.origin",
+      "node.base_humanoid_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_humanoid_short"
+    ],
+    [
+      "node.origin",
+      "node.base_humanoid_large"
+    ],
+    [
+      "node.origin",
+      "node.base_quadruped_small"
+    ],
+    [
+      "node.origin",
+      "node.base_quadruped_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_quadruped_large"
+    ],
+    [
+      "node.origin",
+      "node.base_bird_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_bird_large"
+    ],
+    [
+      "node.origin",
+      "node.base_biped_dino_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_biped_dino_large"
     ]
   ]
 }

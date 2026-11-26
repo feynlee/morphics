@@ -39,6 +39,10 @@
           "region": {
             "type": "string",
             "description": "Area of the tree. Regions suggest roles but do not limit players."
+          },
+          "restricted_to_base": {
+            "type": "string",
+            "description": "Only a morph whose body type is this node, or below it in the body-type tree, can invest. Any points can pay."
           }
         }
       }

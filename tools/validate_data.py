@@ -10,6 +10,8 @@ Needs the `jsonschema` package. Cross checks:
   morph_points only and requires the active morph; morph_points are never granted or spent through the
   spirit track (data/skill_point_rules.json: spirit_points spend on any owned morph, morph_points only
   on the morph that earned them)
+- no cap on spirit points or morph points (data/skill_point_rules.json); spirit points are shared by
+  every morph; base-variant tree nodes name a real body type and every form has one it can invest in
 - skill tree (data/skill_tree.json): edges name real nodes, the tree is connected (every node can be
   reached from every other, so players can move anywhere), and every form has a tree_start node
 - no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
@@ -310,7 +312,13 @@ def main():
                     todo.append(nxt)
         for lost in sorted(node_ids - reached):
             errors.append(f"data/skill_tree.json: {lost} cannot be reached. The tree must be connected")
+    for node in tree["nodes"]:
+        if "restricted_to_base" in node and node["restricted_to_base"] not in bases:
+            errors.append(f"{node['id']}: restricted_to_base {node['restricted_to_base']} is not a body type")
+    restricted = {n["restricted_to_base"] for n in tree["nodes"] if "restricted_to_base" in n}
     for form in forms.values():
+        if not restricted.intersection(chain(bases, form.get("base"))):
+            errors.append(f"{form['id']}: the skill tree has no base-variant node for body type {form.get('base')}")
         if form.get("tree_start") not in node_ids:
             errors.append(f"{form['id']}: tree_start {form.get('tree_start')} is not a node in the skill tree")
 
