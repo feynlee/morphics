@@ -97,7 +97,10 @@ Steam is one back end behind it.
 2. Write the JSON schema and the importer.
 3. Build the M1 prototype.
 
-## 6. Still open for Ziyue
+## 6. Storefronts
+Steam first. Epic Games Store is planned later (Epic Online Services for ownership and purchases).
+Keep the ownership and currency code behind one interface, so a second store is an added back end.
+
+## 7. Still open for Ziyue
 1. Free-to-play on Steam, or a paid base game with paid cosmetics?
-2. Art source: in-house, contractor, or marketplace assets for placeholders?
-3. Minimum PC spec to target?
+2. Minimum PC spec to target?

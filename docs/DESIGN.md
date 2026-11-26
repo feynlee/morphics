@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.4)
+# Morphics: Design Doc (v0.5)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -21,6 +21,9 @@ Decided by Ziyue:
 - Launch content: as many forms as possible. Ziyue and Claude design the forms together.
 - Monetization: forms are sold for an in-game currency. Currency bundles are sold on Steam.
 - Audience: teen and older (teen+).
+- Art: Claude makes the 3D art and animations (models, rigs, animations, VFX briefs), with Ziyue's direction and approval.
+- Budget and timeline: none set. Work is scoped by milestones, not by dates.
+- Storefronts: Steam first. Epic Games Store is added as a later storefront.
 - Retention goal: a "continual playthrough" game. There is always something new to unlock or farm, so the player's investment feels worthwhile.
 
 Assumed (to confirm):
@@ -132,6 +135,7 @@ Platform notes: Steam is the storefront. Steam takes a share of sales, so plan b
 - Forms and skins are JSON data plus 3D art assets.
 - **Forms are made together**: Ziyue sets the idea, and Claude drafts the form (role, stats, skills, lore, look brief) as JSON. The validator checks it. Ziyue approves.
 - **Goal: as many forms as possible at launch.** Plan a form "factory": a template, a stat budget per role, and a checklist per form (design, JSON, model, rig, animations, VFX, skin, test).
+- **Art pipeline is the main production task.** See `ART_PIPELINE.md`. Claude makes the 3D art and animations, so the pipeline must be scriptable and repeatable.
 - Set a per-form budget early (triangle count, texture size, material cost, animation count). 3D art and animation are the bottleneck, not design or data.
 - Reuse where it is cheap and still reads as different: shared skeletons per body type, shared animation sets, material-based skin variants.
 - New content can ship as DLC or store items, without a full game update where possible.
@@ -146,9 +150,8 @@ Platform notes: Steam is the storefront. Steam takes a share of sales, so plan b
 
 ## 9. Open questions for Ziyue
 Decided questions were removed. Still open:
-1. **Art plan**: who makes the 3D art and animation (in-house, contractor, marketplace)? How is a "many forms" launch made affordable?
-2. **Budget and timeline**: total budget, and the target for M1 and for launch?
-3. **Storefront scope beyond Steam**: Steam only at launch, or also Epic, Microsoft Store, or consoles later? (This affects the ownership and currency design.)
+1. **Art quality bar**: Claude's art is made with scripts and tools (see `ART_PIPELINE.md`). Visual quality is the product, so Ziyue should judge the first form and set the bar. If it is not enough, we change the plan (for example: add a human artist for hero forms, or use licensed assets).
+2. **Epic Games Store**: ownership and currency use one interface, so adding Epic later is planned. When should Epic be added (after launch, or at launch)?
 
 Smaller points, with a default if you do not answer:
 - Free-to-play or a paid base game? (Default: free-to-play, because currency bundles carry the revenue.)

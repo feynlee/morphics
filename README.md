@@ -4,6 +4,7 @@ A 3D Windows game (Unreal Engine 5.8.4, sold on Steam) where players become diff
 Each form has its own look, skills, and abilities.
 
 - Design: `docs/DESIGN.md`
+- Art pipeline: `docs/ART_PIPELINE.md`
 - Engine and Steam plan: `docs/ENGINE_AND_STEAM.md`
 - M1 prototype status: `docs/M1_PLAN.md`
 
