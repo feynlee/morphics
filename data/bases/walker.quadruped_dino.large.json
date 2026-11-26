@@ -3,5 +3,14 @@
   "name": "Large four-legged dinosaur",
   "parent": "base.walker.quadruped_dino",
   "status": "planned",
-  "examples": "Triceratops type"
+  "examples": "Triceratops type",
+  "height": {
+    "basis": "shoulder",
+    "reference_m": {
+      "average": 2.5
+    },
+    "variation_pct": 10,
+    "min_m": 2.25,
+    "max_m": 2.75
+  }
 }

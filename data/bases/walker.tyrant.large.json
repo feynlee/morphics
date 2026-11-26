@@ -3,5 +3,14 @@
   "name": "Large tyrant",
   "parent": "base.walker.tyrant",
   "status": "planned",
-  "examples": "Rex type"
+  "examples": "Rex type",
+  "height": {
+    "basis": "standing",
+    "reference_m": {
+      "average": 5.5
+    },
+    "variation_pct": 10,
+    "min_m": 4.95,
+    "max_m": 6.05
+  }
 }

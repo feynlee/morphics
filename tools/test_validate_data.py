@@ -102,6 +102,8 @@ def main():
         lambda d: edit(d / "bases/walker.humanoid.medium.json", lambda b: b["height"].update(min_m=1.2))))
     results.append(case("height on a subcategory", "only a size has a height range",
         lambda d: edit(d / "bases/walker.canine.json", lambda b: b.update(height={"basis": "shoulder", "reference_m": {"avg": 0.5}, "variation_pct": 0, "min_m": 0.5, "max_m": 0.5}))))
+    results.append(case("size without a height", "a size needs a height range",
+        lambda d: edit(d / "bases/walker.canine.small.json", lambda b: b.pop("height"))))
     bad = results.count(False)
     print(f"{len(results) - bad} passed, {bad} failed")
     return 1 if bad else 0

@@ -3,5 +3,14 @@
   "name": "Medium canine",
   "parent": "base.walker.canine",
   "status": "active",
-  "examples": "Wolf, large canine"
+  "examples": "Wolf, large canine",
+  "height": {
+    "basis": "shoulder",
+    "reference_m": {
+      "average": 0.75
+    },
+    "variation_pct": 10,
+    "min_m": 0.68,
+    "max_m": 0.83
+  }
 }

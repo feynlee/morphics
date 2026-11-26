@@ -34,7 +34,7 @@ Needs the `jsonschema` package. Cross checks:
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
   a child is not "active" under a "planned" parent
 - animation_overrides only name animations that the subcategory requires
-- a size may set a height range (height: reference_m, variation_pct, min_m, max_m). It is only for sizes, and
+- every size has a height range (height: reference_m, variation_pct, min_m, max_m). It is only for sizes, and
   min_m and max_m must match the references plus or minus the variation (within 0.01 m)
 - a starter form is never sold: its unlock type is "free" or "earn"
 - at most one starter form per subcategory, and every color used by an active subcategory has at least one starter
@@ -273,6 +273,8 @@ def check_bases(bases):
             for field in RIG_FIELDS + ("spectrum",):
                 if field in b:
                     errors.append(f"{b['id']}: a size has no {field}. It inherits from {parent_id}")
+            if "height" not in b:
+                errors.append(f"{b['id']}: a size needs a height range (height)")
             errors.extend(check_height(b))
             required = parent.get("required_animations", [])
             for anim in b.get("animation_overrides", []):

@@ -3,5 +3,14 @@
   "name": "Medium flier",
   "parent": "base.flyer.flier",
   "status": "planned",
-  "examples": "Hawk"
+  "examples": "Hawk",
+  "height": {
+    "basis": "wingspan",
+    "reference_m": {
+      "average": 1.1
+    },
+    "variation_pct": 10,
+    "min_m": 0.99,
+    "max_m": 1.21
+  }
 }

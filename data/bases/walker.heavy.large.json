@@ -3,5 +3,14 @@
   "name": "Large heavy beast",
   "parent": "base.walker.heavy",
   "status": "planned",
-  "examples": "Bear, boar"
+  "examples": "Bear, boar",
+  "height": {
+    "basis": "shoulder",
+    "reference_m": {
+      "average": 1.2
+    },
+    "variation_pct": 10,
+    "min_m": 1.08,
+    "max_m": 1.32
+  }
 }

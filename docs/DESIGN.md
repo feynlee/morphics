@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.58)
+# Morphics: Design Doc (v0.59)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -270,9 +270,9 @@ base.flyer (planned)              Flyer
 Size ranges (`height` on a size node, in meters):
 - A size can set the real height it stands for, with `reference_m` averages, a `variation_pct` and the resulting `min_m` and `max_m`. Hitboxes and skins are checked against it.
 - **Medium humanoid (Ziyue):** males average 6 ft (1.83 m) and females average 5 ft 6 in (1.68 m). Variation of plus or minus 10 percent is allowed. So the medium humanoid range is **1.51 m to 2.01 m** (standing height).
-- The other sizes have no range yet. The validator checks that `min_m` and `max_m` match the references and the variation.
+- Every size now has a range (table below). The validator checks that `min_m` and `max_m` match the references and the variation.
 
-**Proposed size ranges for the other sizes (Claude's estimates, not applied, for Ziyue to approve one by one).** They use the medium humanoid as the reference and the same plus or minus 10 percent. The basis says what is measured: standing height, shoulder height, wingspan or body length.
+**Size ranges for the other sizes (approved by Ziyue as they stand, 2026-11-26; they can change later).** They were estimated from the medium humanoid and use the same plus or minus 10 percent. The basis says what is measured: standing height, shoulder height, wingspan or body length.
 
 | Size | Id | Basis | Average | Range (plus or minus 10 percent) | Note |
 |---|---|---|---|---|---|
@@ -294,7 +294,7 @@ Size ranges (`height` on a size node, in meters):
 | Medium shark | `base.swimmer.shark.medium` | length | 2.5 m | 2.25 to 2.75 m | Reef shark, hammerhead. |
 | Large shark | `base.swimmer.shark.large` | length | 5 m | 4.5 to 5.5 m | Great white. |
 
-Once Ziyue approves a row, it moves into `data/bases` as a `height` entry. Until then the data has only the medium humanoid.
+These are in `data/bases` as `height` entries on each size. Some are game sizes, not real ones (Stone Tortoise, Raptor). Change a row by editing its size file.
 
 Why this split: if one animation set had to suit very different animals, a wolf, a bear and a tortoise would not all walk well. A subcategory groups morphs that can share a good gait. A new species that fits an existing subcategory costs no animation work. A species with a different gait or spine needs its own subcategory.
 - Test for a new species: its bones map to the subcategory rig, and the shared animations play with only a scale change.
@@ -619,7 +619,6 @@ Decided questions were removed. Still open:
 - **Swimmer order:** decided. The first swimmer is the Shark. Which swimmer subcategory comes next (fish, sea mammals, crustaceans, eels) is open and not urgent.
 - **Otter subcategory:** decided that an otter is a Beast. Which subcategory? Canine is the nearest, but an otter's bounding gait may need its own (mustelid) subcategory. For now it is listed as a provisional canine example.
 - **Hybrids:** a dragon is a Flyer for now (decided). Does it need its own Flyer subcategory later, since no flier rig has four legs? Winged humanoids and centaurs are on hold: Ziyue will say when he decides.
-- **Size ranges:** the medium humanoid is set (1.51 m to 2.01 m). The other sizes still need a real height in meters (for example, a small canine's shoulder height), so hitboxes and skins can be checked.
 - **Build order after the proof of concept:** hoofed and shelled (they have forms), feline, or a first swimmer?
 - **Limited morphs:** can a pass morph use a subcategory nobody can farm yet (Prism Stag under hoofed)?
 
