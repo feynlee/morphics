@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.31)
+# Morphics: Design Doc (v0.32)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -109,7 +109,7 @@ Open questions for Ziyue:
 1. Pick a mission (alone or with co-op friends). Choose a starting form.
 2. Fight and explore. Collect crafting drops and loot. A dungeon ends in a boss (section 3c).
 3. **Morph** between owned forms at any time. A morph has no time limit. A short cooldown after a morph stops swap spam.
-4. Finish the mission. Get rewards: Spectrums, form XP, materials, crafting components.
+4. Finish the mission. Get rewards: form XP, materials, gear. Spectrums drop from wild enemies, not from missions.
 5. Spend rewards in the Hub: level up forms, unlock skills, equip skins, craft or buy forms.
 6. Start the next mission.
 
@@ -126,24 +126,24 @@ Decided by Ziyue. Every earned morph is unlocked by crafting its **Morphic** and
 
 **Flow**
 1. The player runs a dungeon. A dungeon ends in a **boss**. Example: an Ember Fox boss.
-2. The boss can drop components for its morph. Example: in solo play the Ember Fox boss has a **20 percent chance** to drop a component (placeholder).
-3. The player collects all components of the recipe, and also pays a set amount of the morph's **own category Spectrum** (Ember Fox is a four-legged beast, so Green).
+2. The boss can drop **crafting components** for its morph (ears, tail, essence). Example: in solo play the Ember Fox boss has a **20 percent chance** to drop each component (placeholder). **The boss never drops the Morphic itself**, because that would skip the whole farming process. It also never drops Spectrums.
+3. The player collects all components of the recipe, and also pays a set amount of the morph's **own category Spectrum** (Ember Fox is a four-legged beast, so Green). **Spectrums drop only from regular enemies found in the wild** (for example regular Ember Foxes), so the player must also farm out in the world. This diversifies the farming (section 6c).
 4. The player crafts the Morphic and consumes it. The morph is unlocked.
 
 **Example recipe (placeholder numbers):** Ember Fox Morphic = 2 Ember Fox ears + 1 Ember Fox tail + 1 Ember Fox essence + 80 Green Spectrums.
 
 **Rules**
-- Components are specific to one morph (`item.<morph>.<part>`). Spectrums come from battle drops (section 6c) and cannot be converted, so the player must fight that category.
+- Components are specific to one morph (`item.<morph>.<part>`) and drop only from that morph's boss. Spectrums drop only from wild enemies (section 6c) and cannot be converted, so the player must fight that category in the wild.
+- Two drop tables, kept apart: the **boss table** (`data/boss_drops.json`, components only) and the **wild-enemy table** (`data/drops.json`, Spectrums only).
 - The 20 percent solo chance, the component counts, and the Spectrum amounts are **placeholders**. They need playtesting. **Multiplayer scaling is not defined yet.**
 - Prisms skip all of this: buying the morph in the market with Prisms bypasses the crafting (section 6). Spectrums and components cannot be bought.
 - Show drop chances and recipes in the game (Teen+ care, no hidden odds).
 
-**Data** (`unlock.craft` on every `earn` form, checked by the validator)
+**Data** (`unlock.craft` on every `earn` form, and the boss table in `data/boss_drops.json`, checked by the validator)
 ```json
 "craft": {
   "morphic": "Ember Fox Morphic",
   "source_boss": "boss.ember_fox",
-  "boss_drop_chance_solo": 0.2,
   "components": [
     { "item": "item.ember_fox.ear", "count": 2 },
     { "item": "item.ember_fox.tail", "count": 1 },
@@ -152,7 +152,12 @@ Decided by Ziyue. Every earned morph is unlocked by crafting its **Morphic** and
   "spectrum": { "id": "green", "amount": 80 }
 }
 ```
-The validator requires: a recipe on every earned morph; the name "<morph name> Morphic"; boss id `boss.<morph>`; at least one component, each with a count of 1 or more and an id that starts with `item.<morph>.`; and a Spectrum amount in the morph's own category Spectrum. `unlock.cost` (fragments) is removed from forms.
+Boss table entry (`data/boss_drops.json`):
+```json
+{ "boss": "boss.ember_fox", "form_id": "form.ember_fox", "chance_solo": 0.2,
+  "drops": ["item.ember_fox.ear", "item.ember_fox.tail", "item.ember_fox.essence"] }
+```
+The validator requires: a recipe on every earned morph; the name "<morph name> Morphic"; boss id `boss.<morph>`; every earned morph has a boss table entry that drops exactly its recipe components; a boss never drops a Morphic or a Spectrum; at least one component, each with a count of 1 or more and an id that starts with `item.<morph>.`; and a Spectrum amount in the morph's own category Spectrum. `unlock.cost` (fragments) is removed from forms.
 
 ## 3b. Retention: always something to do
 Goal: a player at any level has a next target.
@@ -408,14 +413,14 @@ Rules:
 - A skin uses the spectrum of its body type's top level. All forms and skins under one top level share a spectrum.
 - A new top-level body type needs a new spectrum (the validator requires one, and no two share). This is one more reason a new top-level type is a big step.
 - **Prisms are market-only (confirmed).** They are not used for respec, skill points, or any in-game cost. In the market they can buy any morph, starters included, to bypass farming (section 6).
-- Spectrums are earned as **rare drops from battle** against enemies of that category (section 6c), and from mission rewards of that type (to tune). Enemies never drop another category's spectrum.
+- Spectrums are earned as **rare drops from battle** against enemies of that category (section 6c). Enemies never drop another category's spectrum.
 - **No conversion (decided): players cannot convert one spectrum into another.** There is no exchange, trade, or swap item, in the market or anywhere else. Each spectrum is only earned by play and only spent on its own form type. Prisms are the one currency that works across types, and they are bought with money, not made from spectrums. The validator rejects any data file that defines a conversion.
 - Consequence: a player must fight enemies of a category to earn that category's spectrum. This pushes players to try many form types. It also means a player with a lot of one spectrum cannot spend it on another type, so Prisms are the way to skip farming.
 ### Currency scope (resolved)
 Confirmed by Ziyue:
 - **Prisms are only used to buy things in the market** (morphs, skins, and skipping farming). They are never a cost for respec, skill points, upgrades, or any other in-game action. `data/pricing.json` records `prisms_use: market_only`. The validator rejects Prisms anywhere except a market price.
 - **Spectrums are in-game currency and are what players farm for.** Uses: respec (the respecced morph's own Spectrum color) and other in-game uses (to detail). They are **not** used in the market and they **do not skip farming**.
-- Spectrums are earned only by play (battle drops and missions) and cannot be converted.
+- Spectrums are earned only by play (drops from wild enemies only) and cannot be converted.
 
 - UI: each spectrum shows as a colored bar or gem. Prisms show as a white prism that splits into all the colors.
 
@@ -454,8 +459,8 @@ Revenue levers (in order of priority):
 
 Platform notes: Steam is the storefront. Steam takes a share of sales, so plan bundle prices with that fee. See `ENGINE_AND_STEAM.md`. Currency sold on Steam must follow Steam's rules for virtual items. Check the current rules before the store page goes live.
 
-## 6c. Spectrum drops (battle)
-Decided by Ziyue: players can **earn Spectrums as rare drops by defeating a category of morph in battle**.
+## 6c. Spectrum drops (wild enemies only)
+Decided by Ziyue: players **earn Spectrums as rare drops by defeating regular enemies of a morph category out in the wild** (for example regular Ember Foxes). **Bosses never drop Spectrums.** Bosses drop only crafting components (section 3c). This keeps Spectrum farming in the open world and component farming in dungeons.
 
 **Rules**
 - Enemies belong to a **morph category**: a top-level body type (humanoid, four-legged beast, bird, bipedal dinosaur). Enemy design follows the same body-type tree.
@@ -464,14 +469,14 @@ Decided by Ziyue: players can **earn Spectrums as rare drops by defeating a cate
 - Enemies never drop another category's Spectrum. (Spectrums cannot be converted, so battle is the way to earn each one.)
 - A drop shows as a small glowing colored mote the player picks up. In co-op, each player gets their own drop, so players do not compete for them.
 - Drops are tied to battle, not to the form the player is wearing. A player can earn Green from four-legged beasts while playing as a humanoid.
-- Spectrums are also in mission rewards by type (see section 6). Battle drops are the "rare, exciting" source.
+- Wild enemies are the only Spectrum source. A boss never drops a Spectrum, and the validator rejects it.
 
 **Why this design**
 - It gives a reason to fight each kind of enemy, so missions need variety in enemy categories.
 - A player who wants a Green form fights four-legged beasts. The choice of mission or region becomes a farming choice, which supports the "always something to farm" goal.
 
 **Data** (`data/drops.json`, checked by the validator)
-- One entry per top-level body type: `enemy_base`, `spectrum`, `chance`, `amount_min`, `amount_max`.
+- One entry per top-level body type: `source` (always `wild_enemy`), `enemy_base`, `spectrum`, `chance`, `amount_min`, `amount_max`. The boss table is separate: `data/boss_drops.json` (section 3c).
 - The spectrum must be the category's own spectrum. Every active body type needs an entry. The amount range must be valid.
 - Example: `{ "enemy_base": "base.quadruped", "spectrum": "green", "chance": 0.03, "amount_min": 1, "amount_max": 3 }`.
 

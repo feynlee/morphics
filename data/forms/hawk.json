@@ -25,7 +25,6 @@
     "craft": {
       "morphic": "Hawk Morphic",
       "source_boss": "boss.hawk",
-      "boss_drop_chance_solo": 0.2,
       "components": [
         {
           "item": "item.hawk.feather",

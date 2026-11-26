@@ -1,11 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Morphics Spectrum Drop (rare drop from battle)",
+  "title": "Morphics Spectrum Drop (rare drop from wild enemies only)",
   "type": "array",
   "items": {
     "type": "object",
     "additionalProperties": false,
     "required": [
+      "source",
       "enemy_base",
       "spectrum",
       "chance",
@@ -13,6 +14,10 @@
       "amount_max"
     ],
     "properties": {
+      "source": {
+        "const": "wild_enemy",
+        "description": "Spectrums drop only from regular enemies found in the wild, never from bosses."
+      },
       "enemy_base": {
         "type": "string",
         "description": "Top-level body type of the enemy category."

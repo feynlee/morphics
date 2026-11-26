@@ -42,7 +42,6 @@ struct FMorphFormRow : public FTableRowBase
 	/** Crafting data for earned morphs. Empty for other unlock types. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString CraftMorphic;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString CraftSourceBoss;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float CraftBossDropChanceSolo = 0.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) TArray<FMorphCraftComponent> CraftComponents;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString CraftSpectrumId;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 CraftSpectrumAmount = 0;

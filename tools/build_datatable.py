@@ -33,7 +33,6 @@ def row(form):
         "UnlockType": form["unlock"]["type"],
         "CraftMorphic": form["unlock"].get("craft", {}).get("morphic", ""),
         "CraftSourceBoss": form["unlock"].get("craft", {}).get("source_boss", ""),
-        "CraftBossDropChanceSolo": form["unlock"].get("craft", {}).get("boss_drop_chance_solo", 0.0),
         "CraftComponents": [
             {"Item": c["item"], "Count": c["count"]} for c in form["unlock"].get("craft", {}).get("components", [])
         ],

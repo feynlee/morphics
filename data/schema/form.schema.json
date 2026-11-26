@@ -133,7 +133,6 @@
           "required": [
             "morphic",
             "source_boss",
-            "boss_drop_chance_solo",
             "components",
             "spectrum"
           ],
@@ -146,13 +145,7 @@
             "source_boss": {
               "type": "string",
               "pattern": "^boss\\.[a-z0-9_]+$",
-              "description": "The dungeon boss whose drops are the components."
-            },
-            "boss_drop_chance_solo": {
-              "type": "number",
-              "exclusiveMinimum": 0,
-              "maximum": 1,
-              "description": "Chance that the boss drops a component in solo play (placeholder)."
+              "description": "The dungeon boss whose drops are the components (drop table: data/boss_drops.json)."
             },
             "components": {
               "type": "array",

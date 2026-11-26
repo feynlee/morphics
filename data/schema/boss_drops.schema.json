@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics boss drop table (crafting components only)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "boss",
+      "form_id",
+      "chance_solo",
+      "drops"
+    ],
+    "properties": {
+      "boss": {
+        "type": "string",
+        "pattern": "^boss\\.[a-z0-9_]+$"
+      },
+      "form_id": {
+        "type": "string",
+        "description": "The morph whose recipe this boss feeds."
+      },
+      "chance_solo": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 1,
+        "description": "Chance per component roll in solo play. PLACEHOLDER. Multiplayer scaling is not defined."
+      },
+      "drops": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "pattern": "^item\\.[a-z0-9_]+\\.[a-z0-9_]+$"
+        },
+        "description": "Crafting components only. A boss never drops its Morphic (that would skip farming) and never drops Spectrums."
+      }
+    }
+  }
+}

@@ -25,7 +25,6 @@
     "craft": {
       "morphic": "Raptor Morphic",
       "source_boss": "boss.raptor",
-      "boss_drop_chance_solo": 0.2,
       "components": [
         {
           "item": "item.raptor.claw",

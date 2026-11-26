@@ -25,7 +25,6 @@
     "craft": {
       "morphic": "Stone Tortoise Morphic",
       "source_boss": "boss.stone_tortoise",
-      "boss_drop_chance_solo": 0.2,
       "components": [
         {
           "item": "item.stone_tortoise.shell_shard",

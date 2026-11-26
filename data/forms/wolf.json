@@ -25,7 +25,6 @@
     "craft": {
       "morphic": "Wolf Morphic",
       "source_boss": "boss.wolf",
-      "boss_drop_chance_solo": 0.2,
       "components": [
         {
           "item": "item.wolf.fang",

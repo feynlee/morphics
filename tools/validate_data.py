@@ -2,6 +2,9 @@
 """Validate data/bases, forms, skills, skins against data/schema.
 
 Needs the `jsonschema` package. Cross checks:
+- boss drops (data/boss_drops.json): every earned morph has one boss entry that matches its recipe. A boss
+  drops only that recipe's components (all of them can drop), never the Morphic, never a Spectrum
+- Spectrums drop only from wild enemies (data/drops.json, source wild_enemy), never from bosses
 - spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
   category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
 - skill points are never sold: data/skill_point_sources.json has only experience and quest
@@ -30,7 +33,7 @@ Needs the `jsonschema` package. Cross checks:
 - every earned form (morph), starters included, has a Prisms skip price (the value is "deferred" until
   Prism pricing is set), and no unlock or market price uses Spectrums (Spectrums are in-game currency only)
 - every earned form (morph) lists how it is crafted (unlock.craft): a Morphic named '<morph name> Morphic',
-  a source boss, a solo drop chance, at least one component with a count, and a Spectrum amount in the
+  a source boss, at least one component with a count, and a Spectrum amount in the
   form's own category Spectrum (a boss id is boss.<form short id>; components are item.<form short id>.<part>)
 - Prism pricing is deferred (data/pricing.json): no Prism price may be set until Ziyue decides
 - skins are named after the morph: a default skin has its form's name; a form-exclusive skin
@@ -328,12 +331,48 @@ def main():
             if "prisms" in item.get("market_override", {}):
                 errors.append(f"{item['id']}: Prism pricing is deferred. Do not set a market Prism price yet")
 
+    boss_drops = json.loads((DATA / "boss_drops.json").read_text())
+    boss_schema = json.loads((DATA / "schema" / "boss_drops.schema.json").read_text())
+    for err in Draft202012Validator(boss_schema).iter_errors(boss_drops):
+        errors.append(f"data/boss_drops.json: {err.message}")
+    by_boss = {}
+    for entry in boss_drops:
+        if entry.get("boss") in by_boss:
+            errors.append(f"data/boss_drops.json: more than one entry for {entry.get('boss')}")
+        by_boss[entry.get("boss")] = entry
+        for item in entry.get("drops", []):
+            low = str(item).lower()
+            if "morphic" in low:
+                errors.append(f"data/boss_drops.json: {entry.get('boss')} drops {item}. A boss never drops a Morphic (it would skip farming)")
+            if "spectrum" in low:
+                errors.append(f"data/boss_drops.json: {entry.get('boss')} drops {item}. Spectrums drop only from wild enemies")
+    needed = set()
+    for form in forms.values():
+        craft = form["unlock"].get("craft")
+        if not craft:
+            continue
+        needed.add(craft.get("source_boss"))
+        entry = by_boss.get(craft.get("source_boss"))
+        if entry is None:
+            errors.append(f"{form['id']}: no entry in data/boss_drops.json for {craft.get('source_boss')}")
+            continue
+        if entry.get("form_id") != form["id"]:
+            errors.append(f"data/boss_drops.json: {entry.get('boss')} must name {form['id']}")
+        parts = {c.get("item") for c in craft.get("components", [])}
+        if set(entry.get("drops", [])) != parts:
+            errors.append(f"data/boss_drops.json: {entry.get('boss')} must drop exactly the components of {form['id']}")
+    for boss in by_boss:
+        if boss not in needed:
+            errors.append(f"data/boss_drops.json: {boss} is not the source boss of any earned morph")
+
     drops = json.loads((DATA / "drops.json").read_text())
     drop_schema = json.loads((DATA / "schema" / "drop.schema.json").read_text())
     for err in Draft202012Validator(drop_schema).iter_errors(drops):
         errors.append(f"data/drops.json: {err.message}")
     seen_drop = {}
     for entry in drops:
+        if str(entry.get("enemy_base", "")).startswith("boss.") or entry.get("source") != "wild_enemy":
+            errors.append(f"data/drops.json: Spectrums drop only from wild enemies, not {entry.get('enemy_base')}")
         root = bases.get(entry.get("enemy_base"))
         if root is None or "parent" in root:
             errors.append(f"data/drops.json: {entry.get('enemy_base')} is not a top-level body type")

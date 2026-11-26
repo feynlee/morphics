@@ -25,7 +25,6 @@
     "craft": {
       "morphic": "Gale Heron Morphic",
       "source_boss": "boss.gale_heron",
-      "boss_drop_chance_solo": 0.2,
       "components": [
         {
           "item": "item.gale_heron.plume",

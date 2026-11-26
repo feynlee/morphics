@@ -25,7 +25,6 @@
     "craft": {
       "morphic": "Wanderer Morphic",
       "source_boss": "boss.wanderer",
-      "boss_drop_chance_solo": 0.2,
       "components": [
         {
           "item": "item.wanderer.charm",
