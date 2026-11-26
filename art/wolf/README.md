@@ -1,12 +1,13 @@
 # Wolf art (form.wolf)
 
 This folder builds the quality-test model. The brief is `docs/art/WOLF_BRIEF.md`.
-Art direction: stylized, closer to Palworld, low poly, detail in textures (decided 2026-11-26).
+Art direction: cartoony and stylized, low poly, detail in textures (decided 2026-11-26).
 
-## Status: low-poly first pass
-- `build_wolf.py` makes the stylized Wolf: 10,000 triangles at LOD0, one material, a 2K base color texture and a 1K normal map, and the shared quadruped rig with `idle`, `walk` and `run` actions.
-- Colors and fur strokes are painted by script into the textures (base color and normal map are baked). No hair particles and no fur cards.
-- Known problems: the legs are simple tubes without toes, the front legs read pale, the ears are plain cones, the face has no mouth line, and there are no lower levels of detail yet. The shapes are blobby and need a hand-sculpt pass for final quality.
+## Status: cartoony pass (2026-11-26)
+- Style: cartoony and stylized (Ziyue's request). Chibi proportions: big head, big round eyes, short sturdy legs, round paws with toes, a mouth line.
+- `build_wolf.py` makes 10,000 triangles at LOD0, one material, a 2K base color texture and a 1K normal map, and the shared quadruped rig (`base.quadruped`, family name: Beast) with `idle`, `walk` and `run` actions.
+- Colors and fur strokes are painted by script into the textures. No hair particles and no fur cards.
+- Known problems: the front legs still read paler than the body, the ears are plain cones, the tail is a ball, and there are no lower levels of detail yet. A hand-sculpt pass is needed for final quality.
 - The earlier realistic version is kept as a reference: `build_wolf_realistic.py` and `reference_realistic/`. It is not used in the game.
 
 ## Run it
@@ -26,6 +27,6 @@ Environment variables: `SAMPLES` (render samples, default 32), `VIEWS` (comma li
 `idle` (90 frames at 30 fps), `walk` (36 frames, 4-beat gait), `run` (20 frames). All loop. They are sine-based forward kinematics, so foot sliding is possible. A later pass adds foot IK.
 
 ## Next steps
-1. Shape pass: toes, a mouth line, ear shape, sturdier legs, then lower levels of detail.
+1. Shape pass: front-leg color, ear shape, tail shape, then lower levels of detail.
 2. Import into Unreal and check the look in the third-person camera.
 3. Add a triangle budget check to the build.

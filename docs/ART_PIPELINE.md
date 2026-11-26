@@ -18,7 +18,7 @@ Target: **stylized, closer to Palworld** (decided by Ziyue on 2026-11-26 after s
 - **Detail comes from textures.** Fur, scales, and feathers are painted into the base color and normal map. No Groom, no hair strands, no fur cards. A few simple low-poly tufts (neck, tail tip) can shape the silhouette.
 - **A skin costs texture data only.** It reuses the mesh and swaps textures and material parameters. Skins must not add geometry, so the budget holds.
 - The validator and the build script check the triangle count of each form's model against its body-type budget (to add when models are imported).
-- The first quality-test form is the Wolf, the plain four-legged starter. Its brief is in `docs/art/WOLF_BRIEF.md`. Ziyue approves it before we scale.
+- The first quality-test form is the Wolf, the plain beast starter. Its brief is in `docs/art/WOLF_BRIEF.md`. Ziyue approves it before we scale.
 - Starters are plain and basic archetypes. Themed variants (Ember Fox, and so on) come after and are farmed.
 
 ## Honest limits
@@ -29,7 +29,7 @@ Target: **stylized, closer to Palworld** (decided by Ziyue on 2026-11-26 after s
 
 ## Body types (a tree)
 Animation is made **per top-level body type, not per form**. See `DESIGN.md` section 4b for the tree.
-- Body types live in `data/bases/*.json` as a tree. Example: Four-legged beast > Small four-legged beast > Ember Fox (a farmable variant).
+- Body types live in `data/bases/*.json` as a tree. Example: Beast > Small beast > Ember Fox (a farmable variant).
 - Each top-level body type has ONE skeleton and ONE required animation list.
 - Each subcategory (small, medium, large, and so on) reuses the animations through retargeting (Unreal IK Retargeter) with its proportion settings.
 - A form picks a node. An orc and a human both use `base.humanoid.medium`. A dwarf uses `base.humanoid.short`.
@@ -39,7 +39,7 @@ Animation is made **per top-level body type, not per form**. See `DESIGN.md` sec
 - Fix a problem shared by all children in the parent set. Fix a size-specific problem as an override. This keeps the work small.
 - A new subcategory needs a retarget setup and a test pass.
 - A new top-level body type is the expensive step: new skeleton, full animation set, and retarget tests.
-- Build order: humanoid and four-legged first (they are `active`). Bird and bipedal dinosaur after the first two work in game.
+- Build order: humanoid and beast first (they are `active`). Winged creature and bipedal dinosaur after the first two work in game.
 
 ## Pipeline per form
 1. **Brief** (JSON `look` notes plus a short text): silhouette, colors, materials, motion style.
@@ -65,6 +65,6 @@ Animation is made **per top-level body type, not per form**. See `DESIGN.md` sec
 
 ## Next steps
 1. Check which tools can run where (Blender, Python, Unreal command line).
-2. Build the first base end to end. Four-legged is a good first test: skeleton, the 12 required animations for the small subcategory, then Wolf (the plain starter: model, textures, default skin). Ember Fox is a later, farmable variant.
+2. Build the first base end to end. Beast is a good first test: skeleton, the 12 required animations for the small subcategory, then Wolf (the plain starter: model, textures, default skin). Ember Fox is a later, farmable variant.
 3. Retarget to the large subcategory and test with Stone Tortoise or Ember Fox.
 4. Ziyue reviews it in the editor. Decide: continue, adjust, or change the plan.

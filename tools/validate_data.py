@@ -7,7 +7,7 @@ Needs the `jsonschema` package. Cross checks:
   the recipe's components, never a Morphic, never a Spectrum, each boss table belongs to one boss, and other tables are allowed
 - Spectrums drop only from wild enemies (data/drops.json, source wild_enemy), never from bosses
 - Spectrum drops match on the body-type root (match: body_type_root): a wild enemy of any subcategory
-  (for example small beast) drops the Spectrum of its top-level type (four-legged beast: Green)
+  (for example small beast) drops the Spectrum of its top-level type (beast: Green)
 - spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
   category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
 - skill points are never sold: data/skill_point_sources.json has only experience and quest

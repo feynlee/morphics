@@ -1,8 +1,8 @@
 {
   "id": "base.quadruped",
-  "name": "Four-legged beast",
+  "name": "Beast",
   "status": "active",
-  "description": "Four legs.",
+  "description": "Four legs. Covers cats, canines, bears, foxes and other beasts.",
   "skeleton": "",
   "required_animations": [
     "idle",

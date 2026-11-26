@@ -26,32 +26,32 @@ scene = bpy.context.scene
 # ---------------------------------------------------------------- body graph (skin modifier)
 # name: (x, y, z, radius_x, radius_y). Friendly proportions: big head, chunky body, thick legs, big tail.
 CENTER = {
-    "tail_tip": (0, -0.76, 0.52, 0.060, 0.070),
-    "tail_4": (0, -0.69, 0.60, 0.100, 0.110),
-    "tail_3": (0, -0.59, 0.64, 0.130, 0.130),
-    "tail_2": (0, -0.49, 0.64, 0.120, 0.120),
-    "tail_1": (0, -0.40, 0.63, 0.090, 0.100),
-    "pelvis": (0, -0.24, 0.58, 0.180, 0.200),
-    "spine_2": (0, -0.01, 0.58, 0.180, 0.200),
-    "chest": (0, 0.17, 0.60, 0.190, 0.220),
-    "withers": (0, 0.32, 0.66, 0.170, 0.180),
-    "neck_1": (0, 0.42, 0.74, 0.150, 0.150),
-    "neck_2": (0, 0.50, 0.82, 0.140, 0.140),
-    "skull": (0, 0.58, 0.88, 0.190, 0.170),
-    "muzzle_1": (0, 0.76, 0.82, 0.095, 0.100),
-    "muzzle_2": (0, 0.85, 0.80, 0.075, 0.070),
-    "nose": (0, 0.90, 0.80, 0.045, 0.040),
+    "tail_tip": (0, -0.66, 0.42, 0.080, 0.090),
+    "tail_4": (0, -0.60, 0.50, 0.120, 0.130),
+    "tail_3": (0, -0.50, 0.56, 0.150, 0.150),
+    "tail_2": (0, -0.40, 0.58, 0.130, 0.130),
+    "tail_1": (0, -0.32, 0.58, 0.100, 0.100),
+    "pelvis": (0, -0.18, 0.50, 0.190, 0.200),
+    "spine_2": (0, 0.02, 0.50, 0.190, 0.200),
+    "chest": (0, 0.18, 0.52, 0.200, 0.220),
+    "withers": (0, 0.28, 0.58, 0.190, 0.190),
+    "neck_1": (0, 0.34, 0.66, 0.190, 0.180),
+    "neck_2": (0, 0.40, 0.76, 0.220, 0.200),
+    "skull": (0, 0.50, 0.84, 0.270, 0.230),
+    "muzzle_1": (0, 0.69, 0.76, 0.120, 0.110),
+    "muzzle_2": (0, 0.77, 0.74, 0.090, 0.080),
+    "nose": (0, 0.82, 0.75, 0.050, 0.045),
 }
 LEG_L = {
-    "f_shoulder": (0.110, 0.20, 0.52, 0.100, 0.110),
-    "f_elbow": (0.110, 0.20, 0.34, 0.085, 0.090),
-    "f_wrist": (0.115, 0.22, 0.17, 0.075, 0.080),
-    "f_paw": (0.115, 0.27, 0.05, 0.085, 0.110),
-    "h_hip": (0.135, -0.26, 0.50, 0.140, 0.150),
-    "h_thigh": (0.145, -0.22, 0.40, 0.125, 0.135),
-    "h_knee": (0.145, -0.15, 0.30, 0.095, 0.105),
-    "h_hock": (0.125, -0.33, 0.20, 0.075, 0.080),
-    "h_paw": (0.125, -0.29, 0.05, 0.085, 0.110),
+    "f_shoulder": (0.110, 0.18, 0.44, 0.110, 0.120),
+    "f_elbow": (0.115, 0.19, 0.28, 0.095, 0.100),
+    "f_wrist": (0.120, 0.21, 0.14, 0.090, 0.095),
+    "f_paw": (0.120, 0.25, 0.05, 0.095, 0.120),
+    "h_hip": (0.140, -0.22, 0.42, 0.150, 0.160),
+    "h_thigh": (0.150, -0.19, 0.32, 0.130, 0.140),
+    "h_knee": (0.150, -0.13, 0.24, 0.100, 0.110),
+    "h_hock": (0.130, -0.27, 0.17, 0.085, 0.090),
+    "h_paw": (0.130, -0.24, 0.05, 0.095, 0.120),
 }
 EDGES = [
     ("nose", "muzzle_2"), ("muzzle_2", "muzzle_1"), ("muzzle_1", "skull"), ("skull", "neck_2"),
@@ -96,15 +96,29 @@ bpy.ops.object.modifier_apply(modifier="Sub")
 
 # ---------------------------------------------------------------- ears (joined into the body mesh)
 def add_ear(side, s):
-    bpy.ops.mesh.primitive_cone_add(vertices=10, radius1=0.10, radius2=0.02, depth=0.23,
-                                    location=(s * 0.12, 0.56, 1.06), rotation=(math.radians(-6), math.radians(s * 16), 0))
+    bpy.ops.mesh.primitive_cone_add(vertices=10, radius1=0.13, radius2=0.03, depth=0.27,
+                                    location=(s * 0.17, 0.46, 1.04), rotation=(math.radians(-6), math.radians(s * 22), 0))
     ear = bpy.context.active_object
     ear.name = f"Ear_{side}"
     ear.scale = (1, 0.5, 1)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
     return ear
 
-ears = [add_ear("L", 1), add_ear("R", -1)]
+def add_toes():
+    objs = []
+    for s_ in (1, -1):
+        for (cx, cy) in ((0.12, 0.25), (0.13, -0.24)):
+            for dx in (-0.055, 0.0, 0.055):
+                bpy.ops.mesh.primitive_uv_sphere_add(segments=10, ring_count=6, radius=1.0,
+                                                     location=(s_ * cx + dx, cy + 0.05, 0.035))
+                t = bpy.context.active_object
+                t.scale = (0.052, 0.055, 0.04)
+                bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+                objs.append(t)
+    return objs
+
+
+ears = [add_ear("L", 1), add_ear("R", -1)] + add_toes()
 bpy.ops.object.select_all(action="DESELECT")
 for e in ears:
     e.select_set(True)
@@ -153,21 +167,21 @@ for v in body.data.vertices:
     x, y, z = v.co
     c = COAT
     c = mix(c, GREY, smooth(0.5 - abs(x) * 2.0, 0, 0.5) * 0.35)                 # lighter flanks
-    saddle = smooth(z, 0.62, 0.76) * smooth(0.40 - y, -0.1, 0.35) * smooth(y, -0.55, -0.35)
+    saddle = smooth(z, 0.55, 0.68) * smooth(0.30 - y, -0.1, 0.3) * smooth(y, -0.40, -0.25)
     c = mix(c, DARK, saddle * 0.9)
-    c = mix(c, DARK, smooth(z, 0.93, 1.02) * 0.8)                                 # top of head and ears
-    ear = smooth(z, 0.97, 1.0)
-    belly = (1 - smooth(z, 0.42, 0.55)) * smooth(0.30 - abs(x), 0.02, 0.2)
-    c = mix(c, LIGHT, belly * smooth(y, -0.3, -0.1) * smooth(0.45 - y, -0.05, 0.2) * 0.9)
-    chest = smooth(y, 0.12, 0.3) * (1 - smooth(z, 0.55, 0.74)) * smooth(0.2 - abs(x), 0.0, 0.14)
+    c = mix(c, DARK, smooth(z, 0.98, 1.08) * 0.8)                                 # top of head and ears
+    ear = smooth(z, 1.0, 1.03)
+    belly = (1 - smooth(z, 0.34, 0.46)) * smooth(0.30 - abs(x), 0.02, 0.2)
+    c = mix(c, LIGHT, belly * smooth(y, -0.25, -0.05) * smooth(0.40 - y, -0.05, 0.2) * 0.9)
+    chest = smooth(y, 0.12, 0.3) * (1 - smooth(z, 0.46, 0.62)) * smooth(0.2 - abs(x), 0.0, 0.14) * smooth(z, 0.36, 0.46)
     c = mix(c, LIGHT, chest)
-    muzzle = smooth(y, 0.70, 0.78) * (1 - smooth(z, 0.80, 0.88))
+    muzzle = smooth(y, 0.62, 0.70) * (1 - smooth(z, 0.74, 0.82))
     c = mix(c, LIGHT, muzzle)
-    cheek = smooth(y, 0.50, 0.62) * smooth(abs(x), 0.06, 0.14) * (1 - smooth(z, 0.82, 0.9))
+    cheek = smooth(y, 0.40, 0.54) * smooth(abs(x), 0.10, 0.20) * (1 - smooth(z, 0.80, 0.88))
     c = mix(c, LIGHT, cheek * 0.8)
     c = mix(c, LIGHT, (1 - smooth(z, 0.07, 0.14)) * 0.9)                          # light paws
-    c = mix(c, DARK, smooth(-0.70 - y, 0.0, 0.08))                                # dark tail tip
-    if ear > 0.0 and y > 0.552:
+    c = mix(c, DARK, smooth(-0.58 - y, 0.0, 0.06))                                # dark tail tip
+    if ear > 0.0 and y > 0.462:
         c = mix(c, PINK, ear)                                                       # inner ear
     attr.data[v.index].color = (*c, 1.0)
 
@@ -248,7 +262,10 @@ def paint_material():
     nt.links.new(sep.outputs["X"], absx.inputs[0])
     comb = nt.nodes.new("ShaderNodeCombineXYZ")
     nt.links.new(absx.outputs[0], comb.inputs["X"])
-    nt.links.new(sep.outputs["Y"], comb.inputs["Y"])
+    ysq = nt.nodes.new("ShaderNodeMath"); ysq.operation = "MULTIPLY"
+    ysq.inputs[1].default_value = 0.35
+    nt.links.new(sep.outputs["Y"], ysq.inputs[0])
+    nt.links.new(ysq.outputs[0], comb.inputs["Y"])
     nt.links.new(sep.outputs["Z"], comb.inputs["Z"])
     def layer(prev, mask, color):
         mx = nt.nodes.new("ShaderNodeMix"); mx.data_type = "RGBA"
@@ -256,15 +273,33 @@ def paint_material():
         nt.links.new(prev, mx.inputs["A"])
         mx.inputs["B"].default_value = (*color, 1)
         return mx.outputs[2]
-    EYE = (0.105, 0.735, 0.925)
+    EYE = (0.125, 0.70 * 0.35, 0.88)
     d_eye = dist_to(nt, comb.outputs[0], EYE)
-    cur_col = layer(cur_col, maprange(nt, d_eye, 0.056, 0.048), lin((0.12, 0.09, 0.07)))      # dark outline
-    cur_col = layer(cur_col, maprange(nt, d_eye, 0.046, 0.038), lin((0.98, 0.70, 0.22)))       # amber iris
-    cur_col = layer(cur_col, maprange(nt, d_eye, 0.027, 0.022), lin((0.04, 0.03, 0.025)))     # pupil
-    d_hi = dist_to(nt, comb.outputs[0], (0.098, 0.742, 0.948))
-    cur_col = layer(cur_col, maprange(nt, d_hi, 0.012, 0.008), (1, 1, 1))                 # highlight
-    d_nose = dist_to(nt, comb.outputs[0], (0.0, 0.91, 0.81))
-    cur_col = layer(cur_col, maprange(nt, d_nose, 0.036, 0.030), lin((0.10, 0.08, 0.075)))
+    cur_col = layer(cur_col, maprange(nt, d_eye, 0.080, 0.070), lin((0.12, 0.09, 0.07)))      # dark outline
+    cur_col = layer(cur_col, maprange(nt, d_eye, 0.068, 0.056), lin((0.98, 0.70, 0.22)))       # amber iris
+    cur_col = layer(cur_col, maprange(nt, d_eye, 0.040, 0.034), lin((0.04, 0.03, 0.025)))     # pupil
+    d_hi = dist_to(nt, comb.outputs[0], (0.113, 0.712 * 0.35, 0.905))
+    cur_col = layer(cur_col, maprange(nt, d_hi, 0.020, 0.014), (1, 1, 1))                 # highlight
+    d_nose = dist_to(nt, comb.outputs[0], (0.0, 0.835 * 0.35, 0.755))
+    cur_col = layer(cur_col, maprange(nt, d_nose, 0.040, 0.033), lin((0.10, 0.08, 0.075)))
+    # mouth line: a smile curve on each side of the muzzle
+    zl = nt.nodes.new("ShaderNodeMath"); zl.operation = "MULTIPLY_ADD"
+    zl.inputs[1].default_value = 0.6
+    zl.inputs[2].default_value = 0.715
+    nt.links.new(absx.outputs[0], zl.inputs[0])
+    dz = nt.nodes.new("ShaderNodeMath"); dz.operation = "SUBTRACT"
+    nt.links.new(sep.outputs["Z"], dz.inputs[0])
+    nt.links.new(zl.outputs[0], dz.inputs[1])
+    adz = nt.nodes.new("ShaderNodeMath"); adz.operation = "ABSOLUTE"
+    nt.links.new(dz.outputs[0], adz.inputs[0])
+    line = maprange(nt, adz.outputs[0], 0.009, 0.005)
+    ymask = maprange(nt, sep.outputs["Y"], 0.66, 0.72)
+    xmask = maprange(nt, absx.outputs[0], 0.095, 0.08)
+    m1 = nt.nodes.new("ShaderNodeMath"); m1.operation = "MULTIPLY"
+    nt.links.new(line, m1.inputs[0]); nt.links.new(ymask, m1.inputs[1])
+    m2 = nt.nodes.new("ShaderNodeMath"); m2.operation = "MULTIPLY"
+    nt.links.new(m1.outputs[0], m2.inputs[0]); nt.links.new(xmask, m2.inputs[1])
+    cur_col = layer(cur_col, m2.outputs[0], lin((0.16, 0.10, 0.09)))
     # inner ears: pink-grey in a band near the front of the ear
     nt.links.new(cur_col, em.inputs["Color"])
     return m
@@ -359,10 +394,10 @@ bone("spine_2", p("chest"), p("withers"), "spine_1", True)
 bone("neck_1", p("withers"), p("neck_2"), "spine_2", True)
 bone("neck_2", p("neck_2"), p("skull"), "neck_1", True)
 bone("head", p("skull"), p("muzzle_2"), "neck_2", True)
-bone("jaw", (0, 0.80, 0.77), (0, 0.88, 0.76), "head")
+bone("jaw", (0, 0.72, 0.72), (0, 0.80, 0.71), "head")
 for s, side in ((1, "L"), (-1, "R")):
-    bone(f"ear_{side}", (s * 0.115, 0.56, 1.0), (s * 0.13, 0.55, 1.13), "head")
-tail_pts = [(0, -0.38, 0.60), p("tail_1"), p("tail_2"), p("tail_3"), p("tail_4"), p("tail_tip")]
+    bone(f"ear_{side}", (s * 0.17, 0.46, 1.0), (s * 0.20, 0.45, 1.18), "head")
+tail_pts = [(0, -0.28, 0.54), p("tail_1"), p("tail_2"), p("tail_3"), p("tail_4"), p("tail_tip")]
 prev = "pelvis"
 for i in range(len(tail_pts) - 1):
     nm_ = f"tail_{i + 1}"
@@ -511,10 +546,10 @@ if "--render" in sys.argv:
     scene.render.resolution_x, scene.render.resolution_y = 960, 600
     scene.render.film_transparent = False
     views = {
-        "side": ((5.6, 0.1, 0.75), (0, 0.05, 0.55)),
-        "front34": ((3.2, 4.0, 1.3), (0, 0.1, 0.52)),
+        "side": ((5.0, 0.1, 0.65), (0, 0.05, 0.5)),
+        "front34": ((3.0, 3.6, 1.2), (0, 0.1, 0.5)),
         "back34": ((-2.6, -4.2, 1.5), (0, -0.05, 0.55)),
-        "head": ((1.2, 2.5, 1.2), (0, 0.65, 0.85)),
+        "head": ((1.3, 2.4, 1.15), (0, 0.55, 0.82)),
     }
     only = os.environ.get("VIEWS")
     for name, (loc, tgt) in views.items():
@@ -533,7 +568,7 @@ if "--strip" in sys.argv:
     scene.render.engine = "CYCLES"
     scene.cycles.samples = 12
     scene.render.resolution_x, scene.render.resolution_y = 480, 300
-    co = cam((5.6, 0.1, 0.75), (0, 0.05, 0.55), "strip", lens=85)
+    co = cam((5.0, 0.1, 0.65), (0, 0.05, 0.5), "strip", lens=85)
     scene.camera = co
     arm_obj.animation_data.action = acts["walk"]
     for i, fr in enumerate((1, 7, 13, 19, 25, 31)):

@@ -1,6 +1,6 @@
 {
   "id": "base.bird.medium",
-  "name": "Medium bird",
+  "name": "Medium winged creature",
   "parent": "base.bird",
   "status": "planned",
   "examples": "Heron, hawk"

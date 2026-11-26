@@ -95,13 +95,13 @@
     },
     {
       "id": "node.base_bird_medium",
-      "name": "Body type: bird medium",
+      "name": "Body type: winged creature medium",
       "region": "base",
       "restricted_to_base": "base.bird.medium"
     },
     {
       "id": "node.base_bird_large",
-      "name": "Body type: bird large",
+      "name": "Body type: winged creature large",
       "region": "base",
       "restricted_to_base": "base.bird.large"
     },

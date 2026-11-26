@@ -21,7 +21,7 @@
       },
       "match": {
         "const": "body_type_root",
-        "description": "The entry matches the enemy's top-level body type. Every subcategory under it (such as small beast under four-legged beast) inherits the same Spectrum."
+        "description": "The entry matches the enemy's top-level body type. Every subcategory under it (such as small beast under beast) inherits the same Spectrum."
       },
       "enemy_base": {
         "type": "string",

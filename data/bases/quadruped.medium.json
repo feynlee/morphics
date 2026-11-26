@@ -1,6 +1,6 @@
 {
   "id": "base.quadruped.medium",
-  "name": "Medium four-legged beast",
+  "name": "Medium beast",
   "parent": "base.quadruped",
   "status": "active",
   "examples": "Large cat, large canine"

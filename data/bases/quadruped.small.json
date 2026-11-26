@@ -1,6 +1,6 @@
 {
   "id": "base.quadruped.small",
-  "name": "Small four-legged beast",
+  "name": "Small beast",
   "parent": "base.quadruped",
   "status": "active",
   "examples": "Fox, lynx, small canine",

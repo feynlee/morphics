@@ -1,7 +1,7 @@
 {
   "id": "form.wolf",
   "name": "Wolf",
-  "lore": "A plain wolf. The starter four-legged beast.",
+  "lore": "A plain wolf. The starter beast.",
   "role": "Striker",
   "rarity": "Common",
   "base": "base.quadruped.medium",

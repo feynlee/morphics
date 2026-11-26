@@ -1,8 +1,8 @@
 {
   "id": "base.bird",
-  "name": "Bird",
+  "name": "Winged creature",
   "status": "planned",
-  "description": "Winged flier with two legs.",
+  "description": "Winged flier. Covers birds and other winged creatures.",
   "skeleton": "",
   "required_animations": [
     "idle",

@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.36)
+# Morphics: Design Doc (v0.37)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -81,16 +81,16 @@ Target length: a few minutes. It is mostly presentation, so it is cheap to build
 - There is **one starter per top-level body type**. Each starter is a very basic form of that body type, so the choice shows the variety of the game on the first screen.
 - The starter the player picks is **granted free** in setup. All the other starters are **free to acquire through farming and gameplay** (decided). They are marked `starter: true` in their JSON.
 - Validator rule: **exactly one starter per top-level body type**, planned types included. A starter's unlock type is `free` or `earn`, never `buy`, `pass`, or `event`. It can still be skipped with Prisms like any earned form.
-- **Starters look very plain and basic**: a plain archetype of the body type (a plain wolf, a plain hawk, a plain raptor, a plain human). No elemental or special theme. Themed morphs are variations that players **farm for**. Example: Ember Fox is a farmable variant of the four-legged beast, and a plain Wolf is the starter.
-- Bird and bipedal dinosaur starters are part of the plan now (Hawk and Raptor). Their body types are still `planned` until the art exists.
+- **Starters look very plain and basic**: a plain archetype of the body type (a plain wolf, a plain hawk, a plain raptor, a plain human). No elemental or special theme. Themed morphs are variations that players **farm for**. Example: Ember Fox is a farmable variant of the beast, and a plain Wolf is the starter.
+- Winged creature and bipedal dinosaur starters are part of the plan now (Hawk and Raptor). Their body types are still `planned` until the art exists.
 
 Starter slots:
 
 | Slot | Top-level body type | Status | Starter (plain) | Farmable variants (examples in data) |
 |---|---|---|---|---|
 | 1 | Humanoid (bipedal human) | active | Wanderer | none yet |
-| 2 | Four-legged beast | active | Wolf | Ember Fox, Stone Tortoise |
-| 3 | Bird | planned | Hawk | Gale Heron |
+| 2 | Beast | active | Wolf | Ember Fox, Stone Tortoise |
+| 3 | Winged creature | planned | Hawk | Gale Heron |
 | 4 | Bipedal dinosaur | planned | Raptor | none yet |
 
 Notes:
@@ -128,7 +128,7 @@ Decided by Ziyue. Every earned morph is unlocked by crafting its **Morphic** and
 **Flow**
 1. The player runs a dungeon. A dungeon ends in a **boss**. Example: an Ember Fox boss.
 2. The boss can drop **crafting components** for its morph (ears, tail, essence). Drops use **loot tables**: in solo play the Ember Fox boss has a **20 percent chance** to roll on its crafting material loot table (placeholder). The table then picks one item: **50% Ember Fox ear, 25% Ember Fox tail, 25% Ember Fox essence** (placeholder). So a boss kill gives either nothing or one material. **The boss never drops the Morphic itself**, because that would skip the whole farming process. It also never drops Spectrums.
-3. The player collects all components of the recipe, and also pays a set amount of the morph's **own category Spectrum** (Ember Fox is a four-legged beast, so Green). **Spectrums drop only from regular enemies found in the wild** (for example regular Ember Foxes), so the player must also farm out in the world. This diversifies the farming (section 6c).
+3. The player collects all components of the recipe, and also pays a set amount of the morph's **own category Spectrum** (Ember Fox is a beast, so Green). **Spectrums drop only from regular enemies found in the wild** (for example regular Ember Foxes), so the player must also farm out in the world. This diversifies the farming (section 6c).
 4. The player crafts the Morphic and consumes it. The morph is unlocked.
 
 **Example recipe (placeholder numbers):** Ember Fox Morphic = 2 Ember Fox ears + 1 Ember Fox tail + 1 Ember Fox essence + 80 Green Spectrums.
@@ -217,7 +217,7 @@ Rules:
 - **Skins never change stats, skills, or hitbox.**
 - **Skins are named after the morph.** A form's default skin has the same name as the form (the Wolf form has the "Wolf" skin). A form-exclusive skin name starts with the morph's name (for example "Ember Fox" or "Ember Fox: Frostbite"). The validator checks this. A skin for a body type (not tied to one form) is named after the morph look it shows.
 - A skin is made for one base and uses that base's skeleton, so all base animations work on it.
-- **A skin works on any form in its base, and never on a form in another base.** A skin made for a humanoid would look out of proportion on a four-legged body. The validator rejects it.
+- **A skin works on any form in its base, and never on a form in another base.** A skin made for a humanoid would look out of proportion on a beast body. The validator rejects it.
 
 A **Skill** has: id, type (attack, buff, move, summon), cooldown, cost, effect list, and VFX id.
 Effects use a small shared set of building blocks (damage, heal, push, status, spawn).
@@ -229,22 +229,24 @@ A JSON schema checks every data file in CI before import.
 A **body type** is a node in a tree. Forms under one top-level body type share a skeleton and one animation set.
 This lets us make many forms: a new form is a new look plus skills, not a new animation set.
 
-Structure: **top-level body type > subcategory > form**. Example: Four-legged beast > Small four-legged beast > Ember Fox.
+Naming (Ziyue): the family "Four-legged beast" is now **Beast**, and "Bird" is now **Winged creature**. Ids stay `base.quadruped*` and `base.bird*` so data and saves do not break. Winged creature covers birds and may later cover other winged shapes.
+
+Structure: **top-level body type > subcategory > form**. Example: Beast > Small beast > Ember Fox.
 - The **top level** (root) sets the skeleton and the required animation list.
 - A **subcategory** sets size and build (small, medium, large). It **inherits the skeleton and all animations** from its parent and retargets them to its proportions.
 - A **form** declares the node it uses. Usually that is a subcategory.
-- Deeper levels are allowed when needed (for example: Large four-legged beast > Heavy large four-legged beast). One more segment per level.
+- Deeper levels are allowed when needed (for example: Large beast > Heavy large beast). One more segment per level.
 
 ```
 base.humanoid                  Humanoid
   base.humanoid.medium         human, orc, elf
   base.humanoid.short          dwarf, gnome, halfling
   base.humanoid.large          ogre, giant
-base.quadruped                 Four-legged beast
+base.quadruped                 Beast
   base.quadruped.small         fox, lynx, small canine      <- Ember Fox (farmable)
   base.quadruped.medium        large cat, large canine
   base.quadruped.large         bear, boar, tortoise         <- Stone Tortoise
-base.bird (planned)            Bird
+base.bird (planned)            Winged creature
   base.bird.medium             heron, hawk                  <- Gale Heron (farmable)
   base.bird.large              eagle, roc
 base.biped_dino (planned)      Bipedal dinosaur
@@ -283,7 +285,7 @@ Body-type cue (recommendation, for Ziyue to decide):
 - Each skin is made for one body-type node. **Narrow is the default: a skin fits forms of exactly that node.** It never fits another branch of the tree.
 - Why narrow: skins are the product. A narrow skin is made for exact proportions, so it looks its best. It also lets us make many separate variations and sell each one. For example, a different fox skin, lynx skin, and small-canine skin can each be sold on their own.
 - Examples:
-  - A narrow skin for `base.quadruped.small` fits every small four-legged beast (fox, lynx, small canine). It does not fit a medium or large beast.
+  - A narrow skin for `base.quadruped.small` fits every small beast (fox, lynx, small canine). It does not fit a medium or large beast.
   - A narrow skin for `base.humanoid.short` fits dwarf, gnome, and halfling forms, and no medium humanoid.
 - **Broad skins are an option** (`fit: subtree`): the skin fits its node and every node below it. Use this only for shared patterns and materials (for example a fur pattern or an armor-plate set) that look right at every size. A broad skin is the exception, and Ziyue approves each one.
 - A skin can also be exclusive to one form (`form_id`). Default looks work this way. This is the narrowest option.
@@ -304,7 +306,7 @@ Body-type cue (recommendation, for Ziyue to decide):
 
 **Base-variant nodes at the start of every tree**
 - Every morph's tree begins with **base-variant nodes**: nodes made for a body type, such as small beast.
-- **Only a morph of that body type can invest in them.** A small beast can invest in the small-beast nodes. A large beast or a humanoid cannot. A node made for a broader body type (such as four-legged beast) can be used by every morph under it.
+- **Only a morph of that body type can invest in them.** A small beast can invest in the small-beast nodes. A large beast or a humanoid cannot. A node made for a broader body type (such as beast) can be used by every morph under it.
 - **Any points can buy these nodes**: spirit points or morph points. There is no special currency for them.
 - The validator checks that each of these nodes names a real body type, that every form has base-variant nodes it can invest in, and that the rules file keeps them payable with any points.
 
@@ -414,8 +416,8 @@ Spectrum colors (placeholders, set in `data/spectrums.json`; each top-level body
 | Spectrum | Color | Top-level body type (form type) |
 |---|---|---|
 | Red | `#E5484D` | Humanoid |
-| Green | `#30A46C` | Four-legged beast |
-| Blue | `#3E63DD` | Bird (planned) |
+| Green | `#30A46C` | Beast |
+| Blue | `#3E63DD` | Winged creature (planned) |
 | Amber | `#F5A524` | Bipedal dinosaur (planned) |
 | Violet | `#8E4EC6` | unused, reserved for a fifth body type |
 
@@ -474,18 +476,18 @@ Platform notes: Steam is the storefront. Steam takes a share of sales, so plan b
 Decided by Ziyue: players **earn Spectrums as rare drops by defeating regular enemies of a morph category out in the wild** (for example regular Ember Foxes). **Bosses never drop Spectrums.** Bosses drop only crafting components (section 3c). This keeps Spectrum farming in the open world and component farming in dungeons.
 
 **Rules**
-- Enemies belong to a **morph category**: a top-level body type (humanoid, four-legged beast, bird, bipedal dinosaur). Enemy design follows the same body-type tree.
-- Defeating an enemy of a category can drop **that category's own Spectrum color**. Humanoid enemies drop Red, four-legged beasts drop Green, birds drop Blue, bipedal dinosaurs drop Amber.
-- **Body type decides the color (confirmed by Ziyue).** The match is on the top-level body type, so every subcategory inherits it. A wild enemy under four-legged beast drops Green, including small beast (for example a regular Ember Fox), medium beast, and large beast. A new subcategory needs no new drop entry. A new top-level type needs its own Spectrum and drop entry.
+- Enemies belong to a **morph category**: a top-level body type (humanoid, beast, winged creature, bipedal dinosaur). Enemy design follows the same body-type tree.
+- Defeating an enemy of a category can drop **that category's own Spectrum color**. Humanoid enemies drop Red, beasts drop Green, winged creatures drop Blue, bipedal dinosaurs drop Amber.
+- **Body type decides the color (confirmed by Ziyue).** The match is on the top-level body type, so every subcategory inherits it. A wild enemy under beast drops Green, including small beast (for example a regular Ember Fox), medium beast, and large beast. A new subcategory needs no new drop entry. A new top-level type needs its own Spectrum and drop entry.
 - Drops are **rare**. The validator caps the drop chance at 10 percent per defeated enemy.
 - Enemies never drop another category's Spectrum. (Spectrums cannot be converted, so battle is the way to earn each one.)
 - A drop shows as a small glowing colored mote the player picks up. In co-op, each player gets their own drop, so players do not compete for them.
-- Drops are tied to battle, not to the form the player is wearing. A player can earn Green from four-legged beasts while playing as a humanoid.
+- Drops are tied to battle, not to the form the player is wearing. A player can earn Green from beasts while playing as a humanoid.
 - Wild enemies are the only Spectrum source. A boss never drops a Spectrum, and the validator rejects it.
 
 **Why this design**
 - It gives a reason to fight each kind of enemy, so missions need variety in enemy categories.
-- A player who wants a Green form fights four-legged beasts. The choice of mission or region becomes a farming choice, which supports the "always something to farm" goal.
+- A player who wants a Green form fights beasts. The choice of mission or region becomes a farming choice, which supports the "always something to farm" goal.
 
 **Data** (`data/drops.json`, checked by the validator)
 - One entry per top-level body type: `source` (always `wild_enemy`), `match` (always `body_type_root`), `enemy_base` (the root), `spectrum`, `chance`, `amount_min`, `amount_max`. Boss drops are separate: `data/boss_drops.json` and `data/loot_tables.json` (section 3c).

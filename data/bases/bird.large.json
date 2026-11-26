@@ -1,6 +1,6 @@
 {
   "id": "base.bird.large",
-  "name": "Large bird",
+  "name": "Large winged creature",
   "parent": "base.bird",
   "status": "planned",
   "examples": "Eagle, roc"

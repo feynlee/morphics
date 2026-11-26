@@ -1,7 +1,7 @@
 {
   "id": "form.hawk",
   "name": "Hawk",
-  "lore": "A plain hawk. The starter bird.",
+  "lore": "A plain hawk. The starter winged creature.",
   "role": "Scout",
   "rarity": "Common",
   "base": "base.bird.medium",
