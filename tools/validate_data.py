@@ -2,6 +2,7 @@
 """Validate data/bases, forms, skills, skins against data/schema.
 
 Needs the `jsonschema` package. Cross checks:
+- no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
 - every top-level body type has a spectrum from data/spectrums.json, and no two share one
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
   a root has required_animations, a child is not "active" under a "planned" parent
@@ -60,6 +61,34 @@ def skin_fits(bases, skin, form_base):
     return skin.get("base") == form_base
 
 
+CONVERSION_WORDS = ("convert", "conversion", "exchange", "swap_spectrum", "trade_spectrum")
+
+
+def find_conversion(node, path):
+    """Yield the path of any key or string value that defines a conversion."""
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if any(w in str(key).lower() for w in CONVERSION_WORDS):
+                yield f"{path}.{key}"
+            yield from find_conversion(value, f"{path}.{key}")
+    elif isinstance(node, list):
+        for i, value in enumerate(node):
+            yield from find_conversion(value, f"{path}[{i}]")
+    elif isinstance(node, str) and path.split(".")[-1] in ("type", "kind", "id"):
+        if any(w in node.lower() for w in CONVERSION_WORDS):
+            yield f"{path} = {node}"
+
+
+def check_no_conversion():
+    errors = []
+    for file in sorted(DATA.rglob("*.json")):
+        if "schema" in file.parts:
+            continue
+        for hit in find_conversion(json.loads(file.read_text()), file.relative_to(ROOT).as_posix()):
+            errors.append(f"{hit}: spectrums cannot be converted into each other")
+    return errors
+
+
 def check_bases(bases):
     errors = []
     for b in bases.values():
@@ -93,7 +122,7 @@ def main():
     forms, e1 = load("forms")
     skills, e2 = load("skills")
     skins, e3 = load("skins")
-    errors = e0 + e1 + e2 + e3 + check_bases(bases)
+    errors = e0 + e1 + e2 + e3 + check_bases(bases) + check_no_conversion()
 
     spectrums = json.loads((DATA / "spectrums.json").read_text())
     spectrum_schema = json.loads((DATA / "schema" / "spectrum.schema.json").read_text())

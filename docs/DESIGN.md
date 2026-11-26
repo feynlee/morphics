@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.19)
+# Morphics: Design Doc (v0.20)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -253,7 +253,9 @@ Rules:
 - A skin uses the spectrum of its body type's top level. All forms and skins under one top level share a spectrum.
 - A new top-level body type needs a new spectrum (the validator requires one, and no two share). This is one more reason a new top-level type is a big step.
 - Prisms work for anything. There is no exception: every morph, starters included, can be bought with Prisms to bypass farming (section 6).
-- Spectrums are earned by playing forms of that type and by missions that favor it (to tune). A small share of other spectrums may drop too. Open question: can players convert one spectrum into another? (Default: no conversion at first.)
+- Spectrums are earned by playing forms of that type and by missions that favor it (to tune). A small share of other spectrums may drop too.
+- **No conversion (decided): players cannot convert one spectrum into another.** There is no exchange, trade, or swap item, in the market or anywhere else. Each spectrum is only earned by play and only spent on its own form type. Prisms are the one currency that works across types, and they are bought with money, not made from spectrums. The validator rejects any data file that defines a conversion.
+- Consequence: a player must play forms of a type to earn that type's spectrum. This pushes players to try many form types. It also means a player with a lot of one spectrum cannot spend it on another type, so Prisms are the way to skip farming across types.
 - UI: each spectrum shows as a colored bar or gem. Prisms show as a white prism that splits into all the colors.
 
 | Item | How to get it |
