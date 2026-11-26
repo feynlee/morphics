@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.39)
+# Morphics: Design Doc (v0.40)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -253,6 +253,31 @@ base.biped_dino (planned)      Bipedal dinosaur
   base.biped_dino.medium       raptor
   base.biped_dino.large        rex type
 ```
+
+### 4b-1. Proposal: define subcategories by rig and gait, not by species (draft, needs Ziyue's choice)
+Problem (Ziyue): if the top level is broad, one animation set must suit very different animals. A wolf, a bear and a tortoise do not share a good walk.
+
+Proposal:
+- **Top level stays the body type.** It sets the skeleton layout, the Spectrum color and the required animation list.
+- **A subcategory is a rig profile.** It is a set of bone proportions plus a gait set (walk, run, jump, attack) that the whole group can share. Size (small, medium, large) is then a scale of that profile, not the main split.
+- **Test for a new species.** A species fits an existing subcategory when its bones map to the profile and the shared animations play with only a scale change. If it needs a different gait or a different spine, it needs its own subcategory.
+- **A new species under an existing subcategory costs no animation work.** Example: a Frost Wolf is a new look plus skills under the canine profile. A jackal or a fox fits it too.
+- **Ids.** Existing ids stay. New profiles would use one more segment, for example `base.quadruped.canine.medium`. Nothing changes in the data until Ziyue picks an option.
+
+Draft split for Beast (to check with Ziyue):
+
+| Profile | Gait | Species that fit | Forms today |
+|---|---|---|---|
+| Canine | Trot and lope, flexible spine | wolf, fox, jackal, coyote, dog | Wolf, Ember Fox |
+| Feline | Stalk and pounce, very flexible spine | lynx, lion, panther | none yet |
+| Bear and boar | Heavy plantigrade walk | bear, boar | none yet |
+| Hoofed | Long legs, trot and gallop | stag, deer, horse | Prism Stag |
+| Shelled | Slow walk, no real run, head and limbs retract | tortoise, turtle | Stone Tortoise |
+| Four-legged dinosaur | Heavy, tail balance, charge | triceratops, ankylosaur | none yet |
+
+Species that would need their own subcategory (they do not fit the canine profile): cats, bears and boars, hoofed animals, shelled animals and four-legged dinosaurs. Heron, a tall wading bird, would also need its own profile under Winged creature, apart from hawk (a short-legged perch and dive flier). Raptor stays alone under Bipedal dinosaur for now.
+
+Cost: each profile is one rig and one animation set (12 required animations). More profiles mean more animation work but the animations fit every form in the group. Order of work: canine first (Wolf is the quality test), then the profile of the next form that ships.
 
 Data rules (`data/bases/*.json`, checked by the validator):
 - A node has `id`, `name`, `status` (active or planned), and an optional `parent`.
