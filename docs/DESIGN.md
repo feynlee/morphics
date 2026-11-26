@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.40)
+# Morphics: Design Doc (v0.41)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -278,6 +278,38 @@ Draft split for Beast (to check with Ziyue):
 Species that would need their own subcategory (they do not fit the canine profile): cats, bears and boars, hoofed animals, shelled animals and four-legged dinosaurs. Heron, a tall wading bird, would also need its own profile under Winged creature, apart from hawk (a short-legged perch and dive flier). Raptor stays alone under Bipedal dinosaur for now.
 
 Cost: each profile is one rig and one animation set (12 required animations). More profiles mean more animation work but the animations fit every form in the group. Order of work: canine first (Wolf is the quality test), then the profile of the next form that ships.
+
+### 4b-2. Proposal: no overall categories; each rig and gait profile is the top-level body type (draft, not agreed)
+Idea (Ziyue, to confirm): skeleton and gait belong to the specific groups, not to broad families. So drop the broad family level (Beast, Winged creature). Each rig and gait profile becomes a top-level body type. Size stays a child node (a scale of that profile).
+
+Proposed top-level body types and ids:
+
+| Body type | Proposed id | Today's id | Forms today |
+|---|---|---|---|
+| Humanoid | `base.humanoid` | same | Wanderer |
+| Canine | `base.canine` | `base.quadruped` (part) | Wolf, Ember Fox |
+| Feline | `base.feline` | new | none |
+| Heavy beast (bear, boar) | `base.heavy` | new | none |
+| Hoofed | `base.hoofed` | `base.quadruped` (part) | Prism Stag |
+| Shelled | `base.shelled` | `base.quadruped` (part) | Stone Tortoise |
+| Four-legged dinosaur | `base.quadruped_dino` | new | none |
+| Flier | `base.flier` | `base.bird` (part) | Hawk |
+| Wader | `base.wader` | `base.bird` (part) | Gale Heron |
+| Bipedal dinosaur | `base.biped_dino` | same | Raptor |
+
+Sizes keep the pattern: `base.canine.small`, `base.canine.medium`. Ids that stay: `base.humanoid*` and `base.biped_dino*`. Ids that change: everything under `base.quadruped*` and `base.bird*`. Forms, skins, skill tree nodes and `Forms.json` (BaseId) would change, so the Unreal Data Table needs a re-import.
+
+Spectrum rule without a family level:
+- Every top-level body type names one Spectrum (`spectrum` field). A wild enemy of that type, and of its size nodes, drops it. This is the same rule as today, one level lower.
+- Open point: today each color belongs to one family. With about ten body types, either related types share a color (for example canine, feline, heavy, hoofed and shelled share Green; flier and wader share Blue; both dinosaurs share Amber) or every type gets its own color. A decision card asks Ziyue. Recommended: shared colors, so there are still four colors and farming stays simple.
+- Craft recipes still use the form's own body-type Spectrum. Prisms and the no-conversion rule do not change.
+
+Validator and data changes if confirmed:
+- A root is any base without a parent. Every root needs `rig`, `gait`, `skeleton`, `required_animations` and `spectrum`. A size node needs a parent and adds one id segment.
+- Remove the rule that no two roots share a Spectrum, if colors are shared. Keep the rule that every root has a valid Spectrum.
+- `data/drops.json` gets one entry per active root (canine, hoofed, shelled, humanoid today), keyed by the new ids. The check that a size node drops its root's Spectrum stays.
+- Add negative tests: a root with no rig or gait, a size node under a size node, and a drop entry for a size node.
+- The skill tree base-variant nodes and the Wolf rig name (`base.quadruped` skeleton in the art README) move to the new ids.
 
 Data rules (`data/bases/*.json`, checked by the validator):
 - A node has `id`, `name`, `status` (active or planned), and an optional `parent`.
