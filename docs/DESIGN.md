@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.7)
+# Morphics: Design Doc (v0.8)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -73,22 +73,26 @@ This lets us add forms without code changes.
 | model | Asset path: skeletal mesh, skeleton, animation set |
 | hitbox | Collision shape. It must match the gameplay size, not only the mesh. |
 | morph_in / morph_out | Transition effect ids (Niagara systems) |
-| skins[] | List of Skin ids |
+| default_skin | Skin id of the form's default look. Must be made for the form's base. |
 | unlock | Unlock rule (see section 6) |
 | rarity | Common, Rare, Epic, Legendary (sets cosmetic tier, NOT power tier) |
 
-A **Skin** is cosmetic only:
+A **Skin** is cosmetic only, and it is made for **one base** (body type):
 
 | Field | Meaning |
 |---|---|
-| id, form_id | Identity and parent form |
+| id | Stable unique key |
+| base | The body type the skin is made for (required) |
+| variants[] | Optional: limits the skin to some variants of the base |
+| form_id | Optional: makes the skin exclusive to one form (for example a form's default look) |
 | look | Material instance, textures, optional mesh parts, VFX set |
 | sfx_pack | Optional sound set |
 | unlock | Purchase, event, or earned |
 
 Rules:
 - **Skins never change stats, skills, or hitbox.**
-- A skin must use the same skeleton as its form, so all animations work on it.
+- A skin is made for one base and uses that base's skeleton, so all base animations work on it.
+- **A skin works on any form in its base, and never on a form in another base.** A skin made for a humanoid would look out of proportion on a four-legged body. The validator rejects it.
 
 A **Skill** has: id, type (attack, buff, move, summon), cooldown, cost, effect list, and VFX id.
 Effects use a small shared set of building blocks (damage, heal, push, status, spawn).
@@ -135,7 +139,15 @@ Body-type cue (recommendation, for Ziyue to decide):
 - The nameplate is hidden or small by default, so the skin stays the main identity. Players can show or hide nameplates.
 - Optional: ping or highlight outline on a teammate when they are off screen or behind cover.
 
-Open point for Ziyue: does a skin belong to ONE form (current data model), or can one skin be worn over any form in the same base? The second option sells skins across many forms, but the skin must then fit each form's proportions. Default: one skin per form. Raise this before M3 (store).
+### Skins are sold per body type (decided)
+- A skin is sold for a base. A player who owns a humanoid skin can wear it on **any humanoid form** they own, and cannot wear it on a four-legged form.
+- This makes each skin more valuable: one purchase covers many forms in the base (human, orc, elf, and so on).
+- Store UI: show the skin on every owned form of that base in the preview, and mark which bases a skin fits.
+- A skin can still be limited to some variants of the base (`variants`) when it needs it, for example a short-humanoid-only skin.
+- A skin can be exclusive to one form (`form_id`). Default looks work this way. Premium forms can also have a form-exclusive skin.
+- Each form has a `default_skin`, so a form always has a look.
+- Ownership: a player owns skins and forms separately. Equipping checks the base rule.
+- Balance and art cost: skins for a base must fit every variant they claim, so a skin for a base is more art work than a skin for one form. Plan skin art per base and variant.
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.

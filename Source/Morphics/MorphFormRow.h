@@ -27,7 +27,7 @@ struct FMorphFormRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float Power = 1.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float Defense = 1.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) TArray<FString> SkillIds;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) TArray<FString> SkinIds;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString DefaultSkinId;
 	/** Soft path of the skeletal mesh. Empty in M1 (placeholder mesh). */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FSoftObjectPath Model;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString UnlockType;

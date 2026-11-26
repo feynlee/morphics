@@ -20,9 +20,7 @@
   ],
   "passives": [],
   "model": "",
-  "skins": [
-    "skin.ember_fox.default"
-  ],
+  "default_skin": "skin.ember_fox.default",
   "unlock": {
     "type": "free",
     "cost": 0

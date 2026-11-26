@@ -29,7 +29,7 @@ Animation is made **per base and variant, not per form**.
 6. **Animation**: use the base animation set (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death) for the form's variant. Add only form-specific `extra_animations`.
 7. **Import to Unreal**: FBX import, material instances, Niagara effects for the morph and skills.
 8. **Review**: Ziyue checks it in the editor and in game camera (third-person).
-9. **Skins**: material instances and texture sets on the same skeleton.
+9. **Skins**: a skin is made for a base (body type), not for one form. Build it on the base skeleton and test it on every form and variant it claims. It must never be used on another base (the validator checks this).
 
 ## Making it scale ("many forms at launch")
 - Base categories: one skeleton and one animation set per body type, with size variants.

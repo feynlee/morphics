@@ -1,20 +1,64 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Morphics Skin (cosmetic only)",
+  "title": "Morphics Skin (cosmetic only, made for one base)",
   "type": "object",
-  "required": ["id", "form_id", "name", "look", "unlock"],
+  "required": [
+    "id",
+    "base",
+    "name",
+    "look",
+    "unlock"
+  ],
   "properties": {
-    "id": { "type": "string", "pattern": "^skin\\.[a-z0-9_.]+$" },
-    "form_id": { "type": "string" },
-    "name": { "type": "string" },
-    "look": { "type": "object" },
-    "sfx_pack": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^skin\\.[a-z0-9_.]+$"
+    },
+    "base": {
+      "type": "string",
+      "pattern": "^base\\.[a-z0-9_]+$",
+      "description": "Body type this skin is made for. A skin never works on another base."
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional. Limits the skin to these variants of the base."
+    },
+    "form_id": {
+      "type": "string",
+      "description": "Optional. Makes the skin exclusive to one form (for example its default look)."
+    },
+    "name": {
+      "type": "string"
+    },
+    "look": {
+      "type": "object"
+    },
+    "sfx_pack": {
+      "type": "string"
+    },
     "unlock": {
       "type": "object",
-      "required": ["type", "cost"],
+      "required": [
+        "type",
+        "cost"
+      ],
       "properties": {
-        "type": { "enum": ["free", "earn", "buy", "pass", "event"] },
-        "cost": { "type": "integer", "minimum": 0 }
+        "type": {
+          "enum": [
+            "free",
+            "earn",
+            "buy",
+            "pass",
+            "event"
+          ]
+        },
+        "cost": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     }
   }

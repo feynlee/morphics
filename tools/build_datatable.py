@@ -29,7 +29,7 @@ def row(form):
         "Power": stats["power"],
         "Defense": stats["defense"],
         "SkillIds": form["skills"],
-        "SkinIds": form["skins"],
+        "DefaultSkinId": form["default_skin"],
         "Model": form.get("model", ""),
         "UnlockType": form["unlock"]["type"],
         "UnlockCost": form["unlock"]["cost"],

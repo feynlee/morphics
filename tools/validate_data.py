@@ -4,7 +4,8 @@
 Uses the `jsonschema` package. Also checks cross references:
 - every form has a known base, and its variant exists in that base
 - every skill id in a form exists
-- every skin id in a form exists and points back to that form
+- a form's default_skin exists and is made for the form's base (a skin never works on another base)
+- a skin's base and variants exist, and an exclusive skin matches its form's base
 Exit code 0 means OK. Exit code 1 means errors.
 """
 import json
@@ -46,11 +47,31 @@ def main():
         for sid in form.get("skills", []):
             if sid not in skills:
                 errors.append(f"{form['id']}: unknown skill {sid}")
-        for sid in form.get("skins", []):
-            if sid not in skins:
-                errors.append(f"{form['id']}: unknown skin {sid}")
-            elif skins[sid]["form_id"] != form["id"]:
-                errors.append(f"{sid}: form_id does not match {form['id']}")
+        sid = form.get("default_skin")
+        skin = skins.get(sid)
+        if skin is None:
+            errors.append(f"{form['id']}: unknown default_skin {sid}")
+        else:
+            if skin["base"] != form.get("base"):
+                errors.append(f"{sid}: made for {skin['base']}, but {form['id']} is {form.get('base')}")
+            if skin.get("form_id") not in (None, form["id"]):
+                errors.append(f"{sid}: is exclusive to {skin['form_id']}, not {form['id']}")
+            if "variants" in skin and form.get("variant") not in skin["variants"]:
+                errors.append(f"{sid}: does not fit variant {form.get('variant')}")
+    for skin in skins.values():
+        if skin.get("base") not in bases:
+            errors.append(f"{skin['id']}: unknown base {skin.get('base')}")
+            continue
+        known = [x["id"] for x in bases[skin["base"]]["variants"]]
+        for var in skin.get("variants", []):
+            if var not in known:
+                errors.append(f"{skin['id']}: variant {var} is not in {skin['base']}")
+        if "form_id" in skin:
+            owner = forms.get(skin["form_id"])
+            if owner is None:
+                errors.append(f"{skin['id']}: unknown form_id {skin['form_id']}")
+            elif owner["base"] != skin["base"]:
+                errors.append(f"{skin['id']}: base {skin['base']} does not match {owner['id']} ({owner['base']})")
     for err in errors:
         print("ERROR", err)
     print(f"{len(bases)} bases, {len(forms)} forms, {len(skills)} skills, {len(skins)} skins, {len(errors)} errors")

@@ -20,9 +20,7 @@
   ],
   "passives": [],
   "model": "",
-  "skins": [
-    "skin.stone_tortoise.default"
-  ],
+  "default_skin": "skin.stone_tortoise.default",
   "unlock": {
     "type": "free",
     "cost": 0

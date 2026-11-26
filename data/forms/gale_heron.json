@@ -20,9 +20,7 @@
   ],
   "passives": [],
   "model": "",
-  "skins": [
-    "skin.gale_heron.default"
-  ],
+  "default_skin": "skin.gale_heron.default",
   "unlock": {
     "type": "free",
     "cost": 0
