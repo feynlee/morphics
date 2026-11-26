@@ -4,8 +4,7 @@
   "lore": "Very fast and mobile, fragile.",
   "role": "Scout",
   "rarity": "Rare",
-  "base": "base.bird",
-  "variant": "medium",
+  "base": "base.bird.medium",
   "base_stats": {
     "hp": 80,
     "speed": 11,

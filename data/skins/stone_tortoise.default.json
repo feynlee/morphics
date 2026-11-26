@@ -1,6 +1,6 @@
 {
   "id": "skin.stone_tortoise.default",
-  "base": "base.quadruped",
+  "base": "base.quadruped.large",
   "form_id": "form.stone_tortoise",
   "name": "Stone Tortoise Default",
   "look": {

@@ -8,7 +8,6 @@
     "role",
     "rarity",
     "base",
-    "variant",
     "base_stats",
     "skills",
     "default_skin",
@@ -115,12 +114,8 @@
     },
     "base": {
       "type": "string",
-      "pattern": "^base\\.[a-z0-9_]+$",
-      "description": "Base category. Sets skeleton and shared animations."
-    },
-    "variant": {
-      "type": "string",
-      "description": "Variant id inside the base (size or proportion)."
+      "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "A node in the body-type tree. Usually a subcategory. Sets skeleton and shared animations."
     },
     "extra_animations": {
       "type": "array",

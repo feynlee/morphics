@@ -16,15 +16,8 @@
     },
     "base": {
       "type": "string",
-      "pattern": "^base\\.[a-z0-9_]+$",
-      "description": "Body type this skin is made for. A skin never works on another base."
-    },
-    "variants": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Optional. Limits the skin to these variants of the base."
+      "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "Body-type node this skin is made for. It fits this node and all nodes below it. It never fits another branch."
     },
     "form_id": {
       "type": "string",

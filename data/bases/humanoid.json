@@ -2,24 +2,7 @@
   "id": "base.humanoid",
   "name": "Humanoid",
   "status": "active",
-  "description": "Two legs, two arms. Humans, orcs, elves, and similar.",
-  "variants": [
-    {
-      "id": "medium",
-      "name": "Medium humanoid",
-      "examples": "Human, orc, elf"
-    },
-    {
-      "id": "short",
-      "name": "Short humanoid",
-      "examples": "Dwarf, gnome, halfling"
-    },
-    {
-      "id": "large",
-      "name": "Large humanoid",
-      "examples": "Ogre, giant"
-    }
-  ],
+  "description": "Two legs, two arms.",
   "skeleton": "",
   "required_animations": [
     "idle",

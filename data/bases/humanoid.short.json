@@ -1,0 +1,7 @@
+{
+  "id": "base.humanoid.short",
+  "name": "Short humanoid",
+  "parent": "base.humanoid",
+  "status": "active",
+  "examples": "Dwarf, gnome, halfling"
+}

@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.8)
+# Morphics: Design Doc (v0.9)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -21,7 +21,7 @@ Decided by Ziyue:
 - Launch content: as many forms as possible. Ziyue and Claude design the forms together.
 - Monetization: forms are sold for an in-game currency. Currency bundles are sold on Steam.
 - Audience: teen and older (teen+).
-- Base categories: every form declares a base category (body type) and a size variant. Forms in one base share a skeleton and animations. See section 4b.
+- Body types are a **tree**. Every form declares one body type (a node in the tree). Forms under one top-level body type share a skeleton and animations. See section 4b.
 - Art: Claude makes the 3D art and animations (models, rigs, animations, VFX briefs), with Ziyue's direction and approval.
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
@@ -65,7 +65,7 @@ This lets us add forms without code changes.
 | id | Stable unique key |
 | name, lore | Display text |
 | role | Tank, Striker, Support, Scout, Controller |
-| base, variant | Base category and size variant (see section 4b). Sets skeleton and shared animations. |
+| base | Body type: a node in the body-type tree (see section 4b). Sets skeleton and shared animations. |
 | extra_animations[] | Optional form-specific animations on top of the base set |
 | base_stats | HP, speed, power, defense |
 | skills[] | 1 basic attack, 2 active skills, 1 ultimate |
@@ -82,8 +82,7 @@ A **Skin** is cosmetic only, and it is made for **one base** (body type):
 | Field | Meaning |
 |---|---|
 | id | Stable unique key |
-| base | The body type the skin is made for (required) |
-| variants[] | Optional: limits the skin to some variants of the base |
+| base | The body-type node the skin is made for (required). It fits that node and every node below it. |
 | form_id | Optional: makes the skin exclusive to one form (for example a form's default look) |
 | look | Material instance, textures, optional mesh parts, VFX set |
 | sfx_pack | Optional sound set |
@@ -100,33 +99,45 @@ New forms mostly recombine these blocks.
 
 A JSON schema checks every data file in CI before import.
 
-## 4b. Base categories
-A **base category** is a body type. Forms of one base share a skeleton and one animation set.
-This is what lets us make many forms: a new form is a new look plus skills, not a new animation set.
+## 4b. Body types (a tree)
+A **body type** is a node in a tree. Forms under one top-level body type share a skeleton and one animation set.
+This lets us make many forms: a new form is a new look plus skills, not a new animation set.
 
-Structure: **base > variant > form (submorph)**.
-- **Base**: the body type and skeleton (for example, humanoid).
-- **Variant**: a size or proportion inside the base (for example, short humanoid).
-- **Form**: the actual morph (for example, a dwarf).
+Structure: **top-level body type > subcategory > form**. Example: Four-legged beast > Small four-legged beast > Ember Fox.
+- The **top level** (root) sets the skeleton and the required animation list.
+- A **subcategory** sets size and build (small, medium, large). It inherits the skeleton and animations and retargets them to its proportions.
+- A **form** declares the node it uses. Usually that is a subcategory.
+- Deeper levels are allowed when needed (for example: Large four-legged beast > Heavy large four-legged beast). One more segment per level.
 
-| Base | Variants | Example forms | Status |
-|---|---|---|---|
-| Humanoid | medium, short, large | human, orc, elf / dwarf, gnome, halfling / ogre, giant | active |
-| Four-legged | lean, heavy | large cat, large canine / bear, boar | active |
-| Bird | medium, large | heron, hawk / eagle | planned |
-| Bipedal dinosaur | medium, large | raptor / rex type | planned |
+```
+base.humanoid                  Humanoid
+  base.humanoid.medium         human, orc, elf
+  base.humanoid.short          dwarf, gnome, halfling
+  base.humanoid.large          ogre, giant
+base.quadruped                 Four-legged beast
+  base.quadruped.small         fox, lynx, small canine      <- Ember Fox
+  base.quadruped.medium        large cat, large canine
+  base.quadruped.large         bear, boar, tortoise         <- Stone Tortoise
+base.bird (planned)            Bird
+  base.bird.medium             heron, hawk                  <- Gale Heron
+  base.bird.large              eagle, roc
+base.biped_dino (planned)      Bipedal dinosaur
+  base.biped_dino.medium       raptor
+  base.biped_dino.large        rex type
+```
 
-Rules:
-- Every form declares `base` and `variant` in its JSON. The validator rejects an unknown base or variant.
-- All forms in a base use the same required animation list (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death).
-- A variant reuses the base animations, retargeted or scaled to its proportions.
+Data rules (`data/bases/*.json`, checked by the validator):
+- A node has `id`, `name`, `status` (active or planned), and an optional `parent`.
+- A child id is its parent's id plus one segment (`base.quadruped` > `base.quadruped.small`).
+- A root has `required_animations` (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death) and a `skeleton`.
+- A node cannot be `active` under a `planned` parent.
+- Every form declares `base`. The validator rejects an unknown node.
 - A form may add `extra_animations` for its own signature moves.
-- New bases are added as data (`data/bases/*.json`). A new base needs a new skeleton and a new animation set, so it is a bigger task than a new form.
-- Skins stay on their form's skeleton, as before.
-- Gameplay: the base sets default movement feel and hitbox size range. A form can change them within limits.
+- New top-level body types are added as data. A new top level needs a new skeleton and a full animation set, so it is a bigger task than a new subcategory or a new form.
+- Gameplay: the node sets default movement feel and hitbox size range. A form can change them within limits.
 
 ### Skins and what players see
-- The **look is a skin worn over the body type**. The body type (base and variant) is a gameplay detail. It sets skeleton, animations, and movement feel.
+- The **look is a skin worn over the body type**. The body type is a gameplay detail. It sets skeleton, animations, and movement feel.
 - **Every player sees every other player's skin**, in co-op and in shared spaces. Skins are the way teammates recognize each other in the 3D world.
 - Skins are always shown. Players cannot turn off other players' skins or replace them with a default look. (A "reduce effects" option may lower VFX, but the model and colors stay.)
 - Skin readability rules: a skin keeps a clear silhouette and a distinct main color. It must still read from far away, and two teammates in different skins must be easy to tell apart.
@@ -135,19 +146,24 @@ Rules:
 
 Body-type cue (recommendation, for Ziyue to decide):
 - Show a **small role icon** on the teammate nameplate (Tank, Striker, Support, Scout, Controller). Role helps co-op play. It is a small icon and does not cover the skin.
-- Do NOT show the body type (base or variant) as an icon. The silhouette already shows it, and it is not useful information for a teammate.
+- Do NOT show the body type as an icon. The silhouette already shows it, and it is not useful information for a teammate.
 - The nameplate is hidden or small by default, so the skin stays the main identity. Players can show or hide nameplates.
 - Optional: ping or highlight outline on a teammate when they are off screen or behind cover.
 
 ### Skins are sold per body type (decided)
-- A skin is sold for a base. A player who owns a humanoid skin can wear it on **any humanoid form** they own, and cannot wear it on a four-legged form.
-- This makes each skin more valuable: one purchase covers many forms in the base (human, orc, elf, and so on).
-- Store UI: show the skin on every owned form of that base in the preview, and mark which bases a skin fits.
-- A skin can still be limited to some variants of the base (`variants`) when it needs it, for example a short-humanoid-only skin.
+- A skin declares the body-type node it is made for. **It fits that node and every node below it. It never fits another branch.**
+- Examples:
+  - A skin made for `base.quadruped.small` fits fox-sized forms only.
+  - A skin made for `base.quadruped` fits every four-legged beast (small, medium, large).
+  - Neither fits a humanoid or a bird.
+- The skin's level is the artist's choice: a broad skin must look right at every size below it. Use a broad level for patterns and materials (fur, armor plates), and a narrow level for skins that depend on exact proportions.
+- A player who owns a skin can wear it on any owned form whose body type it fits.
+- This makes each skin more valuable: one purchase covers many forms.
+- Store UI: show the skin on every owned form it fits in the preview, and show which body types it fits.
 - A skin can be exclusive to one form (`form_id`). Default looks work this way. Premium forms can also have a form-exclusive skin.
-- Each form has a `default_skin`, so a form always has a look.
-- Ownership: a player owns skins and forms separately. Equipping checks the base rule.
-- Balance and art cost: skins for a base must fit every variant they claim, so a skin for a base is more art work than a skin for one form. Plan skin art per base and variant.
+- Each form has a `default_skin` that fits its body type, so a form always has a look.
+- Ownership: a player owns skins and forms separately. Equipping checks the body-type rule.
+- Art cost: a skin at a broad level means more fit testing. Plan skin art per node and test it on every form it fits.
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.

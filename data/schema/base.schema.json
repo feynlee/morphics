@@ -1,18 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Morphics Base Category",
+  "title": "Morphics Base Category (a node in the body-type tree)",
   "type": "object",
   "required": [
     "id",
     "name",
-    "status",
-    "variants",
-    "required_animations"
+    "status"
   ],
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^base\\.[a-z0-9_]+$"
+      "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "A child id is its parent id plus one more segment."
     },
     "name": {
       "type": "string"
@@ -20,45 +19,34 @@
     "description": {
       "type": "string"
     },
+    "examples": {
+      "type": "string"
+    },
+    "parent": {
+      "type": "string",
+      "description": "Parent base id. Absent on a root (top-level) base."
+    },
     "status": {
       "enum": [
         "active",
         "planned"
-      ],
-      "description": "active = skeleton and animations exist or are being made"
-    },
-    "variants": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "examples": {
-            "type": "string"
-          }
-        }
-      }
+      ]
     },
     "skeleton": {
       "type": "string",
-      "description": "Unreal asset path"
+      "description": "Unreal asset path. Set on a root. Children inherit it."
     },
     "required_animations": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Set on a root. Children inherit it."
+    },
+    "proportion_notes": {
+      "type": "string",
+      "description": "Optional. How this subcategory differs from its parent (size, build)."
     }
   }
 }

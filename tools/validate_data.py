@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Validate data/forms, data/skills, data/skins against data/schema.
+"""Validate data/bases, forms, skills, skins against data/schema.
 
-Uses the `jsonschema` package. Also checks cross references:
-- every form has a known base, and its variant exists in that base
-- every skill id in a form exists
-- a form's default_skin exists and is made for the form's base (a skin never works on another base)
-- a skin's base and variants exist, and an exclusive skin matches its form's base
+Needs the `jsonschema` package. Cross checks:
+- bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
+  a root has required_animations, a child is not "active" under a "planned" parent
+- a form's base exists
+- a skin's base exists
+- a form's skills exist
+- a form's default_skin exists and fits the form: the skin's base must be the form's base
+  or one of its ancestors (a skin never works on another branch of the tree)
+- an exclusive skin (form_id) names a real form that it fits
 Exit code 0 means OK. Exit code 1 means errors.
 """
 import json
@@ -32,18 +36,59 @@ def load(kind):
     return items, errors
 
 
+def chain(bases, base_id):
+    """Return [base_id, parent, grandparent, ...]. Stops at a root or a bad link."""
+    out, seen = [], set()
+    while base_id in bases and base_id not in seen:
+        seen.add(base_id)
+        out.append(base_id)
+        base_id = bases[base_id].get("parent")
+    return out
+
+
+def check_bases(bases):
+    errors = []
+    for b in bases.values():
+        parent_id = b.get("parent")
+        if parent_id is None:
+            if "required_animations" not in b:
+                errors.append(f"{b['id']}: a root base needs required_animations")
+            continue
+        parent = bases.get(parent_id)
+        if parent is None:
+            errors.append(f"{b['id']}: unknown parent {parent_id}")
+            continue
+        if not b["id"].startswith(parent_id + "."):
+            errors.append(f"{b['id']}: id must start with parent id {parent_id}.")
+        if b["id"].count(".") != parent_id.count(".") + 1:
+            errors.append(f"{b['id']}: id must add exactly one segment to {parent_id}")
+        if parent["status"] == "planned" and b["status"] == "active":
+            errors.append(f"{b['id']}: cannot be active under planned parent {parent_id}")
+        if parent_id not in chain(bases, parent_id) or b["id"] in chain(bases, parent_id):
+            errors.append(f"{b['id']}: parent chain has a cycle")
+    return errors
+
+
 def main():
+    bases, e0 = load("bases")
     forms, e1 = load("forms")
     skills, e2 = load("skills")
     skins, e3 = load("skins")
-    bases, e4 = load("bases")
-    errors = e1 + e2 + e3 + e4
+    errors = e0 + e1 + e2 + e3 + check_bases(bases)
+
+    for skin in skins.values():
+        if skin.get("base") not in bases:
+            errors.append(f"{skin['id']}: unknown base {skin.get('base')}")
+        if "form_id" in skin:
+            owner = forms.get(skin["form_id"])
+            if owner is None:
+                errors.append(f"{skin['id']}: unknown form_id {skin['form_id']}")
+            elif skin.get("base") not in chain(bases, owner.get("base")):
+                errors.append(f"{skin['id']}: base {skin['base']} does not fit {owner['id']} ({owner.get('base')})")
+
     for form in forms.values():
-        base = bases.get(form.get("base"))
-        if base is None:
+        if form.get("base") not in bases:
             errors.append(f"{form['id']}: unknown base {form.get('base')}")
-        elif form.get("variant") not in [x["id"] for x in base["variants"]]:
-            errors.append(f"{form['id']}: variant {form.get('variant')} is not in {base['id']}")
         for sid in form.get("skills", []):
             if sid not in skills:
                 errors.append(f"{form['id']}: unknown skill {sid}")
@@ -51,27 +96,12 @@ def main():
         skin = skins.get(sid)
         if skin is None:
             errors.append(f"{form['id']}: unknown default_skin {sid}")
-        else:
-            if skin["base"] != form.get("base"):
-                errors.append(f"{sid}: made for {skin['base']}, but {form['id']} is {form.get('base')}")
-            if skin.get("form_id") not in (None, form["id"]):
-                errors.append(f"{sid}: is exclusive to {skin['form_id']}, not {form['id']}")
-            if "variants" in skin and form.get("variant") not in skin["variants"]:
-                errors.append(f"{sid}: does not fit variant {form.get('variant')}")
-    for skin in skins.values():
-        if skin.get("base") not in bases:
-            errors.append(f"{skin['id']}: unknown base {skin.get('base')}")
             continue
-        known = [x["id"] for x in bases[skin["base"]]["variants"]]
-        for var in skin.get("variants", []):
-            if var not in known:
-                errors.append(f"{skin['id']}: variant {var} is not in {skin['base']}")
-        if "form_id" in skin:
-            owner = forms.get(skin["form_id"])
-            if owner is None:
-                errors.append(f"{skin['id']}: unknown form_id {skin['form_id']}")
-            elif owner["base"] != skin["base"]:
-                errors.append(f"{skin['id']}: base {skin['base']} does not match {owner['id']} ({owner['base']})")
+        if skin.get("base") not in chain(bases, form.get("base")):
+            errors.append(f"{sid}: made for {skin.get('base')}, which does not fit {form['id']} ({form.get('base')})")
+        if skin.get("form_id") not in (None, form["id"]):
+            errors.append(f"{sid}: is exclusive to {skin['form_id']}, not {form['id']}")
+
     for err in errors:
         print("ERROR", err)
     print(f"{len(bases)} bases, {len(forms)} forms, {len(skills)} skills, {len(skins)} skins, {len(errors)} errors")

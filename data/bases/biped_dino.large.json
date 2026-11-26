@@ -1,0 +1,7 @@
+{
+  "id": "base.biped_dino.large",
+  "name": "Large bipedal dinosaur",
+  "parent": "base.biped_dino",
+  "status": "planned",
+  "examples": "Rex type"
+}

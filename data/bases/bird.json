@@ -2,19 +2,7 @@
   "id": "base.bird",
   "name": "Bird",
   "status": "planned",
-  "description": "Winged flier with two legs. Herons, hawks, and similar.",
-  "variants": [
-    {
-      "id": "medium",
-      "name": "Medium bird",
-      "examples": "Heron, hawk"
-    },
-    {
-      "id": "large",
-      "name": "Large bird",
-      "examples": "Roc, eagle"
-    }
-  ],
+  "description": "Winged flier with two legs.",
   "skeleton": "",
   "required_animations": [
     "idle",

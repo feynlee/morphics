@@ -1,0 +1,7 @@
+{
+  "id": "base.quadruped.large",
+  "name": "Large four-legged beast",
+  "parent": "base.quadruped",
+  "status": "active",
+  "examples": "Bear, boar, tortoise"
+}

@@ -3,18 +3,6 @@
   "name": "Bipedal dinosaur",
   "status": "planned",
   "description": "Two strong legs, a tail, and small or no arms.",
-  "variants": [
-    {
-      "id": "medium",
-      "name": "Medium biped dino",
-      "examples": "Raptor"
-    },
-    {
-      "id": "large",
-      "name": "Large biped dino",
-      "examples": "Rex type"
-    }
-  ],
   "skeleton": "",
   "required_animations": [
     "idle",

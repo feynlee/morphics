@@ -4,8 +4,7 @@
   "lore": "Fast, hits hard, low defense.",
   "role": "Striker",
   "rarity": "Common",
-  "base": "base.quadruped",
-  "variant": "lean",
+  "base": "base.quadruped.small",
   "base_stats": {
     "hp": 100,
     "speed": 8,

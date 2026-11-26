@@ -12,7 +12,7 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
   3. `python tools/build_datatable.py` writes `Content/Data/Generated/Forms.json`.
   4. Import that file in the editor as a Data Table (row type `MorphFormRow`).
 - CI (`.github/workflows/data.yml`) runs steps 2 and 3 on each PR.
-- 4 base categories (`data/bases`) and 3 placeholder forms with original names: Ember Fox, Stone Tortoise (both four-legged), Gale Heron (bird, planned base).
+- a body-type tree (`data/bases`, 4 top-level types with 2 or 3 subcategories each) and 3 placeholder forms with original names: Ember Fox, Stone Tortoise (both four-legged), Gale Heron (bird, planned base).
 - M1 note: Gale Heron uses a planned base, so M1 needs only the four-legged base for playable forms. Add a humanoid form if a humanoid test is wanted.
 
 ## Not verified yet

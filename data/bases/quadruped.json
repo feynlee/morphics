@@ -1,20 +1,8 @@
 {
   "id": "base.quadruped",
-  "name": "Four-legged",
+  "name": "Four-legged beast",
   "status": "active",
-  "description": "Four legs. Large cats, large canines, bears, and similar.",
-  "variants": [
-    {
-      "id": "lean",
-      "name": "Lean quadruped",
-      "examples": "Large cat, large canine"
-    },
-    {
-      "id": "heavy",
-      "name": "Heavy quadruped",
-      "examples": "Bear, boar, tortoise"
-    }
-  ],
+  "description": "Four legs.",
   "skeleton": "",
   "required_animations": [
     "idle",

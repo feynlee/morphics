@@ -1,0 +1,7 @@
+{
+  "id": "base.bird.large",
+  "name": "Large bird",
+  "parent": "base.bird",
+  "status": "planned",
+  "examples": "Eagle, roc"
+}

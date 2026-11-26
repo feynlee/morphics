@@ -1,0 +1,7 @@
+{
+  "id": "base.bird.medium",
+  "name": "Medium bird",
+  "parent": "base.bird",
+  "status": "planned",
+  "examples": "Heron, hawk"
+}
