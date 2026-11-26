@@ -153,6 +153,8 @@ Decided by Ziyue. Every earned morph is unlocked by crafting its **Morphic** and
   "spectrum": { "id": "green", "amount": 80 }
 }
 ```
+**Planned (not designed):** more loot tables will be added later, for wild enemies and bosses, for other crafting and materials. Ziyue has no ideas for them yet, so they are left for when they are relevant. The validator accepts extra tables in `data/loot_tables.json`. Every table must still have weights that sum to 100, and no table may hold a Morphic or a Spectrum.
+
 Boss entry (`data/boss_drops.json`) and its loot table (`data/loot_tables.json`):
 ```json
 { "boss": "boss.ember_fox", "form_id": "form.ember_fox", "roll_chance_solo": 0.2,

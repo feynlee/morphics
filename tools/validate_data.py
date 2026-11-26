@@ -4,7 +4,7 @@
 Needs the `jsonschema` package. Cross checks:
 - boss drops (data/boss_drops.json): every earned morph has one boss entry. A boss rolls (solo chance) on a
   crafting material loot table (data/loot_tables.json). Loot table weights sum to 100, the table holds exactly
-  the recipe's components, never a Morphic, never a Spectrum, and each table belongs to one boss
+  the recipe's components, never a Morphic, never a Spectrum, each boss table belongs to one boss, and other tables are allowed
 - Spectrums drop only from wild enemies (data/drops.json, source wild_enemy), never from bosses
 - Spectrum drops match on the body-type root (match: body_type_root): a wild enemy of any subcategory
   (for example small beast) drops the Spectrum of its top-level type (four-legged beast: Green)
@@ -392,9 +392,8 @@ def main():
     for boss in by_boss:
         if boss not in needed:
             errors.append(f"data/boss_drops.json: {boss} is not the source boss of any earned morph")
-    for tid in tables:
-        if tid not in used_tables:
-            errors.append(f"data/loot_tables.json: {tid} is not used by any boss")
+    # Other loot tables (wild enemies, other crafting and materials) are planned and not designed yet.
+    # So a table that no boss uses is allowed. The weight, no-Morphic, and no-Spectrum rules still apply to every table.
 
     drops = json.loads((DATA / "drops.json").read_text())
     drop_schema = json.loads((DATA / "schema" / "drop.schema.json").read_text())
