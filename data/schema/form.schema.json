@@ -123,6 +123,11 @@
         "type": "string"
       },
       "description": "Form-specific animations on top of the base set."
+    },
+    "starter": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if the player can inhabit this form as the first form (the opening). Starter forms must be free."
     }
   }
 }

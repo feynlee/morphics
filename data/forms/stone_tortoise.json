@@ -23,5 +23,6 @@
   "unlock": {
     "type": "free",
     "cost": 0
-  }
+  },
+  "starter": true
 }

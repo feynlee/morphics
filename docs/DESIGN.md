@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.11)
+# Morphics: Design Doc (v0.12)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -25,6 +25,7 @@ Decided by Ziyue:
 - Art: Claude makes the 3D art and animations (models, rigs, animations, VFX briefs), with Ziyue's direction and approval.
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
+- Opening: the player starts as an amorphic spirit with no body. The goal is to inhabit a first form. Inhabiting it unlocks the ability to gain more forms and morph into them at will. See section 3a.
 - Retention goal: a "continual playthrough" game. There is always something new to unlock or farm, so the player's investment feels worthwhile.
 
 Assumed (to confirm):
@@ -32,6 +33,38 @@ Assumed (to confirm):
 - Co-op size: 2 to 4 players.
 - Input: keyboard and mouse, plus gamepad support.
 - Style: high-fidelity 3D with readable silhouettes. Each form must be easy to tell apart from far away.
+
+## 3a. Opening: the spirit
+**Spirit state**
+- The player starts as an **amorphic spirit**: a formless, glowing presence with no body, no skin, and no body type.
+- The spirit can float and look around, and it can reach the world, but it cannot fight. It has no skills.
+- The spirit is not a form. It is a special state outside the body-type tree. (No skeleton or animation set from the tree. It needs its own light visual and movement.)
+- In co-op, every player starts as a spirit. Spirits are tinted with the player's color so players can find each other, until each one takes a form.
+
+**First inhabitation**
+- The opening goal is to **inhabit a first form**: find a vessel in the world and enter it.
+- A short guided sequence (about 10 to 15 minutes): learn to move, find the vessel, face a small threat that the spirit cannot beat, then inhabit.
+- Inhabiting is a strong moment. It uses the morph-in effect, and it is the first time the player sees their skin. It must look great, because it shows what the game sells.
+- The first form is free. Starter forms are marked `starter: true` in their JSON, and the validator requires them to be free.
+
+**Unlock of morphing**
+- Inhabiting the first form **unlocks the ability to gain more forms**. It also unlocks the morph action: change into any owned form at will (no time limit, short cooldown only, see section 3).
+- The collection screen, the Hub, and the form store open at this moment, in steps, so the first session is not overwhelming.
+- Story idea (placeholder): the spirit "remembers" how to take forms as it learns each body. Each new form adds to the collection.
+- Returning players and new co-op joiners skip the opening after they have done it once. A joining player who has not done it plays it as a short solo part, then joins.
+
+**How the first form is chosen**
+Options:
+1. **Fixed**: every player gets the same first form. Cheapest to build and easiest to guide. Every first session is the same, so it is easy to tune. Less choice, and no early sign of the variety we sell.
+2. **Picked from starters**: the player chooses from 3 or 4 free starter forms (ideally from different body types, such as a humanoid and a four-legged beast). This shows variety in minute one and gives early attachment. Costs more: each starter needs its own opening inhabitation and a first-session tuning.
+3. **Shaped by play**: the spirit's choices in the opening decide the form. Most story value. Highest cost and risk, and hard to tune.
+
+Recommendation: **option 2 with 3 starters**, from different body types. Build **option 1** (fixed first form) for M1, because M1 is a prototype. The data already supports this: `starter` flag on forms.
+
+Open questions for Ziyue:
+- Is the first form fixed, picked, or shaped by play? (Default: fixed in M1, picked from 3 starters later.)
+- Can the player return to spirit state later (for example to rest, to escape, or as a free "form")? (Default: no, to keep the game simple.)
+- Does the spirit get cosmetics (aura, trail) that are sold? (Default: not yet. It is a later option and it would be cosmetic only.)
 
 ## 3. Core loop
 1. Pick a mission (alone or with co-op friends). Choose a starting form.

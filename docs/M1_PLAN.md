@@ -20,6 +20,9 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
   First task on the dev PC: open `Morphics.uproject` in UE 5.8.4, let it generate and build, fix any errors.
 - The Data Table import was NOT tested in the editor.
 
+## Opening in M1
+M1 includes a minimal opening: spirit state, find a vessel, inhabit a fixed first form (Ember Fox), then unlock morph. A first-form picker is a later task. See `DESIGN.md` section 3a.
+
 ## Next tasks (need the editor)
 1. Compile and open the project.
 2. Import `Forms.json` as a Data Table.
