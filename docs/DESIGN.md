@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.43)
+# Morphics: Design Doc (v0.44)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -307,15 +307,15 @@ Family ids stay. Sizes of Beast and Winged creature move under a profile, for ex
 
 Spectrum rule (unchanged in effect): the family names the Spectrum. A wild enemy of any profile or size under the family drops it. Drop entries stay one per active family (`base.humanoid`, `base.quadruped`, and so on), and the validator check "a size drops its family's Spectrum" stays. Craft recipes use the Spectrum of the form's family. 
 
-Six Spectrum colors, one per family (Ziyue: start from red, orange, yellow, green, blue and purple). The color set in `data/spectrums.json` is the source of truth, and each family names exactly one color. Proposed reclassification:
+Six Spectrum colors, one per family (Ziyue: start from red, orange, yellow, green, blue and purple). **Confirmed so far: Red is Humanoid and Green is Beast.** Orange, Yellow, Blue and Purple are not decided. Ziyue may change or remove some of the other families, so the rows below for them are provisional. The color set in `data/spectrums.json` is the source of truth, and each family names exactly one color. Proposed reclassification:
 
 | Color | Family | Status | What moves |
 |---|---|---|---|
 | Red | Humanoid | active | nothing |
-| Orange | Bipedal dinosaur | planned | the color id `amber` is renamed `orange`. Hex changes from `#F5A524` to a clearer orange, for example `#F76B15` (placeholder) |
+| Orange | Bipedal dinosaur (provisional) | planned | the color id `amber` is renamed `orange`. Hex changes from `#F5A524` to a clearer orange, for example `#F76B15` (placeholder) |
 | Yellow | to decide | not defined yet | new color. Hex for example `#E5B800` (placeholder) |
 | Green | Beast | active | nothing. Four-legged dinosaurs stay here as the Four-legged dinosaur subcategory (Ziyue's earlier decision) |
-| Blue | Winged creature | planned | nothing |
+| Blue | Winged creature (provisional) | planned | nothing |
 | Purple | to decide | not defined yet | replaces Violet. Same hex `#8E4EC6`. The id `violet` is renamed `purple` |
 
 Violet leaves the set. It becomes Purple, the sixth color, so no extra color stays unused. Both Yellow and Purple are defined in the data but have no family yet.
