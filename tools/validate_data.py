@@ -9,7 +9,7 @@ Needs the `jsonschema` package. Cross checks:
 - a starter form is never sold: its unlock type is "free" or "earn"
 - exactly one starter form per active top-level body type; at most one per planned one
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
-- a starter's skip price is in spectrum only (prisms never buy starters)
+- every earned form (morph), starters included, has BOTH a spectrum and a prisms skip price
 - a form's base exists
 - a skin's base exists
 - a form's skills exist
@@ -148,8 +148,10 @@ def main():
             errors.append(f"{item['id']}: an earn unlock needs a skip price")
         if unlock.get("type") != "earn" and "skip" in unlock:
             errors.append(f"{item['id']}: skip is only for earn unlocks")
-        if item.get("starter") and unlock.get("skip", {}).get("currency") == "prisms":
-            errors.append(f"{item['id']}: prisms cannot skip a starter; use spectrum")
+        if unlock.get("type") == "earn" and item["id"] in forms:
+            for currency in ("spectrum", "prisms"):
+                if currency not in unlock.get("skip", {}):
+                    errors.append(f"{item['id']}: an earned form needs a {currency} skip price")
 
     starters = {}
     for form in forms.values():

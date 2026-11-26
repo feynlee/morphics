@@ -55,25 +55,21 @@
         },
         "skip": {
           "type": "object",
-          "required": [
-            "currency",
-            "amount"
-          ],
           "additionalProperties": false,
+          "minProperties": 1,
           "properties": {
-            "currency": {
-              "enum": [
-                "spectrum",
-                "prisms"
-              ],
-              "description": "spectrum = the soft currency of the item's own spectrum (set by its top-level body type), earned in play. prisms = premium currency (a mix of all spectrums), bought on Steam."
-            },
-            "amount": {
+            "spectrum": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "description": "Price in the item's own Spectrum (soft currency earned in play)."
+            },
+            "prisms": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Price in Prisms (premium currency, a mix of all spectrums)."
             }
           },
-          "description": "Price to skip farming. Required when type is earn. Starters may only use spectrum."
+          "description": "Prices to skip farming. Required when type is earn. Every form (morph) that is earned must have both prices."
         }
       }
     },

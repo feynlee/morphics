@@ -24,8 +24,8 @@
     "type": "earn",
     "cost": 600,
     "skip": {
-      "currency": "spectrum",
-      "amount": 1500
+      "spectrum": 1500,
+      "prisms": 400
     }
   },
   "starter": true
