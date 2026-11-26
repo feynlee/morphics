@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.47)
+# Morphics: Design Doc (v0.48)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -307,11 +307,11 @@ Decided (Ziyue): a creature that flies is a Flyer, even if it can also walk. So 
 Open points for Ziyue:
 - Swimmers have no forms yet. Fish, sea creatures and other swimmers would each need their own subcategory.
 - Dragons, winged humanoids and centaurs mix movement types. A hybrid goes under the domain of its main gait, and a creature that flies is a Flyer.
-- Raptor and Tyrant have no color yet. Orange is free for them. Purple is also free.
+- Orange and Purple stay **reserved and unused** for expansion (Ziyue). Raptor and Tyrant therefore need one of the four colors in use. Not decided. Recommended: Green, as with four-legged dinosaurs.
 
 Spectrum colors (Ziyue): color is assigned **per subcategory**, not per top category or family.
 - Six colors: red, orange, yellow, green, blue, purple. `data/spectrums.json` stays the source of truth.
-- Red: Humanoid. Green: the Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur). Yellow: all Flyer subcategories. Blue: all Swimmer subcategories. Orange and Purple: not assigned yet.
+- Red: Humanoid. Green: the Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur). Yellow: all Flyer subcategories. Blue: all Swimmer subcategories. Orange and Purple: reserved for expansion, unused for now.
 - Several subcategories may share a color. The old family groups (Humanoid, Beast, Winged creature, Bipedal dinosaur) are dropped as a level.
 - Wild drops follow the subcategory color: an enemy of a subcategory (any size) drops that subcategory's color. `data/drops.json` has one entry per color in use. The validator checks that each active subcategory's color has an entry and that the entry drops that same color.
 
