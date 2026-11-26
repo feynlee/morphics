@@ -578,7 +578,7 @@ Every morph, starters included, can be bought with Prisms to bypass farming. So 
 - The picked starter is granted free in setup. Unpicked starters are earned in play, or bought in the market.
 - Note for pricing: a starter is a very basic form, so its price should be low. Players may feel that a paid basic form is a bad deal. Keep starter prices modest, and show that they can also be earned for free.
 
-**Limited morphs (decided)**
+**Limited morphs (decided; deferred: Ziyue will not introduce limited morphs for now, so no limited morph is released until he says so)**
 - **Pass and event exclusive morphs are limited.** They are **not available in the market unless Ziyue says so.**
 - Data: a form sets `limited: true`. The validator requires it for any `pass` or `event` unlock.
 - A limited morph is excluded from the market by default. The market list is built by `tools/build_market.py`, which skips limited forms.
@@ -619,7 +619,6 @@ Decided questions were removed. Still open:
 - **Swimmer order:** decided. The first swimmer is the Shark. Which swimmer subcategory comes next (fish, sea mammals, crustaceans, eels) is open and not urgent.
 - **Hybrids:** a dragon is a Flyer for now (decided). Does it need its own Flyer subcategory later, since no flier rig has four legs? Winged humanoids and centaurs are on hold: Ziyue will say when he decides.
 - **Build order after the proof of concept:** decided. **Feline next, then Shark** (Ziyue). Hoofed and shelled wait.
-- **Limited morphs, in plain words:** some morphs are sold only for a limited time, for example with a season pass. The Prism Stag (a deer) is one. Question: should a limited morph always be a kind of creature that players can already farm in the normal game? Or may we release a limited morph first, for example a shark, before players can farm any shark in the normal game? Example: the Prism Stag is a deer, but deer are not buildable yet. Which is better?
 
 Other open questions:
 1. **Art quality bar**: Claude's art is made with scripts and tools (see `ART_PIPELINE.md`). Visual quality is the product, so Ziyue should judge the first form and set the bar. If it is not enough, we change the plan (for example: add a human artist for hero forms, or use licensed assets).
