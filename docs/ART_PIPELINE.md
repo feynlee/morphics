@@ -4,13 +4,26 @@ Claude makes the 3D art and animations. Ziyue directs and approves.
 This is the main production task. This doc says how, and what is still unproven.
 
 ## Visual style
-Target: realistic-stylized, similar in feel to ARK: Survival Ascended. **Decided by Ziyue (2026-11-26): more realistic, with no cartoon exaggeration.** The Palworld-like option is dropped. All art is original. We copy no creature, design, or asset from any game. See `DESIGN.md` section 1b.
+Target: **stylized, closer to Palworld** (decided by Ziyue on 2026-11-26 after seeing the first Wolf, replacing the earlier realistic target). Bold silhouettes, friendly proportions, simple shapes, hand-painted style textures, rich lighting. All art is original. We copy no creature, design, or asset from any game. See `DESIGN.md` section 1b.
+
+### Budget per form (proposal, Ziyue to confirm)
+| Item | Medium creature | Small form | Large form |
+|---|---|---|---|
+| Triangles, LOD0 | 8,000 to 12,000 | 5,000 to 8,000 | 12,000 to 18,000 |
+| Lower levels of detail | LOD1 50%, LOD2 25%, LOD3 10% | same | same |
+| Materials | 1 | 1 | 1 |
+| Base color texture | 2K | 1K | 2K |
+| Normal map | 1K | 512 | 1K |
+| Bones (shared body-type skeleton) | about 45 | same | same |
+- **Detail comes from textures.** Fur, scales, and feathers are painted into the base color and normal map. No Groom, no hair strands, no fur cards. A few simple low-poly tufts (neck, tail tip) can shape the silhouette.
+- **A skin costs texture data only.** It reuses the mesh and swaps textures and material parameters. Skins must not add geometry, so the budget holds.
+- The validator and the build script check the triangle count of each form's model against its body-type budget (to add when models are imported).
 - The first quality-test form is the Wolf, the plain four-legged starter. Its brief is in `docs/art/WOLF_BRIEF.md`. Ziyue approves it before we scale.
 - Starters are plain and basic archetypes. Themed variants (Ember Fox, and so on) come after and are farmed.
 
 ## Honest limits
 - Claude works through code and tools. It does not sculpt by hand.
-- Models come from scripts (Blender Python), procedural tools, or AI 3D generation tools if available.
+- Models come from scripts (Blender Python), procedural tools, or AI 3D generation tools if available. Low poly plus painted textures is also much easier to make by script than detailed fur.
 - Visual quality sells the game. The first form is a **test of the quality bar**. Ziyue judges it before we scale.
 - Blender is not confirmed installed in the cloud environment. First task: check, or run the pipeline on Ziyue's PC.
 

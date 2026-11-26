@@ -2,7 +2,9 @@
 
 This folder builds the first quality-test model. The brief is `docs/art/WOLF_BRIEF.md`.
 
-## Status: first pass, not final quality
+## Status: realistic reference only. The art direction changed to a stylized, low-poly look (see `docs/art/WOLF_BRIEF.md`). The model in `out/` is the old realistic version and will be replaced.
+
+## Old status: first pass, not final quality
 - The body is a generated mesh (Blender Skin modifier, voxel remesh, smoothing). It has a real rig and three looping animations, but it is not a hand-sculpted model.
 - Fur is Blender hair particles. It is for previews only. It does not export to Unreal. The game needs fur cards or Unreal Groom, made later.
 - No UV unwrap or baked textures yet. Colors come from a procedural shader.

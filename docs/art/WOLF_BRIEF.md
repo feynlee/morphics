@@ -1,18 +1,19 @@
 # Wolf art brief (form.wolf)
 
-Status: draft for Ziyue to approve. Style is **realistic, no cartoon exaggeration** (decided 2026-11-26). All art is original.
+Status: draft v2 for Ziyue to approve. Style is **stylized, closer to Palworld** (decided 2026-11-26, replacing the realistic version). All art is original.
+
+**What changed after the first realistic Wolf:** the realistic Wolf used dense hair particles and a smooth high-detail body. That is a lot of data, and fur does not export to the game. The Wolf is now rebuilt as a low-poly stylized model with painted textures. The old realistic version stays in the repo as a reference render.
 
 ## Role
 The plain starter for the four-legged beast family (`base.quadruped.medium`). It sets the quality bar. Starters are plain and basic. Themed variants come later.
 
 ## Look
-- **Anatomy:** a grey wolf with real proportions. Deep narrow chest, long legs, a long muzzle, a medium head, upright ears, a bushy tail carried low. Shoulder height about 0.8 m in the world scale used for the body type (a large dog to a large wolf).
-- **Silhouette:** clear from behind and from the side. The player sees it from behind most of the time, so the back, ears and tail must read well.
-- **Coat:** layered fur. A grey-brown saddle over the back and flanks, darker on the spine and tail tip, a light cream on the cheeks, chest, belly and inner legs. Soft fur cards or strands on the neck ruff and tail. Short coat on the legs and face.
-- **Colors (default skin):** coat `#8A7D6E`, dark `#4A4038`, light `#E6DCCB`, eyes amber `#E8B64A`, nose near black. Muted and natural. No glow, no saturated accent.
-- **Face:** narrow eyes, a dark nose, a visible mouth line. A calm, alert expression. No exaggerated features.
-- **Materials:** fur shader with root to tip color, subsurface hint on ears, wet gloss on the nose and eyes. Roughness high on the coat.
-- **Detail budget (first pass):** body about 20k triangles plus fur cards. Final in Unreal with Nanite where possible. Textures 2K, in material instances so skins swap cleanly.
+- **Shape:** a wolf with friendly, readable proportions. A larger head (about one third of the body length), a short strong muzzle, big upright ears, thicker legs, a chunky body, and a big bushy tail. Clear silhouette from behind and from the side. No gore or harsh features, because the audience is teen and up and the look is friendly.
+- **Surface:** clean simple forms with soft bevels. Fur is painted into the texture as soft clumps and strokes. A few low-poly tufts on the neck ruff and the tail tip.
+- **Colors (default skin):** a grey-brown coat `#8A7D6E` with a darker saddle `#4A4038`, cream chest, belly, muzzle and inner legs `#E6DCCB`, amber eyes `#E8B64A`, near-black nose. Muted and natural so the starter stays plain. Themed variants carry the louder colors later.
+- **Face:** large eyes with a simple highlight, a clear nose and mouth line, a calm alert expression.
+- **Material:** one material. Base color 2K, normal map 1K. Stylized shading with a soft rim light. No fur shader and no Groom.
+- **Budget:** about 10,000 triangles at LOD0, plus 3 lower levels of detail. About 45 bones from the shared quadruped skeleton.
 
 ## Rig (body type skeleton `base.quadruped`)
 Root, pelvis, spine (4), chest, neck (2), head, jaw, ears (2), tail (5), four legs (upper, lower, paw, toe). Digitigrade hind legs. All quadruped morphs retarget to this skeleton.

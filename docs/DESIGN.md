@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.35)
+# Morphics: Design Doc (v0.36)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -10,11 +10,12 @@ Each form has its own look, skills, and abilities.
 Forms and skins are the main product the studio sells. Visual quality is the key selling point.
 
 ## 1b. Visual style
-- **Target look: realistic-stylized, similar in feel to ARK: Survival Ascended.** That means detailed creatures with believable anatomy, rich lighting, grounded materials, and strong atmosphere.
-- **Decided by Ziyue (2026-11-26): build more realistic.** The earlier "slightly cartoonier, like Palworld" option is dropped. Use believable anatomy and proportions, real fur and skin materials, and grounded colors. No cartoon exaggeration: no oversized heads or eyes, no rubbery shapes. Stylization comes from clean readable silhouettes and strong lighting, not from caricature.
+- **Decided by Ziyue (2026-11-26, after seeing the first Wolf): a stylized look closer to Palworld.** This reverses the earlier "more realistic" decision. Creatures have a bold readable silhouette, friendly proportions (a larger head, thicker limbs), simple clean shapes, and hand-painted style textures. The reason is data: the realistic Wolf with real fur needed dense geometry and fur strands, which is a lot of data for little gain. **Detail comes from textures, not from triangles or strands.**
+- **Per-form budget (proposal, Ziyue to confirm):** a medium creature is about 8,000 to 12,000 triangles at the top level of detail, with 3 lower levels of detail. One material per form, with a 2K base color texture (1K for small forms) and a 1K normal map. No dense fur, no hair strands, no Groom. Fur is painted into the texture. A few simple low-poly tufts are allowed on the neck and tail for the silhouette. Skins reuse the same mesh and swap textures and material parameters, so a skin costs texture data only.
+- Mood and lighting stay rich and warm (Unreal Lumen and soft shadows), because the lighting is what makes simple shapes look good. The earlier ARK: Survival Ascended look remains a mood reference only, not the model detail target.
 - **All art is original.** We use these games only as a rough guide to quality and mood. We do not copy any creature, character, name, design, texture, or asset from them or from any other game.
 - Readability first: because skins are the product, every morph needs a clear silhouette and a distinct main color (section 4b).
-- Unreal fits this look: Nanite and Lumen for detail and light, Niagara for effects, material instances for skin variants.
+- Unreal fits this look: Lumen for light, Niagara for effects, material instances for skin variants. Nanite is not required because the meshes are low poly.
 
 ## 2. Decisions and assumptions
 Decided by Ziyue:
@@ -33,7 +34,7 @@ Decided by Ziyue:
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
 - Opening: the player starts as an amorphic spirit. The spirit is for **game setup and storytelling only**, with no gameplay. The player picks a starter form during setup, so gameplay always starts in a form. Inhabiting the first form unlocks gaining more forms and morphing at will. See section 3a.
-- Visual style: **realistic-stylized, similar in feel to ARK: Survival Ascended** (detailed creatures, rich lighting, grounded materials). The look is **realistic, with no cartoon exaggeration** (decided). All art is original (section 1b).
+- Visual style: **stylized, closer to Palworld** (decided after the first Wolf), with low-poly models and texture-based detail. Rich lighting. All art is original (section 1b).
 - Starters are **very plain and basic archetypes**. Themed variants (such as Ember Fox) are farmable, not starters.
 - Roles come from a **skill tree**. Ziyue will detail it later (section 4c, pending).
 - Skins are **named after the morph** (section 4).
