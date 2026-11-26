@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Spectrum Drop (rare drop from battle)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "enemy_base",
+      "spectrum",
+      "chance",
+      "amount_min",
+      "amount_max"
+    ],
+    "properties": {
+      "enemy_base": {
+        "type": "string",
+        "description": "Top-level body type of the enemy category."
+      },
+      "spectrum": {
+        "type": "string",
+        "description": "Must be the spectrum of enemy_base. Enemies never drop another category's spectrum."
+      },
+      "chance": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 0.1,
+        "description": "Drop chance per defeated enemy. Rare: at most 10 percent. PLACEHOLDER, set by playtest."
+      },
+      "amount_min": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "amount_max": {
+        "type": "integer",
+        "minimum": 1
+      }
+    }
+  }
+}

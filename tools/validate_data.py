@@ -2,6 +2,8 @@
 """Validate data/bases, forms, skills, skins against data/schema.
 
 Needs the `jsonschema` package. Cross checks:
+- spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
+  category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
 - no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
 - every top-level body type has a spectrum from data/spectrums.json, and no two share one
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
@@ -181,6 +183,27 @@ def main():
             for currency in ("spectrum", "prisms"):
                 if currency not in unlock.get("skip", {}):
                     errors.append(f"{item['id']}: an earned form needs a {currency} skip price")
+
+    drops = json.loads((DATA / "drops.json").read_text())
+    drop_schema = json.loads((DATA / "schema" / "drop.schema.json").read_text())
+    for err in Draft202012Validator(drop_schema).iter_errors(drops):
+        errors.append(f"data/drops.json: {err.message}")
+    seen_drop = {}
+    for entry in drops:
+        root = bases.get(entry.get("enemy_base"))
+        if root is None or "parent" in root:
+            errors.append(f"data/drops.json: {entry.get('enemy_base')} is not a top-level body type")
+            continue
+        if entry.get("enemy_base") in seen_drop:
+            errors.append(f"data/drops.json: more than one drop entry for {entry['enemy_base']}")
+        seen_drop[entry["enemy_base"]] = True
+        if entry.get("spectrum") != root.get("spectrum"):
+            errors.append(f"data/drops.json: {root['id']} drops {entry.get('spectrum')}, but its spectrum is {root.get('spectrum')}")
+        if entry.get("amount_min", 1) > entry.get("amount_max", 1):
+            errors.append(f"data/drops.json: {root['id']} has amount_min above amount_max")
+    for b in bases.values():
+        if "parent" not in b and b.get("status") == "active" and b["id"] not in seen_drop:
+            errors.append(f"data/drops.json: active body type {b['id']} needs a drop entry")
 
     starters = {}
     for form in forms.values():

@@ -1,0 +1,30 @@
+[
+  {
+    "enemy_base": "base.humanoid",
+    "spectrum": "red",
+    "chance": 0.03,
+    "amount_min": 1,
+    "amount_max": 3
+  },
+  {
+    "enemy_base": "base.quadruped",
+    "spectrum": "green",
+    "chance": 0.03,
+    "amount_min": 1,
+    "amount_max": 3
+  },
+  {
+    "enemy_base": "base.bird",
+    "spectrum": "blue",
+    "chance": 0.03,
+    "amount_min": 1,
+    "amount_max": 3
+  },
+  {
+    "enemy_base": "base.biped_dino",
+    "spectrum": "amber",
+    "chance": 0.03,
+    "amount_min": 1,
+    "amount_max": 3
+  }
+]

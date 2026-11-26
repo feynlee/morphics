@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.20)
+# Morphics: Design Doc (v0.21)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -253,9 +253,9 @@ Rules:
 - A skin uses the spectrum of its body type's top level. All forms and skins under one top level share a spectrum.
 - A new top-level body type needs a new spectrum (the validator requires one, and no two share). This is one more reason a new top-level type is a big step.
 - Prisms work for anything. There is no exception: every morph, starters included, can be bought with Prisms to bypass farming (section 6).
-- Spectrums are earned by playing forms of that type and by missions that favor it (to tune). A small share of other spectrums may drop too.
+- Spectrums are earned as **rare drops from battle** against enemies of that category (section 6c), and from mission rewards of that type (to tune). Enemies never drop another category's spectrum.
 - **No conversion (decided): players cannot convert one spectrum into another.** There is no exchange, trade, or swap item, in the market or anywhere else. Each spectrum is only earned by play and only spent on its own form type. Prisms are the one currency that works across types, and they are bought with money, not made from spectrums. The validator rejects any data file that defines a conversion.
-- Consequence: a player must play forms of a type to earn that type's spectrum. This pushes players to try many form types. It also means a player with a lot of one spectrum cannot spend it on another type, so Prisms are the way to skip farming across types.
+- Consequence: a player must fight enemies of a category to earn that category's spectrum. This pushes players to try many form types. It also means a player with a lot of one spectrum cannot spend it on another type, so Prisms are the way to skip farming across types.
 - UI: each spectrum shows as a colored bar or gem. Prisms show as a white prism that splits into all the colors.
 
 | Item | How to get it |
@@ -291,6 +291,33 @@ Revenue levers (in order of priority):
 4. Supporter or starter packs.
 
 Platform notes: Steam is the storefront. Steam takes a share of sales, so plan bundle prices with that fee. See `ENGINE_AND_STEAM.md`. Currency sold on Steam must follow Steam's rules for virtual items. Check the current rules before the store page goes live.
+
+## 6c. Spectrum drops (battle)
+Decided by Ziyue: players can **earn Spectrums as rare drops by defeating a category of morph in battle**.
+
+**Rules**
+- Enemies belong to a **morph category**: a top-level body type (humanoid, four-legged beast, bird, bipedal dinosaur). Enemy design follows the same body-type tree.
+- Defeating an enemy of a category can drop **that category's own Spectrum color**. Humanoid enemies drop Red, four-legged beasts drop Green, birds drop Blue, bipedal dinosaurs drop Amber.
+- Drops are **rare**. The validator caps the drop chance at 10 percent per defeated enemy.
+- Enemies never drop another category's Spectrum. (Spectrums cannot be converted, so battle is the way to earn each one.)
+- A drop shows as a small glowing colored mote the player picks up. In co-op, each player gets their own drop, so players do not compete for them.
+- Drops are tied to battle, not to the form the player is wearing. A player can earn Green from four-legged beasts while playing as a humanoid.
+- Spectrums are also in mission rewards by type (see section 6). Battle drops are the "rare, exciting" source.
+
+**Why this design**
+- It gives a reason to fight each kind of enemy, so missions need variety in enemy categories.
+- A player who wants a Green form fights four-legged beasts. The choice of mission or region becomes a farming choice, which supports the "always something to farm" goal.
+
+**Data** (`data/drops.json`, checked by the validator)
+- One entry per top-level body type: `enemy_base`, `spectrum`, `chance`, `amount_min`, `amount_max`.
+- The spectrum must be the category's own spectrum. Every active body type needs an entry. The amount range must be valid.
+- Example: `{ "enemy_base": "base.quadruped", "spectrum": "green", "chance": 0.03, "amount_min": 1, "amount_max": 3 }`.
+
+**Tuning: needs playtesting**
+- The current numbers (3 percent chance, 1 to 3 per drop) are **placeholders**, not tested. Drop rates must be set by playtest.
+- Things to test: how long it takes to earn a typical skip price, how it feels to wait for a rare drop, and whether it matches the Prisms prices (section 6).
+- Possible tuning tools, to decide later: higher chance from elite or boss enemies, a "pity" counter so a long dry streak ends in a drop, and a per-mission cap. Any pity rule must be visible to the player (no hidden odds).
+- Teen+ care: show drop chances in the game's info screen.
 
 ## 6b. In-game market
 Decided by Ziyue: there is an **in-game market that players can use from the beginning**, where they can buy any morph they like.
