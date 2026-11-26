@@ -3,7 +3,7 @@
   "name": "Humanoid",
   "parent": "base.walker",
   "status": "active",
-  "examples": "Human, orc, elf, dwarf, gnome, halfling, ogre, giant",
+  "examples": "Human, orc, elf, dwarf, gnome, halfling, ogre, giant, werewolf",
   "rig": "rig.walker.humanoid",
   "mesh": "mesh.walker.humanoid",
   "skeleton": "",

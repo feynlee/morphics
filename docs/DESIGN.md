@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.54)
+# Morphics: Design Doc (v0.55)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -234,7 +234,7 @@ Decided by Ziyue (applied in v0.50):
 - A **subcategory** is a unique **skeleton (rig), gait set, base mesh and Spectrum color**. Skins attach to the subcategory mesh. A morph is a skin plus skills on a subcategory.
 - A **size** (small, medium, large) is a scale of the subcategory mesh. It inherits the rig, gait, mesh and color, and may override a few animations.
 - A creature that flies is a Flyer, even if it can also walk. So the Gale Heron is a Flier.
-- **Movement rule (Ziyue):** if it flies, it is a Flyer, even if it can also walk. If it has legs and walks, it is a Walker. If it has fins or flippers, it is a Swimmer. So an **otter has four legs and is a Beast (Walker, Green)**, and a **seal has flippers and is a Swimmer (Blue)**. A seal needs its own swimmer subcategory later. **For now a dragon is a Flyer (Yellow)** (Ziyue). It uses the Flier subcategory, large size, until a better fit is designed.
+- **Movement rule (Ziyue):** if it flies, it is a Flyer, even if it can also walk. If it has legs and walks, it is a Walker. If it has fins or flippers, it is a Swimmer. So an **otter has four legs and is a Beast (Walker, Green)**, and a **seal has flippers and is a Swimmer (Blue)**. A seal needs its own swimmer subcategory later. **For now a dragon is a Flyer (Yellow)** (Ziyue). **A werewolf is a Humanoid (Red)** (Ziyue), so beast-people with human bodies are Humanoids. It uses the Flier subcategory, large size, until a better fit is designed.
 - Four-legged dinosaurs are large beasts. Raptor and Tyrant are counted as beasts for now. All of these are Green.
 
 ```
@@ -590,7 +590,7 @@ Decided questions were removed. Still open:
 - **Swimmer order:** decided. The first swimmer is the Shark. Which swimmer subcategory comes next (fish, sea mammals, crustaceans, eels) is open and not urgent.
 - **Otter subcategory:** decided that an otter is a Beast. Which subcategory? Canine is the nearest, but an otter's bounding gait may need its own (mustelid) subcategory. For now it is listed as a provisional canine example.
 - **Hybrids:** a dragon is a Flyer for now (decided). Does it need its own Flyer subcategory later, since no flier rig has four legs? Winged humanoids and centaurs are still open.
-- **Beast-people:** is a wolf-person under the humanoid subcategory or canine?
+- **Beast-people:** decided for the werewolf (Humanoid). Other beast-people with a human body follow the same rule unless Ziyue says otherwise.
 - **Raptor and Tyrant:** Green for now. Orange or Purple later, or stay Green?
 - **Size ranges:** real heights in meters for small, medium and large, so hitboxes and skins can be checked.
 - **Build order after the proof of concept:** hoofed and shelled (they have forms), feline, or a first swimmer?
