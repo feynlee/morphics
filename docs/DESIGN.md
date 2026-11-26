@@ -37,7 +37,7 @@ Decided by Ziyue:
 - Starters are **very plain and basic archetypes**. Themed variants (such as Ember Fox) are farmable, not starters.
 - Roles come from a **skill tree**. Ziyue will detail it later (section 4c, pending).
 - Skins are **named after the morph** (section 4).
-- Skill points come from **many sources** (section 4d).
+- Skill points are **earned only, through experience and quest rewards. They are never bought with currency** (section 4d).
 - **Prism pricing is deferred.** No Prism prices are set now. Ziyue will cover it later in development (see `REMINDERS.md`).
 - Retention goal: a "continual playthrough" game. There is always something new to unlock or farm, so the player's investment feels worthwhile.
 
