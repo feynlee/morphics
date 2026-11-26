@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.48)
+# Morphics: Design Doc (v0.49)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -297,7 +297,7 @@ Mapping of the existing groups under the three top categories (new ids are propo
 | Walker | Shelled | Green | `base.quadruped.large` | `base.walker.shelled` (large) | Stone Tortoise |
 | Walker | Feline, Heavy beast | Green | new | `base.walker.feline`, `base.walker.heavy` | none (planned) |
 | Walker | Four-legged dinosaur | Green | new | `base.walker.quadruped_dino` | none (planned) |
-| Walker | Raptor, Tyrant | not assigned | `base.biped_dino.*` | `base.walker.raptor`, `base.walker.tyrant` | Raptor (planned) |
+| Walker | Raptor, Tyrant | Green | `base.biped_dino.*` | `base.walker.raptor`, `base.walker.tyrant` | Raptor (planned) |
 | Flyer | Flier | Yellow | `base.bird.medium`, `.large` | `base.flyer.flier` (medium, large) | Hawk (planned) |
 | Flyer | Wader (heron) | Yellow | `base.bird.medium` | `base.flyer.wader` (medium) | Gale Heron (planned) |
 | Swimmer | none yet | Blue | none | `base.swimmer.*` | none |
@@ -307,11 +307,11 @@ Decided (Ziyue): a creature that flies is a Flyer, even if it can also walk. So 
 Open points for Ziyue:
 - Swimmers have no forms yet. Fish, sea creatures and other swimmers would each need their own subcategory.
 - Dragons, winged humanoids and centaurs mix movement types. A hybrid goes under the domain of its main gait, and a creature that flies is a Flyer.
-- Orange and Purple stay **reserved and unused** for expansion (Ziyue). Raptor and Tyrant therefore need one of the four colors in use. Not decided. Recommended: Green, as with four-legged dinosaurs.
+- Orange and Purple stay **reserved and unused** for expansion (Ziyue). Raptor and Tyrant are considered beasts for now (Ziyue), so they are Green.
 
 Spectrum colors (Ziyue): color is assigned **per subcategory**, not per top category or family.
 - Six colors: red, orange, yellow, green, blue, purple. `data/spectrums.json` stays the source of truth.
-- Red: Humanoid. Green: the Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur). Yellow: all Flyer subcategories. Blue: all Swimmer subcategories. Orange and Purple: reserved for expansion, unused for now.
+- Red: Humanoid. Green: the Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur, Raptor, Tyrant). Yellow: all Flyer subcategories. Blue: all Swimmer subcategories. Orange and Purple: reserved for expansion, unused for now.
 - Several subcategories may share a color. The old family groups (Humanoid, Beast, Winged creature, Bipedal dinosaur) are dropped as a level.
 - Wild drops follow the subcategory color: an enemy of a subcategory (any size) drops that subcategory's color. `data/drops.json` has one entry per color in use. The validator checks that each active subcategory's color has an entry and that the entry drops that same color.
 
