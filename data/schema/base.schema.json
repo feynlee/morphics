@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Body Type (a node in the tree: top category > subcategory > size)",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "A child id is its parent's id plus one more segment. Top categories are base.walker, base.swimmer, base.flyer."
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "examples": {
+      "type": "string"
+    },
+    "parent": {
+      "type": "string",
+      "description": "Parent base id. Absent on a top category."
+    },
+    "status": {
+      "enum": [
+        "active",
+        "planned"
+      ]
+    },
+    "skeleton": {
+      "type": "string",
+      "description": "Unreal asset path. Set on a subcategory only. Sizes inherit it."
+    },
+    "required_animations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "Set on a subcategory only. Sizes inherit it."
+    },
+    "proportion_notes": {
+      "type": "string",
+      "description": "Optional. How this size differs from its subcategory."
+    },
+    "animation_overrides": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Animations this size replaces. Every other animation is inherited from its subcategory. Names must be in the subcategory's required_animations."
+    },
+    "spectrum": {
+      "type": "string",
+      "description": "Spectrum id (a color in data/spectrums.json). Set on a subcategory only. Sizes inherit it. Several subcategories may share one color."
+    },
+    "rig": {
+      "type": "string",
+      "pattern": "^rig\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "Rig id. Set on a subcategory only. Sizes inherit it. It is the skeleton contract for retargeting."
+    },
+    "mesh": {
+      "type": "string",
+      "pattern": "^mesh\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "Base mesh id. Set on a subcategory only. Skins attach to this mesh."
+    },
+    "gait": {
+      "type": "string",
+      "description": "The gait set of this subcategory. Set on a subcategory only."
+    },
+    "height": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis",
+        "reference_m",
+        "variation_pct",
+        "min_m",
+        "max_m"
+      ],
+      "description": "Optional. Set on a size. The real height range, in meters, that the size represents. Hitboxes and skins are checked against it.",
+      "properties": {
+        "basis": {
+          "enum": [
+            "standing",
+            "shoulder",
+            "length",
+            "wingspan"
+          ]
+        },
+        "reference_m": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "description": "Average heights, for example male and female."
+        },
+        "variation_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50,
+          "description": "Allowed variation around the references, plus or minus, in percent."
+        },
+        "min_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    }
+  }
+}

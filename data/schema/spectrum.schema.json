@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Spectrum (soft currency color)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "color"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z]+$"
+      },
+      "name": {
+        "type": "string"
+      },
+      "color": {
+        "type": "string",
+        "pattern": "^#[0-9A-Fa-f]{6}$"
+      }
+    },
+    "additionalProperties": false
+  },
+  "description": "Spectrums cannot be converted into each other, so a spectrum has no exchange or conversion fields."
+}

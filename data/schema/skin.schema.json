@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Skin (cosmetic only, made for one base)",
+  "type": "object",
+  "required": [
+    "id",
+    "base",
+    "name",
+    "look",
+    "unlock"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^skin\\.[a-z0-9_.]+$"
+    },
+    "base": {
+      "type": "string",
+      "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "Body-type node this skin is made for. By default (fit: node) it fits this node only."
+    },
+    "form_id": {
+      "type": "string",
+      "description": "Optional. Makes the skin exclusive to one form (for example its default look)."
+    },
+    "name": {
+      "type": "string"
+    },
+    "look": {
+      "type": "object"
+    },
+    "sfx_pack": {
+      "type": "string"
+    },
+    "unlock": {
+      "type": "object",
+      "required": [
+        "type",
+        "cost"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "free",
+            "earn",
+            "buy",
+            "pass",
+            "event"
+          ]
+        },
+        "cost": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "For earn: the farming target (fragments or spectrum to collect)."
+        },
+        "skip": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "prisms"
+          ],
+          "properties": {
+            "prisms": {
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "const": "deferred"
+                }
+              ],
+              "description": "Prisms price to skip farming (market purchase). 'deferred' until Prism pricing is set. Spectrums never skip farming."
+            }
+          },
+          "description": "Market price to skip farming. Required when type is earn. Prisms only."
+        }
+      }
+    },
+    "fit": {
+      "enum": [
+        "node",
+        "subtree"
+      ],
+      "default": "node",
+      "description": "node (default, narrow): fits forms whose body type is exactly `base`. subtree (broad, opt-in): fits `base` and every node below it. Use subtree only for shared patterns."
+    }
+  }
+}

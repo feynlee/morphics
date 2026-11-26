@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Spectrum Drop (rare drop from wild enemies only)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "source",
+      "match",
+      "spectrum",
+      "chance",
+      "amount_min",
+      "amount_max"
+    ],
+    "properties": {
+      "source": {
+        "const": "wild_enemy",
+        "description": "Spectrums drop only from regular enemies found in the wild, never from bosses."
+      },
+      "match": {
+        "const": "subcategory_color",
+        "description": "The entry matches the color of the enemy's subcategory. Every size under that subcategory drops the same Spectrum."
+      },
+      "spectrum": {
+        "type": "string",
+        "description": "A color in data/spectrums.json. Wild enemies of a subcategory with this color drop it. Enemies never drop another color."
+      },
+      "chance": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 0.1,
+        "description": "Drop chance per defeated enemy. Rare: at most 10 percent. PLACEHOLDER, set by playtest."
+      },
+      "amount_min": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "amount_max": {
+        "type": "integer",
+        "minimum": 1
+      }
+    }
+  }
+}

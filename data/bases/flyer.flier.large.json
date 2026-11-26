@@ -1,0 +1,16 @@
+{
+  "id": "base.flyer.flier.large",
+  "name": "Large flier",
+  "parent": "base.flyer.flier",
+  "status": "planned",
+  "examples": "Eagle, roc, dragon (for now)",
+  "height": {
+    "basis": "wingspan",
+    "reference_m": {
+      "average": 2.3
+    },
+    "variation_pct": 10,
+    "min_m": 2.07,
+    "max_m": 2.53
+  }
+}

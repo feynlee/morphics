@@ -1,0 +1,14 @@
+{
+  "id": "skill.wanderer.guard_strike",
+  "name": "Guard Strike",
+  "type": "attack",
+  "cooldown": 5,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 16
+    }
+  ],
+  "vfx": ""
+}

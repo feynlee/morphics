@@ -1,0 +1,14 @@
+{
+  "id": "skill.prism_stag.basic",
+  "name": "Stag Strike",
+  "type": "attack",
+  "cooldown": 0.7,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 7
+    }
+  ],
+  "vfx": ""
+}

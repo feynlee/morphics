@@ -1,0 +1,16 @@
+{
+  "id": "base.walker.feline.medium",
+  "name": "Medium feline",
+  "parent": "base.walker.feline",
+  "status": "planned",
+  "examples": "Lion, panther",
+  "height": {
+    "basis": "shoulder",
+    "reference_m": {
+      "average": 1.0
+    },
+    "variation_pct": 10,
+    "min_m": 0.9,
+    "max_m": 1.1
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "note": "Skill points are earned only through experience and quest rewards, never bought. Two tracks: the spirit track (player) gives spirit points, spendable on any owned morph. The morph track gives morph points, earned only while playing that morph and spendable only on that morph.",
+  "sources": [
+    {
+      "id": "xp.level_up",
+      "name": "Player (spirit) level-up",
+      "channel": "experience",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "xp.form_mastery",
+      "name": "Morph level-up (morph experience)",
+      "channel": "experience",
+      "repeatable": true,
+      "track": "morph",
+      "awards": "morph_points",
+      "requires_active_morph": true
+    },
+    {
+      "id": "quest.mission_clear",
+      "name": "Mission clear",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.optional_objective",
+      "name": "Optional mission objective",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.boss_first_defeat",
+      "name": "First defeat of a boss",
+      "channel": "quest",
+      "repeatable": false,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.category_first_defeat",
+      "name": "First defeat of an enemy category",
+      "channel": "quest",
+      "repeatable": false,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.discovery",
+      "name": "Discovery or exploration",
+      "channel": "quest",
+      "repeatable": false,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.challenge",
+      "name": "Challenge or achievement",
+      "channel": "quest",
+      "repeatable": false,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.daily",
+      "name": "Daily goal",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.weekly",
+      "name": "Weekly goal",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.coop_milestone",
+      "name": "Co-op milestone",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.morph_earned",
+      "name": "First time a morph is earned in play (farmed)",
+      "channel": "quest",
+      "repeatable": false,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.gear_earned",
+      "name": "First time a piece of gear is earned in play",
+      "channel": "quest",
+      "repeatable": false,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.collection_milestone",
+      "name": "Collection milestone (earned items only)",
+      "channel": "quest",
+      "repeatable": false,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.event",
+      "name": "Event quest",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.pass_free_track",
+      "name": "Free pass track reward (no purchase needed)",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "spirit",
+      "awards": "spirit_points",
+      "requires_active_morph": false
+    },
+    {
+      "id": "quest.morph_challenge",
+      "name": "Morph challenge (a goal done while playing one morph)",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "morph",
+      "awards": "morph_points",
+      "requires_active_morph": true
+    },
+    {
+      "id": "quest.morph_objective",
+      "name": "Morph mission objective (done with that morph)",
+      "channel": "quest",
+      "repeatable": true,
+      "track": "morph",
+      "awards": "morph_points",
+      "requires_active_morph": true
+    }
+  ]
+}

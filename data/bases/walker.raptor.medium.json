@@ -1,0 +1,16 @@
+{
+  "id": "base.walker.raptor.medium",
+  "name": "Medium raptor",
+  "parent": "base.walker.raptor",
+  "status": "planned",
+  "examples": "Raptor",
+  "height": {
+    "basis": "standing",
+    "reference_m": {
+      "average": 1.5
+    },
+    "variation_pct": 10,
+    "min_m": 1.35,
+    "max_m": 1.65
+  }
+}

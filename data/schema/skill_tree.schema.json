@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Skill Tree (one shared tree)",
+  "type": "object",
+  "required": [
+    "status",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "status": {
+      "enum": [
+        "placeholder",
+        "designed"
+      ]
+    },
+    "note": {
+      "type": "string"
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "region"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^node\\.[a-z0-9_]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string",
+            "description": "Area of the tree. Regions suggest roles but do not limit players."
+          },
+          "restricted_to_base": {
+            "type": "string",
+            "description": "Only a morph whose body type is this node, or below it in the body-type tree, can invest. Any points can pay."
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

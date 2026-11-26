@@ -1,0 +1,53 @@
+{
+  "id": "form.raptor",
+  "name": "Raptor",
+  "lore": "A plain raptor. The starter bipedal dinosaur.",
+  "role": "Striker",
+  "rarity": "Common",
+  "base": "base.walker.raptor.medium",
+  "base_stats": {
+    "hp": 100,
+    "speed": 9,
+    "power": 9,
+    "defense": 4
+  },
+  "skills": [
+    "skill.raptor.basic",
+    "skill.raptor.lunge",
+    "skill.raptor.hiss",
+    "skill.raptor.rake"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.raptor.default",
+  "unlock": {
+    "type": "earn",
+    "craft": {
+      "morphic": "Raptor Morphic",
+      "source_boss": "boss.raptor",
+      "components": [
+        {
+          "item": "item.raptor.claw",
+          "count": 2
+        },
+        {
+          "item": "item.raptor.tooth",
+          "count": 2
+        },
+        {
+          "item": "item.raptor.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "green",
+        "amount": 50
+      }
+    },
+    "skip": {
+      "prisms": "deferred"
+    }
+  },
+  "starter": true,
+  "tree_start": "node.strike_1"
+}

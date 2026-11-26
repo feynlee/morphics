@@ -1,0 +1,121 @@
+[
+  {
+    "id": "loot.boss.ember_fox.materials",
+    "entries": [
+      {
+        "item": "item.ember_fox.ear",
+        "weight": 50
+      },
+      {
+        "item": "item.ember_fox.tail",
+        "weight": 25
+      },
+      {
+        "item": "item.ember_fox.essence",
+        "weight": 25
+      }
+    ]
+  },
+  {
+    "id": "loot.boss.gale_heron.materials",
+    "entries": [
+      {
+        "item": "item.gale_heron.plume",
+        "weight": 60
+      },
+      {
+        "item": "item.gale_heron.beak",
+        "weight": 20
+      },
+      {
+        "item": "item.gale_heron.essence",
+        "weight": 20
+      }
+    ]
+  },
+  {
+    "id": "loot.boss.hawk.materials",
+    "entries": [
+      {
+        "item": "item.hawk.feather",
+        "weight": 60
+      },
+      {
+        "item": "item.hawk.talon",
+        "weight": 20
+      },
+      {
+        "item": "item.hawk.essence",
+        "weight": 20
+      }
+    ]
+  },
+  {
+    "id": "loot.boss.raptor.materials",
+    "entries": [
+      {
+        "item": "item.raptor.claw",
+        "weight": 40
+      },
+      {
+        "item": "item.raptor.tooth",
+        "weight": 40
+      },
+      {
+        "item": "item.raptor.essence",
+        "weight": 20
+      }
+    ]
+  },
+  {
+    "id": "loot.boss.stone_tortoise.materials",
+    "entries": [
+      {
+        "item": "item.stone_tortoise.shell_shard",
+        "weight": 60
+      },
+      {
+        "item": "item.stone_tortoise.claw",
+        "weight": 20
+      },
+      {
+        "item": "item.stone_tortoise.essence",
+        "weight": 20
+      }
+    ]
+  },
+  {
+    "id": "loot.boss.wanderer.materials",
+    "entries": [
+      {
+        "item": "item.wanderer.charm",
+        "weight": 50
+      },
+      {
+        "item": "item.wanderer.cloth",
+        "weight": 25
+      },
+      {
+        "item": "item.wanderer.essence",
+        "weight": 25
+      }
+    ]
+  },
+  {
+    "id": "loot.boss.wolf.materials",
+    "entries": [
+      {
+        "item": "item.wolf.fang",
+        "weight": 50
+      },
+      {
+        "item": "item.wolf.pelt",
+        "weight": 25
+      },
+      {
+        "item": "item.wolf.essence",
+        "weight": 25
+      }
+    ]
+  }
+]

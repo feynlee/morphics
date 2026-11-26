@@ -1,0 +1,14 @@
+{
+  "id": "skill.ember_fox.dash",
+  "name": "Fox Dash",
+  "type": "move",
+  "cooldown": 4,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "push",
+      "amount": 6
+    }
+  ],
+  "vfx": ""
+}

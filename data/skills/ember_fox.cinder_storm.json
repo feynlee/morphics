@@ -1,0 +1,14 @@
+{
+  "id": "skill.ember_fox.cinder_storm",
+  "name": "Cinder Storm",
+  "type": "attack",
+  "cooldown": 40,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 48
+    }
+  ],
+  "vfx": ""
+}

@@ -1,0 +1,26 @@
+{
+  "id": "base.walker.hoofed",
+  "name": "Hoofed",
+  "parent": "base.walker",
+  "status": "active",
+  "examples": "Stag, deer, horse",
+  "rig": "rig.walker.hoofed",
+  "mesh": "mesh.walker.hoofed",
+  "skeleton": "",
+  "gait": "Long legs, trot and gallop.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "green"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "base.walker.feline",
+  "name": "Feline",
+  "parent": "base.walker",
+  "status": "planned",
+  "examples": "Lynx, lion, panther",
+  "rig": "rig.walker.feline",
+  "mesh": "mesh.walker.feline",
+  "skeleton": "",
+  "gait": "Stalk and pounce with a very flexible spine.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "green"
+}

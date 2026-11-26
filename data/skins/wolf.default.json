@@ -1,0 +1,13 @@
+{
+  "id": "skin.wolf.default",
+  "base": "base.walker.canine.medium",
+  "name": "Wolf",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}

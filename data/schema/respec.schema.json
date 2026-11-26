@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill tree respec cost",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "cost",
+    "rules"
+  ],
+  "properties": {
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "spectrum_color",
+        "amount",
+        "status"
+      ],
+      "properties": {
+        "currency": {
+          "enum": [
+            "spectrum"
+          ],
+          "description": "Respec is paid in Spectrums (likely, decided by Ziyue)."
+        },
+        "spectrum_color": {
+          "enum": [
+            "morph_own"
+          ],
+          "description": "Confirmed by Ziyue: the respecced morph's own Spectrum."
+        },
+        "amount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "description": "null while the status is pending."
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "set"
+          ]
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "set"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

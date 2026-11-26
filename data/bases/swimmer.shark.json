@@ -1,0 +1,27 @@
+{
+  "id": "base.swimmer.shark",
+  "name": "Shark",
+  "parent": "base.swimmer",
+  "status": "planned",
+  "examples": "Reef shark, great white, hammerhead",
+  "rig": "rig.swimmer.shark",
+  "mesh": "mesh.swimmer.shark",
+  "skeleton": "",
+  "gait": "Side-to-side tail sweep, constant forward swimming, turns by banking.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "blue",
+  "description": "The first Swimmer subcategory (Ziyue)."
+}

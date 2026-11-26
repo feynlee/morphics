@@ -1,0 +1,27 @@
+{
+  "id": "base.walker.raptor",
+  "name": "Raptor",
+  "parent": "base.walker",
+  "status": "planned",
+  "examples": "Raptor",
+  "rig": "rig.walker.raptor",
+  "mesh": "mesh.walker.raptor",
+  "skeleton": "",
+  "gait": "Two-legged sprint with tail balance.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "green",
+  "description": "Two strong legs, a tail, small arms. Counted as a beast for now."
+}

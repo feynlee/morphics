@@ -1,0 +1,27 @@
+{
+  "id": "base.flyer.flier",
+  "name": "Flier",
+  "parent": "base.flyer",
+  "status": "planned",
+  "examples": "Hawk, eagle, roc, dragon (for now)",
+  "rig": "rig.flyer.flier",
+  "mesh": "mesh.flyer.flier",
+  "skeleton": "",
+  "gait": "Flap, glide and dive. Short legs for perching.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "yellow",
+  "description": "A winged creature that usually stands and walks on two legs. It has two wings."
+}

@@ -1,0 +1,53 @@
+{
+  "id": "form.ember_fox",
+  "name": "Ember Fox",
+  "lore": "Fast, hits hard, low defense.",
+  "role": "Striker",
+  "rarity": "Common",
+  "base": "base.walker.canine.small",
+  "base_stats": {
+    "hp": 100,
+    "speed": 8,
+    "power": 12,
+    "defense": 4
+  },
+  "skills": [
+    "skill.ember_fox.basic",
+    "skill.ember_fox.dash",
+    "skill.ember_fox.flame_burst",
+    "skill.ember_fox.cinder_storm"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.ember_fox.default",
+  "unlock": {
+    "type": "earn",
+    "craft": {
+      "morphic": "Ember Fox Morphic",
+      "source_boss": "boss.ember_fox",
+      "components": [
+        {
+          "item": "item.ember_fox.ear",
+          "count": 2
+        },
+        {
+          "item": "item.ember_fox.tail",
+          "count": 1
+        },
+        {
+          "item": "item.ember_fox.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "green",
+        "amount": 80
+      }
+    },
+    "skip": {
+      "prisms": "deferred"
+    }
+  },
+  "starter": false,
+  "tree_start": "node.strike_2"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "skin.wanderer.default",
+  "base": "base.walker.humanoid.medium",
+  "name": "Wanderer",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}

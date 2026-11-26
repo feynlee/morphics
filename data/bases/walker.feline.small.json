@@ -1,0 +1,16 @@
+{
+  "id": "base.walker.feline.small",
+  "name": "Small feline",
+  "parent": "base.walker.feline",
+  "status": "planned",
+  "examples": "Lynx, wildcat",
+  "height": {
+    "basis": "shoulder",
+    "reference_m": {
+      "average": 0.6
+    },
+    "variation_pct": 10,
+    "min_m": 0.54,
+    "max_m": 0.66
+  }
+}

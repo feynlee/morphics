@@ -1,0 +1,16 @@
+{
+  "id": "base.walker.humanoid.short",
+  "name": "Short humanoid",
+  "parent": "base.walker.humanoid",
+  "status": "active",
+  "examples": "Dwarf, gnome, halfling",
+  "height": {
+    "basis": "standing",
+    "reference_m": {
+      "average": 1.2
+    },
+    "variation_pct": 10,
+    "min_m": 1.08,
+    "max_m": 1.32
+  }
+}

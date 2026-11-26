@@ -1,0 +1,303 @@
+{
+  "status": "placeholder",
+  "note": "Placeholder layout. Ziyue will give the detailed tree design. Only the rules are real: one shared tree, each form has its own start node, every node can be reached from every start, and the tree begins with body-type nodes that only a matching body type can invest in (any points can buy them).",
+  "nodes": [
+    {
+      "id": "node.origin",
+      "name": "Origin",
+      "region": "center"
+    },
+    {
+      "id": "node.guard_1",
+      "name": "Guard 1",
+      "region": "guard"
+    },
+    {
+      "id": "node.guard_2",
+      "name": "Guard 2",
+      "region": "guard"
+    },
+    {
+      "id": "node.strike_1",
+      "name": "Strike 1",
+      "region": "strike"
+    },
+    {
+      "id": "node.strike_2",
+      "name": "Strike 2",
+      "region": "strike"
+    },
+    {
+      "id": "node.support_1",
+      "name": "Support 1",
+      "region": "support"
+    },
+    {
+      "id": "node.support_2",
+      "name": "Support 2",
+      "region": "support"
+    },
+    {
+      "id": "node.scout_1",
+      "name": "Scout 1",
+      "region": "scout"
+    },
+    {
+      "id": "node.scout_2",
+      "name": "Scout 2",
+      "region": "scout"
+    },
+    {
+      "id": "node.control_1",
+      "name": "Control 1",
+      "region": "control"
+    },
+    {
+      "id": "node.control_2",
+      "name": "Control 2",
+      "region": "control"
+    },
+    {
+      "id": "node.base_flyer_flier_large",
+      "name": "Body type: large flier",
+      "region": "base",
+      "restricted_to_base": "base.flyer.flier.large"
+    },
+    {
+      "id": "node.base_flyer_flier_medium",
+      "name": "Body type: medium flier",
+      "region": "base",
+      "restricted_to_base": "base.flyer.flier.medium"
+    },
+    {
+      "id": "node.base_flyer_wader_medium",
+      "name": "Body type: medium wader",
+      "region": "base",
+      "restricted_to_base": "base.flyer.wader.medium"
+    },
+    {
+      "id": "node.base_walker_canine_medium",
+      "name": "Body type: medium canine",
+      "region": "base",
+      "restricted_to_base": "base.walker.canine.medium"
+    },
+    {
+      "id": "node.base_walker_canine_small",
+      "name": "Body type: small canine",
+      "region": "base",
+      "restricted_to_base": "base.walker.canine.small"
+    },
+    {
+      "id": "node.base_walker_feline_medium",
+      "name": "Body type: medium feline",
+      "region": "base",
+      "restricted_to_base": "base.walker.feline.medium"
+    },
+    {
+      "id": "node.base_walker_feline_small",
+      "name": "Body type: small feline",
+      "region": "base",
+      "restricted_to_base": "base.walker.feline.small"
+    },
+    {
+      "id": "node.base_walker_heavy_large",
+      "name": "Body type: large heavy beast",
+      "region": "base",
+      "restricted_to_base": "base.walker.heavy.large"
+    },
+    {
+      "id": "node.base_walker_hoofed_medium",
+      "name": "Body type: medium hoofed",
+      "region": "base",
+      "restricted_to_base": "base.walker.hoofed.medium"
+    },
+    {
+      "id": "node.base_walker_humanoid_large",
+      "name": "Body type: large humanoid",
+      "region": "base",
+      "restricted_to_base": "base.walker.humanoid.large"
+    },
+    {
+      "id": "node.base_walker_humanoid_medium",
+      "name": "Body type: medium humanoid",
+      "region": "base",
+      "restricted_to_base": "base.walker.humanoid.medium"
+    },
+    {
+      "id": "node.base_walker_humanoid_short",
+      "name": "Body type: short humanoid",
+      "region": "base",
+      "restricted_to_base": "base.walker.humanoid.short"
+    },
+    {
+      "id": "node.base_walker_quadruped_dino_large",
+      "name": "Body type: large four-legged dinosaur",
+      "region": "base",
+      "restricted_to_base": "base.walker.quadruped_dino.large"
+    },
+    {
+      "id": "node.base_walker_raptor_medium",
+      "name": "Body type: medium raptor",
+      "region": "base",
+      "restricted_to_base": "base.walker.raptor.medium"
+    },
+    {
+      "id": "node.base_walker_shelled_large",
+      "name": "Body type: large shelled",
+      "region": "base",
+      "restricted_to_base": "base.walker.shelled.large"
+    },
+    {
+      "id": "node.base_walker_tyrant_large",
+      "name": "Body type: large tyrant",
+      "region": "base",
+      "restricted_to_base": "base.walker.tyrant.large"
+    },
+    {
+      "id": "node.base_swimmer_shark_medium",
+      "name": "Body type: medium shark",
+      "region": "base",
+      "restricted_to_base": "base.swimmer.shark.medium"
+    },
+    {
+      "id": "node.base_swimmer_shark_large",
+      "name": "Body type: large shark",
+      "region": "base",
+      "restricted_to_base": "base.swimmer.shark.large"
+    }
+  ],
+  "edges": [
+    [
+      "node.origin",
+      "node.guard_1"
+    ],
+    [
+      "node.origin",
+      "node.strike_1"
+    ],
+    [
+      "node.origin",
+      "node.support_1"
+    ],
+    [
+      "node.origin",
+      "node.scout_1"
+    ],
+    [
+      "node.origin",
+      "node.control_1"
+    ],
+    [
+      "node.guard_1",
+      "node.guard_2"
+    ],
+    [
+      "node.strike_1",
+      "node.strike_2"
+    ],
+    [
+      "node.support_1",
+      "node.support_2"
+    ],
+    [
+      "node.scout_1",
+      "node.scout_2"
+    ],
+    [
+      "node.control_1",
+      "node.control_2"
+    ],
+    [
+      "node.guard_2",
+      "node.strike_2"
+    ],
+    [
+      "node.strike_2",
+      "node.scout_2"
+    ],
+    [
+      "node.scout_2",
+      "node.control_2"
+    ],
+    [
+      "node.control_2",
+      "node.support_2"
+    ],
+    [
+      "node.support_2",
+      "node.guard_2"
+    ],
+    [
+      "node.origin",
+      "node.base_flyer_flier_large"
+    ],
+    [
+      "node.origin",
+      "node.base_flyer_flier_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_flyer_wader_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_canine_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_canine_small"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_feline_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_feline_small"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_heavy_large"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_hoofed_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_humanoid_large"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_humanoid_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_humanoid_short"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_quadruped_dino_large"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_raptor_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_shelled_large"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_tyrant_large"
+    ],
+    [
+      "node.origin",
+      "node.base_swimmer_shark_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_swimmer_shark_large"
+    ]
+  ]
+}

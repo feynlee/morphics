@@ -1,0 +1,14 @@
+{
+  "id": "skill.hawk.swoop",
+  "name": "Swoop",
+  "type": "attack",
+  "cooldown": 34,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 20
+    }
+  ],
+  "vfx": ""
+}

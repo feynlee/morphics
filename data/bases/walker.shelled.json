@@ -1,0 +1,26 @@
+{
+  "id": "base.walker.shelled",
+  "name": "Shelled",
+  "parent": "base.walker",
+  "status": "active",
+  "examples": "Tortoise, turtle",
+  "rig": "rig.walker.shelled",
+  "mesh": "mesh.walker.shelled",
+  "skeleton": "",
+  "gait": "Slow walk, no real run. Head and limbs pull in.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "green"
+}

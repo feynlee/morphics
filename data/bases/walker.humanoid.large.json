@@ -1,0 +1,16 @@
+{
+  "id": "base.walker.humanoid.large",
+  "name": "Large humanoid",
+  "parent": "base.walker.humanoid",
+  "status": "active",
+  "examples": "Ogre, giant",
+  "height": {
+    "basis": "standing",
+    "reference_m": {
+      "average": 2.8
+    },
+    "variation_pct": 10,
+    "min_m": 2.52,
+    "max_m": 3.08
+  }
+}

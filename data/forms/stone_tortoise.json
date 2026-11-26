@@ -1,0 +1,53 @@
+{
+  "id": "form.stone_tortoise",
+  "name": "Stone Tortoise",
+  "lore": "Slow, very tough, low damage.",
+  "role": "Tank",
+  "rarity": "Common",
+  "base": "base.walker.shelled.large",
+  "base_stats": {
+    "hp": 180,
+    "speed": 4,
+    "power": 6,
+    "defense": 12
+  },
+  "skills": [
+    "skill.stone_tortoise.basic",
+    "skill.stone_tortoise.shell_guard",
+    "skill.stone_tortoise.quake_step",
+    "skill.stone_tortoise.mountain_wall"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.stone_tortoise.default",
+  "unlock": {
+    "type": "earn",
+    "craft": {
+      "morphic": "Stone Tortoise Morphic",
+      "source_boss": "boss.stone_tortoise",
+      "components": [
+        {
+          "item": "item.stone_tortoise.shell_shard",
+          "count": 3
+        },
+        {
+          "item": "item.stone_tortoise.claw",
+          "count": 1
+        },
+        {
+          "item": "item.stone_tortoise.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "green",
+        "amount": 80
+      }
+    },
+    "skip": {
+      "prisms": "deferred"
+    }
+  },
+  "starter": false,
+  "tree_start": "node.guard_1"
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics boss drops (a roll on a crafting material loot table)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "boss",
+      "form_id",
+      "roll_chance_solo",
+      "loot_table"
+    ],
+    "properties": {
+      "boss": {
+        "type": "string",
+        "pattern": "^boss\\.[a-z0-9_]+$"
+      },
+      "form_id": {
+        "type": "string",
+        "description": "The morph whose recipe this boss feeds."
+      },
+      "roll_chance_solo": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 1,
+        "description": "Chance that the boss rolls on its crafting material loot table, in solo play. PLACEHOLDER. Multiplayer scaling is not defined."
+      },
+      "loot_table": {
+        "type": "string",
+        "description": "Id of the crafting material loot table in data/loot_tables.json. It holds only the components of the boss's morph."
+      }
+    }
+  }
+}

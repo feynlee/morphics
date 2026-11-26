@@ -1,0 +1,28 @@
+{
+  "id": "form.prism_stag",
+  "name": "Prism Stag",
+  "lore": "A pass-exclusive support form. Placeholder.",
+  "role": "Support",
+  "rarity": "Epic",
+  "base": "base.walker.hoofed.medium",
+  "base_stats": {
+    "hp": 110,
+    "speed": 7,
+    "power": 5,
+    "defense": 5
+  },
+  "skills": [
+    "skill.prism_stag.basic",
+    "skill.prism_stag.glow_pulse",
+    "skill.prism_stag.light_leap",
+    "skill.prism_stag.dawn_veil"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.prism_stag.default",
+  "unlock": {
+    "type": "pass"
+  },
+  "limited": true,
+  "tree_start": "node.support_1"
+}

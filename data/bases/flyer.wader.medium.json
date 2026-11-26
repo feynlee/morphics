@@ -1,0 +1,16 @@
+{
+  "id": "base.flyer.wader.medium",
+  "name": "Medium wader",
+  "parent": "base.flyer.wader",
+  "status": "planned",
+  "examples": "Heron",
+  "height": {
+    "basis": "standing",
+    "reference_m": {
+      "average": 1.1
+    },
+    "variation_pct": 10,
+    "min_m": 0.99,
+    "max_m": 1.21
+  }
+}

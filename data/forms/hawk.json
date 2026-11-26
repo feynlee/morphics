@@ -1,0 +1,53 @@
+{
+  "id": "form.hawk",
+  "name": "Hawk",
+  "lore": "A plain hawk. The starter winged creature.",
+  "role": "Scout",
+  "rarity": "Common",
+  "base": "base.flyer.flier.medium",
+  "base_stats": {
+    "hp": 80,
+    "speed": 10,
+    "power": 7,
+    "defense": 3
+  },
+  "skills": [
+    "skill.hawk.basic",
+    "skill.hawk.dive",
+    "skill.hawk.screech",
+    "skill.hawk.swoop"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.hawk.default",
+  "unlock": {
+    "type": "earn",
+    "craft": {
+      "morphic": "Hawk Morphic",
+      "source_boss": "boss.hawk",
+      "components": [
+        {
+          "item": "item.hawk.feather",
+          "count": 3
+        },
+        {
+          "item": "item.hawk.talon",
+          "count": 1
+        },
+        {
+          "item": "item.hawk.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "yellow",
+        "amount": 50
+      }
+    },
+    "skip": {
+      "prisms": "deferred"
+    }
+  },
+  "starter": true,
+  "tree_start": "node.scout_1"
+}

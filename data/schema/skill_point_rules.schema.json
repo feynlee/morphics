@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill point rules (two tracks, shared spirit points, no caps)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spirit_points",
+    "morph_points",
+    "base_variant_nodes"
+  ],
+  "properties": {
+    "spirit_points": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "track",
+        "spendable_on",
+        "shared_across_morphs",
+        "cap"
+      ],
+      "properties": {
+        "track": {
+          "const": "spirit"
+        },
+        "spendable_on": {
+          "const": "any_owned_morph"
+        },
+        "shared_across_morphs": {
+          "const": true
+        },
+        "cap": {
+          "const": "none"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "morph_points": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "track",
+        "spendable_on",
+        "cap"
+      ],
+      "properties": {
+        "track": {
+          "const": "morph"
+        },
+        "spendable_on": {
+          "const": "earning_morph_only"
+        },
+        "cap": {
+          "const": "none"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "base_variant_nodes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "investable_by",
+        "payable_with"
+      ],
+      "properties": {
+        "investable_by": {
+          "const": "matching_body_type_only"
+        },
+        "payable_with": {
+          "const": "any_points"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

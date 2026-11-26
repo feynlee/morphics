@@ -1,0 +1,16 @@
+{
+  "id": "base.swimmer.shark.medium",
+  "name": "Medium shark",
+  "parent": "base.swimmer.shark",
+  "status": "planned",
+  "examples": "Reef shark, hammerhead",
+  "height": {
+    "basis": "length",
+    "reference_m": {
+      "average": 2.5
+    },
+    "variation_pct": 10,
+    "min_m": 2.25,
+    "max_m": 2.75
+  }
+}

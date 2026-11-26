@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Morphics Form",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "role",
+    "rarity",
+    "base",
+    "base_stats",
+    "skills",
+    "default_skin",
+    "unlock"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^form\\.[a-z0-9_]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "lore": {
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "Tank",
+        "Striker",
+        "Support",
+        "Scout",
+        "Controller"
+      ]
+    },
+    "rarity": {
+      "enum": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary"
+      ]
+    },
+    "base_stats": {
+      "type": "object",
+      "required": [
+        "hp",
+        "speed",
+        "power",
+        "defense"
+      ],
+      "properties": {
+        "hp": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "speed": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "power": {
+          "type": "number",
+          "minimum": 0
+        },
+        "defense": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "string"
+      }
+    },
+    "passives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "model": {
+      "type": "string",
+      "description": "Unreal asset path. Empty in M1."
+    },
+    "default_skin": {
+      "type": "string",
+      "description": "Skin id for the form's default look. Must be made for the form's base."
+    },
+    "unlock": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "free",
+            "earn",
+            "buy",
+            "pass",
+            "event"
+          ]
+        },
+        "skip": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "prisms"
+          ],
+          "properties": {
+            "prisms": {
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "const": "deferred"
+                }
+              ],
+              "description": "Prisms price to skip farming (market purchase). 'deferred' until Prism pricing is set. Spectrums never skip farming."
+            }
+          },
+          "description": "Market price to skip farming. Required when type is earn. Prisms only."
+        },
+        "craft": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "morphic",
+            "source_boss",
+            "components",
+            "spectrum"
+          ],
+          "description": "Required for earn. The morph is unlocked by crafting its Morphic (a crafting currency specific to the morph) and consuming it. A Morphic is crafted from boss and dungeon drops plus a set amount of the form's own category Spectrum. All numbers are placeholders to playtest. Multiplayer scaling is not defined.",
+          "properties": {
+            "morphic": {
+              "type": "string",
+              "description": "Name of the crafted item: '<morph name> Morphic'."
+            },
+            "source_boss": {
+              "type": "string",
+              "pattern": "^boss\\.[a-z0-9_]+$",
+              "description": "The dungeon boss whose drops are the components (drop table: data/boss_drops.json)."
+            },
+            "components": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "item",
+                  "count"
+                ],
+                "properties": {
+                  "item": {
+                    "type": "string",
+                    "pattern": "^item\\.[a-z0-9_]+\\.[a-z0-9_]+$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            },
+            "spectrum": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "amount"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "description": "Spectrum spent when crafting. It must be the form's own category Spectrum."
+            }
+          }
+        }
+      }
+    },
+    "base": {
+      "type": "string",
+      "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "A node in the body-type tree. Usually a subcategory. Sets skeleton and shared animations."
+    },
+    "extra_animations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Form-specific animations on top of the base set."
+    },
+    "starter": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if the player can inhabit this form as the first form (the opening). Starter forms are never sold. The one the player picks is granted in setup. The others are earned in play (unlock type earn)."
+    },
+    "limited": {
+      "type": "boolean",
+      "default": false,
+      "description": "Limited morphs (pass or event exclusives) are NOT sold in the market by default."
+    },
+    "market_override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_by"
+      ],
+      "properties": {
+        "approved_by": {
+          "type": "string",
+          "description": "Only Ziyue Li may approve selling a limited morph in the market."
+        },
+        "note": {
+          "type": "string"
+        },
+        "prisms": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Market price in Prisms for a limited morph that Ziyue allows in the market."
+        }
+      },
+      "description": "Allows a limited morph in the market. Needs Ziyue's approval."
+    },
+    "tree_start": {
+      "type": "string",
+      "description": "Node on the shared skill tree where this form starts. Pending the final tree design."
+    }
+  }
+}

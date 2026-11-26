@@ -1,0 +1,53 @@
+{
+  "id": "form.wolf",
+  "name": "Wolf",
+  "lore": "A plain wolf. The starter beast.",
+  "role": "Striker",
+  "rarity": "Common",
+  "base": "base.walker.canine.medium",
+  "base_stats": {
+    "hp": 110,
+    "speed": 8,
+    "power": 9,
+    "defense": 5
+  },
+  "skills": [
+    "skill.wolf.basic",
+    "skill.wolf.pounce",
+    "skill.wolf.howl",
+    "skill.wolf.rend"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.wolf.default",
+  "unlock": {
+    "type": "earn",
+    "craft": {
+      "morphic": "Wolf Morphic",
+      "source_boss": "boss.wolf",
+      "components": [
+        {
+          "item": "item.wolf.fang",
+          "count": 2
+        },
+        {
+          "item": "item.wolf.pelt",
+          "count": 1
+        },
+        {
+          "item": "item.wolf.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "green",
+        "amount": 50
+      }
+    },
+    "skip": {
+      "prisms": "deferred"
+    }
+  },
+  "starter": true,
+  "tree_start": "node.strike_1"
+}

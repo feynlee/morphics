@@ -1,0 +1,21 @@
+{
+  "id": "base.walker.canine.small",
+  "name": "Small canine",
+  "parent": "base.walker.canine",
+  "status": "active",
+  "examples": "Fox, small canine",
+  "animation_overrides": [
+    "run",
+    "jump"
+  ],
+  "proportion_notes": "Light and quick. Own run and jump.",
+  "height": {
+    "basis": "shoulder",
+    "reference_m": {
+      "average": 0.38
+    },
+    "variation_pct": 10,
+    "min_m": 0.34,
+    "max_m": 0.42
+  }
+}

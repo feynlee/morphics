@@ -1,0 +1,53 @@
+{
+  "id": "form.gale_heron",
+  "name": "Gale Heron",
+  "lore": "Very fast and mobile, fragile.",
+  "role": "Scout",
+  "rarity": "Rare",
+  "base": "base.flyer.wader.medium",
+  "base_stats": {
+    "hp": 80,
+    "speed": 11,
+    "power": 8,
+    "defense": 3
+  },
+  "skills": [
+    "skill.gale_heron.basic",
+    "skill.gale_heron.wind_glide",
+    "skill.gale_heron.feather_volley",
+    "skill.gale_heron.storm_lift"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.gale_heron.default",
+  "unlock": {
+    "type": "earn",
+    "craft": {
+      "morphic": "Gale Heron Morphic",
+      "source_boss": "boss.gale_heron",
+      "components": [
+        {
+          "item": "item.gale_heron.plume",
+          "count": 3
+        },
+        {
+          "item": "item.gale_heron.beak",
+          "count": 1
+        },
+        {
+          "item": "item.gale_heron.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "yellow",
+        "amount": 80
+      }
+    },
+    "skip": {
+      "prisms": "deferred"
+    }
+  },
+  "starter": false,
+  "tree_start": "node.scout_2"
+}

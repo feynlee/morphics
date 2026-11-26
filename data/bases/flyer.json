@@ -1,0 +1,6 @@
+{
+  "id": "base.flyer",
+  "name": "Flyer",
+  "status": "planned",
+  "description": "A creature that flies, even if it can also walk. Subcategories hold the skeletons and gaits."
+}

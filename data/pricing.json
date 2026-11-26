@@ -1,0 +1,6 @@
+{
+  "prism_pricing": "deferred",
+  "note": "Ziyue will decide Prism prices later in development (before the store milestone M3). Until then no Prism price may be set in data.",
+  "prisms_use": "market_only",
+  "prisms_use_note": "Confirmed by Ziyue: Prisms are a market resource, not an in-game cost. They buy things in the market only."
+}

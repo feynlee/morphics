@@ -1,0 +1,44 @@
+[
+  {
+    "boss": "boss.ember_fox",
+    "form_id": "form.ember_fox",
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.ember_fox.materials"
+  },
+  {
+    "boss": "boss.gale_heron",
+    "form_id": "form.gale_heron",
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.gale_heron.materials"
+  },
+  {
+    "boss": "boss.hawk",
+    "form_id": "form.hawk",
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.hawk.materials"
+  },
+  {
+    "boss": "boss.raptor",
+    "form_id": "form.raptor",
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.raptor.materials"
+  },
+  {
+    "boss": "boss.stone_tortoise",
+    "form_id": "form.stone_tortoise",
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.stone_tortoise.materials"
+  },
+  {
+    "boss": "boss.wanderer",
+    "form_id": "form.wanderer",
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.wanderer.materials"
+  },
+  {
+    "boss": "boss.wolf",
+    "form_id": "form.wolf",
+    "roll_chance_solo": 0.2,
+    "loot_table": "loot.boss.wolf.materials"
+  }
+]

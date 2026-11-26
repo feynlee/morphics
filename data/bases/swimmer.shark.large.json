@@ -1,0 +1,16 @@
+{
+  "id": "base.swimmer.shark.large",
+  "name": "Large shark",
+  "parent": "base.swimmer.shark",
+  "status": "planned",
+  "examples": "Great white",
+  "height": {
+    "basis": "length",
+    "reference_m": {
+      "average": 5.0
+    },
+    "variation_pct": 10,
+    "min_m": 4.5,
+    "max_m": 5.5
+  }
+}

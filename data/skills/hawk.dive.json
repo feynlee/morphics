@@ -1,0 +1,14 @@
+{
+  "id": "skill.hawk.dive",
+  "name": "Dive",
+  "type": "move",
+  "cooldown": 5,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "push",
+      "amount": 8
+    }
+  ],
+  "vfx": ""
+}

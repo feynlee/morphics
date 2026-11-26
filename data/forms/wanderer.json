@@ -1,0 +1,53 @@
+{
+  "id": "form.wanderer",
+  "name": "Wanderer",
+  "lore": "A plain, balanced traveler. The starter humanoid.",
+  "role": "Striker",
+  "rarity": "Common",
+  "base": "base.walker.humanoid.medium",
+  "base_stats": {
+    "hp": 120,
+    "speed": 6,
+    "power": 8,
+    "defense": 6
+  },
+  "skills": [
+    "skill.wanderer.basic",
+    "skill.wanderer.guard_strike",
+    "skill.wanderer.sprint",
+    "skill.wanderer.rally"
+  ],
+  "passives": [],
+  "model": "",
+  "default_skin": "skin.wanderer.default",
+  "unlock": {
+    "type": "earn",
+    "craft": {
+      "morphic": "Wanderer Morphic",
+      "source_boss": "boss.wanderer",
+      "components": [
+        {
+          "item": "item.wanderer.charm",
+          "count": 2
+        },
+        {
+          "item": "item.wanderer.cloth",
+          "count": 1
+        },
+        {
+          "item": "item.wanderer.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "red",
+        "amount": 50
+      }
+    },
+    "skip": {
+      "prisms": "deferred"
+    }
+  },
+  "starter": true,
+  "tree_start": "node.origin"
+}

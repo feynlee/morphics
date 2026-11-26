@@ -1,0 +1,14 @@
+{
+  "id": "skin.stone_tortoise.default",
+  "base": "base.walker.shelled.large",
+  "form_id": "form.stone_tortoise",
+  "name": "Stone Tortoise",
+  "look": {
+    "material_instance": "",
+    "vfx_set": ""
+  },
+  "unlock": {
+    "type": "free",
+    "cost": 0
+  }
+}
