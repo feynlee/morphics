@@ -12,7 +12,7 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
   3. `python tools/build_datatable.py` writes `Content/Data/Generated/Forms.json`.
   4. Import that file in the editor as a Data Table (row type `MorphFormRow`).
 - CI (`.github/workflows/data.yml`) runs steps 2 and 3 on each PR.
-- a body-type tree (`data/bases`, 4 top-level types with 2 or 3 subcategories each) and 3 placeholder forms with original names: Ember Fox, Stone Tortoise (both four-legged), Gale Heron (bird, planned base).
+- a body-type tree (`data/bases`, 4 top-level types with 2 or 3 subcategories each) and 4 placeholder forms with original names: Wanderer (humanoid starter), Ember Fox (four-legged starter), Stone Tortoise (four-legged), Gale Heron (bird starter, planned base).
 - M1 note: Gale Heron uses a planned base, so M1 needs only the four-legged base for playable forms. Add a humanoid form if a humanoid test is wanted.
 
 ## Not verified yet
@@ -21,7 +21,7 @@ Goal: one arena, 3 forms, the morph action, Steam login. No store.
 - The Data Table import was NOT tested in the editor.
 
 ## Opening in M1
-M1 includes a minimal opening: spirit state, find a vessel, inhabit a fixed first form (Ember Fox), then unlock morph. A first-form picker is a later task. See `DESIGN.md` section 3a.
+M1 includes a minimal opening: spirit state, find a vessel, a starter picker with the two active starters (Wanderer for humanoid, Ember Fox for four-legged), inhabit the chosen form, then unlock morph. Bird and dinosaur starters wait until those body types are active. See `DESIGN.md` section 3a.
 
 ## Next tasks (need the editor)
 1. Compile and open the project.

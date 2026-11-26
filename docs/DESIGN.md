@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.12)
+# Morphics: Design Doc (v0.13)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -53,16 +53,31 @@ Assumed (to confirm):
 - Story idea (placeholder): the spirit "remembers" how to take forms as it learns each body. Each new form adds to the collection.
 - Returning players and new co-op joiners skip the opening after they have done it once. A joining player who has not done it plays it as a short solo part, then joins.
 
-**How the first form is chosen**
-Options:
-1. **Fixed**: every player gets the same first form. Cheapest to build and easiest to guide. Every first session is the same, so it is easy to tune. Less choice, and no early sign of the variety we sell.
-2. **Picked from starters**: the player chooses from 3 or 4 free starter forms (ideally from different body types, such as a humanoid and a four-legged beast). This shows variety in minute one and gives early attachment. Costs more: each starter needs its own opening inhabitation and a first-session tuning.
-3. **Shaped by play**: the spirit's choices in the opening decide the form. Most story value. Highest cost and risk, and hard to tune.
+**How the first form is chosen (decided)**
+- At the start of a new game, the player **picks a starter form**.
+- There is **one starter per top-level body type**. Each starter is a very basic form of that body type, so the choice shows the variety of the game on the first screen.
+- The starter picker is part of the opening, just before inhabitation: the spirit meets the vessels and picks one.
+- Starters are free. They are marked `starter: true` in their JSON.
+- Validator rule: **exactly one starter per top-level body type**. For a body type that is still `planned` (no art yet), zero starters are allowed until it becomes `active`, and at most one. A starter must be free.
+- Starters should be plain, with no strong elemental or special theme. Special forms are for the store and for farming.
 
-Recommendation: **option 2 with 3 starters**, from different body types. Build **option 1** (fixed first form) for M1, because M1 is a prototype. The data already supports this: `starter` flag on forms.
+Starter slots:
+
+| Slot | Top-level body type | Status | Starter (placeholder) |
+|---|---|---|---|
+| 1 | Humanoid (bipedal human) | active | Wanderer |
+| 2 | Four-legged beast | active | Ember Fox |
+| 3 | Bird | planned | Gale Heron |
+| 4 | Bipedal dinosaur | planned | not made yet |
+
+Notes:
+- The starters are placeholders. In particular, Ember Fox and Gale Heron have a themed look and should be replaced with plain starters (for example a plain wolf and a plain hawk) before launch.
+- Adding a new top-level body type adds a new starter slot. The picker shows one card per top-level body type.
+- Players keep access to all starters. A player who picks one can later get the others (they are free), so the pick is a first step, not a lock.
+- Skins for a starter are sold like any other skin. Starters are a good first target for early skin sales, because every player owns one.
 
 Open questions for Ziyue:
-- Is the first form fixed, picked, or shaped by play? (Default: fixed in M1, picked from 3 starters later.)
+- Do all starters stay free for everyone, or can a player who picks one get the other starters only by earning them in play? (Default: all starters are free to unlock in the opening hub, in any order.)
 - Can the player return to spirit state later (for example to rest, to escape, or as a free "form")? (Default: no, to keep the game simple.)
 - Does the spirit get cosmetics (aura, trail) that are sold? (Default: not yet. It is a later option and it would be cosmetic only.)
 

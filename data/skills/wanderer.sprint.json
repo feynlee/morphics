@@ -1,0 +1,14 @@
+{
+  "id": "skill.wanderer.sprint",
+  "name": "Sprint",
+  "type": "move",
+  "cooldown": 4,
+  "cost": 0,
+  "effects": [
+    {
+      "kind": "push",
+      "amount": 6
+    }
+  ],
+  "vfx": ""
+}

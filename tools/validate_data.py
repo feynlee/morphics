@@ -6,6 +6,7 @@ Needs the `jsonschema` package. Cross checks:
   a root has required_animations, a child is not "active" under a "planned" parent
 - animation_overrides only name animations that the root requires
 - a starter form is free (unlock type "free")
+- exactly one starter form per active top-level body type; at most one per planned one
 - a form's base exists
 - a skin's base exists
 - a form's skills exist
@@ -118,6 +119,19 @@ def main():
             errors.append(f"{sid}: made for {skin.get('base')}, which does not fit {form['id']} ({form.get('base')})")
         if skin.get("form_id") not in (None, form["id"]):
             errors.append(f"{sid}: is exclusive to {skin['form_id']}, not {form['id']}")
+
+    starters = {}
+    for form in forms.values():
+        if form.get("starter") and form.get("base") in bases:
+            starters.setdefault(chain(bases, form["base"])[-1], []).append(form["id"])
+    for b in bases.values():
+        if "parent" in b:
+            continue
+        found = starters.get(b["id"], [])
+        if len(found) > 1:
+            errors.append(f"{b['id']}: more than one starter form: {', '.join(found)}")
+        elif not found and b["status"] == "active":
+            errors.append(f"{b['id']}: needs exactly one starter form, found none")
 
     for err in errors:
         print("ERROR", err)
