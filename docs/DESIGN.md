@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.57)
+# Morphics: Design Doc (v0.58)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -271,6 +271,30 @@ Size ranges (`height` on a size node, in meters):
 - A size can set the real height it stands for, with `reference_m` averages, a `variation_pct` and the resulting `min_m` and `max_m`. Hitboxes and skins are checked against it.
 - **Medium humanoid (Ziyue):** males average 6 ft (1.83 m) and females average 5 ft 6 in (1.68 m). Variation of plus or minus 10 percent is allowed. So the medium humanoid range is **1.51 m to 2.01 m** (standing height).
 - The other sizes have no range yet. The validator checks that `min_m` and `max_m` match the references and the variation.
+
+**Proposed size ranges for the other sizes (Claude's estimates, not applied, for Ziyue to approve one by one).** They use the medium humanoid as the reference and the same plus or minus 10 percent. The basis says what is measured: standing height, shoulder height, wingspan or body length.
+
+| Size | Id | Basis | Average | Range (plus or minus 10 percent) | Note |
+|---|---|---|---|---|---|
+| Short humanoid | `base.walker.humanoid.short` | standing | 1.2 m | 1.08 to 1.32 m | Dwarf, gnome, halfling. About 65 percent of a human. |
+| Large humanoid | `base.walker.humanoid.large` | standing | 2.8 m | 2.52 to 3.08 m | Ogre, giant. About 1.5 times a human. |
+| Small canine | `base.walker.canine.small` | shoulder | 0.38 m | 0.34 to 0.42 m | Fox. Real fox shoulder height is about 0.35 to 0.40 m. |
+| Medium canine | `base.walker.canine.medium` | shoulder | 0.75 m | 0.68 to 0.83 m | Wolf. Real wolf shoulder height is about 0.70 to 0.80 m. |
+| Small feline | `base.walker.feline.small` | shoulder | 0.6 m | 0.54 to 0.66 m | Lynx. |
+| Medium feline | `base.walker.feline.medium` | shoulder | 1 m | 0.9 to 1.1 m | Lion, panther. |
+| Large heavy beast | `base.walker.heavy.large` | shoulder | 1.2 m | 1.08 to 1.32 m | Bear, boar. A large brown bear is about 1.0 to 1.3 m. |
+| Medium hoofed | `base.walker.hoofed.medium` | shoulder | 1.3 m | 1.17 to 1.43 m | Stag, deer. Red deer stag is about 1.2 to 1.5 m. |
+| Large shelled | `base.walker.shelled.large` | shoulder | 1.2 m | 1.08 to 1.32 m | Stone Tortoise. Shell top, about 2 m long. Bigger than a real tortoise on purpose. |
+| Large four-legged dinosaur | `base.walker.quadruped_dino.large` | shoulder | 2.5 m | 2.25 to 2.75 m | Triceratops type. Real hip height is about 2.5 to 3 m. |
+| Medium raptor | `base.walker.raptor.medium` | standing | 1.5 m | 1.35 to 1.65 m | Raptor. Head height, about 1.5 m. Real raptors were smaller, this is a game size. |
+| Large tyrant | `base.walker.tyrant.large` | standing | 5.5 m | 4.95 to 6.05 m | Rex type. Head height, about 5.5 m. |
+| Medium flier | `base.flyer.flier.medium` | wingspan | 1.1 m | 0.99 to 1.21 m | Hawk. Real red-tailed hawk is about 1.1 to 1.4 m. |
+| Large flier | `base.flyer.flier.large` | wingspan | 2.3 m | 2.07 to 2.53 m | Eagle. A roc or dragon would be larger and needs its own size later. |
+| Medium wader | `base.flyer.wader.medium` | standing | 1.1 m | 0.99 to 1.21 m | Heron. Great blue heron is about 1.0 to 1.3 m tall. |
+| Medium shark | `base.swimmer.shark.medium` | length | 2.5 m | 2.25 to 2.75 m | Reef shark, hammerhead. |
+| Large shark | `base.swimmer.shark.large` | length | 5 m | 4.5 to 5.5 m | Great white. |
+
+Once Ziyue approves a row, it moves into `data/bases` as a `height` entry. Until then the data has only the medium humanoid.
 
 Why this split: if one animation set had to suit very different animals, a wolf, a bear and a tortoise would not all walk well. A subcategory groups morphs that can share a good gait. A new species that fits an existing subcategory costs no animation work. A species with a different gait or spine needs its own subcategory.
 - Test for a new species: its bones map to the subcategory rig, and the shared animations play with only a scale change.
