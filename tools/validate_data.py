@@ -4,6 +4,8 @@
 Needs the `jsonschema` package. Cross checks:
 - spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
   category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
+- skill points are never sold: data/skill_point_sources.json has only experience and quest
+  channels, and no data file may attach a currency price, skip, or purchase to skill points
 - skill tree (data/skill_tree.json): edges name real nodes, the tree is connected (every node can be
   reached from every other, so players can move anywhere), and every form has a tree_start node
 - no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
@@ -98,6 +100,43 @@ def check_no_conversion():
     return errors
 
 
+PRICE_KEYS = {"price", "prices", "cost", "skip", "prisms", "spectrum", "currency", "buy", "purchase"}
+
+
+def find_skill_point_price(node, path):
+    """Yield paths where skill points are given a currency price or are bought."""
+    if isinstance(node, dict):
+        mentions = any(
+            "skill_point" in str(k).lower() or (isinstance(v, str) and "skill_point" in v.lower())
+            for k, v in node.items()
+        )
+        if mentions and any(k in PRICE_KEYS for k in node):
+            yield path
+        for key, value in node.items():
+            yield from find_skill_point_price(value, f"{path}.{key}")
+    elif isinstance(node, list):
+        for i, value in enumerate(node):
+            yield from find_skill_point_price(value, f"{path}[{i}]")
+
+
+def check_skill_points():
+    errors = []
+    sources_file = DATA / "skill_point_sources.json"
+    schema = json.loads((DATA / "schema" / "skill_point_source.schema.json").read_text())
+    doc = json.loads(sources_file.read_text())
+    for err in Draft202012Validator(schema).iter_errors(doc):
+        errors.append(f"data/skill_point_sources.json: {err.message}")
+    ids = [s.get("id") for s in doc.get("sources", [])]
+    if len(ids) != len(set(ids)):
+        errors.append("data/skill_point_sources.json: duplicate source id")
+    for file in sorted(DATA.rglob("*.json")):
+        if "schema" in file.parts:
+            continue
+        for hit in find_skill_point_price(json.loads(file.read_text()), file.relative_to(ROOT).as_posix()):
+            errors.append(f"{hit}: skill points cannot be bought or priced in currency")
+    return errors
+
+
 def check_bases(bases):
     errors = []
     for b in bases.values():
@@ -131,7 +170,7 @@ def main():
     forms, e1 = load("forms")
     skills, e2 = load("skills")
     skins, e3 = load("skins")
-    errors = e0 + e1 + e2 + e3 + check_bases(bases) + check_no_conversion()
+    errors = e0 + e1 + e2 + e3 + check_bases(bases) + check_no_conversion() + check_skill_points()
 
     spectrums = json.loads((DATA / "spectrums.json").read_text())
     spectrum_schema = json.loads((DATA / "schema" / "spectrum.schema.json").read_text())

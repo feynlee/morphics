@@ -1,0 +1,101 @@
+{
+  "note": "Skill points are earned only through experience and quest rewards. They can never be bought with currency. Amounts are pending the skill tree design.",
+  "sources": [
+    {
+      "id": "xp.level_up",
+      "name": "Form or player level-up",
+      "channel": "experience",
+      "repeatable": true
+    },
+    {
+      "id": "xp.form_mastery",
+      "name": "Form mastery level",
+      "channel": "experience",
+      "repeatable": true
+    },
+    {
+      "id": "quest.mission_clear",
+      "name": "Mission clear",
+      "channel": "quest",
+      "repeatable": true
+    },
+    {
+      "id": "quest.optional_objective",
+      "name": "Optional mission objective",
+      "channel": "quest",
+      "repeatable": true
+    },
+    {
+      "id": "quest.boss_first_defeat",
+      "name": "First defeat of a boss",
+      "channel": "quest",
+      "repeatable": false
+    },
+    {
+      "id": "quest.category_first_defeat",
+      "name": "First defeat of an enemy category",
+      "channel": "quest",
+      "repeatable": false
+    },
+    {
+      "id": "quest.discovery",
+      "name": "Discovery or exploration",
+      "channel": "quest",
+      "repeatable": false
+    },
+    {
+      "id": "quest.challenge",
+      "name": "Challenge or achievement",
+      "channel": "quest",
+      "repeatable": false
+    },
+    {
+      "id": "quest.daily",
+      "name": "Daily goal",
+      "channel": "quest",
+      "repeatable": true
+    },
+    {
+      "id": "quest.weekly",
+      "name": "Weekly goal",
+      "channel": "quest",
+      "repeatable": true
+    },
+    {
+      "id": "quest.coop_milestone",
+      "name": "Co-op milestone",
+      "channel": "quest",
+      "repeatable": true
+    },
+    {
+      "id": "quest.morph_earned",
+      "name": "First time a morph is earned in play (farmed)",
+      "channel": "quest",
+      "repeatable": false
+    },
+    {
+      "id": "quest.gear_earned",
+      "name": "First time a piece of gear is earned in play",
+      "channel": "quest",
+      "repeatable": false
+    },
+    {
+      "id": "quest.collection_milestone",
+      "name": "Collection milestone (earned items only)",
+      "channel": "quest",
+      "repeatable": false
+    },
+    {
+      "id": "quest.event",
+      "name": "Event quest",
+      "channel": "quest",
+      "repeatable": true
+    },
+    {
+      "id": "quest.pass_free_track",
+      "name": "Free pass track reward (no purchase needed)",
+      "channel": "quest",
+      "repeatable": true
+    }
+  ]
+}

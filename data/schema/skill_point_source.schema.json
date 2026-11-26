@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill point sources (earned only, never sold)",
+  "type": "object",
+  "required": [
+    "sources"
+  ],
+  "properties": {
+    "note": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "channel",
+          "repeatable"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^(xp|quest)\\.[a-z0-9_]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "channel": {
+            "enum": [
+              "experience",
+              "quest"
+            ],
+            "description": "The only two ways to get skill points. There is no purchase channel."
+          },
+          "repeatable": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

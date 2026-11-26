@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.24)
+# Morphics: Design Doc (v0.25)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -273,27 +273,40 @@ Body-type cue (recommendation, for Ziyue to decide):
 6. Do skills carry between morphs? (Default: no, each morph has its own skills from its own build.)
 7. Does each skill on the tree stay in a body type, or can any form learn any skill? (Body types change animations. A skill needs an animation that fits the body.)
 
-## 4d. Skill points: sources
-Ziyue wants **many ways to earn skill points**, and to earn rewards by unlocking new morphs and other in-game gear. Skill points feed the skill tree (section 4c).
+## 4d. Skill points: earned only, never bought
+**Decided by Ziyue: skill points cannot be purchased with currency.** They are earned only in two ways:
+1. **Experience** (farming XP by playing).
+2. **Quest rewards.**
 
-Proposed sources (to confirm and tune):
-1. **Missions**: completing missions, first-time clears, and optional objectives.
-2. **Level-ups and form mastery**: each form gives points at mastery levels.
-3. **Unlocking a new morph**: the first time a player gets a morph (by farming, the market, or a pass).
-4. **In-game gear and unlocks**: unlocking a piece of gear, a new area, or a new feature can reward points.
-5. **First defeat of an enemy category**: the first time a player beats each category and each boss.
-6. **Discoveries and exploration**: finding landmarks, secrets, and collectibles.
-7. **Challenges and achievements**: skill-based goals (for example "win a fight without taking damage").
-8. **Daily and weekly goals**: a steady, fair stream for regular players.
-9. **Seasons and the pass**: reward tracks give points (the free track as well as the paid one).
-10. **Co-op milestones**: playing missions with teammates, reviving, and finishing group goals.
-11. **Collection milestones**: owning a set number of morphs or skins, or all morphs of a body type.
-12. **Events**: limited-time events give points.
+Skill points feed the skill tree (section 4c). They are not sold in the market, not skippable with Spectrums or Prisms, and not in any bundle or paid pass track. No price of any kind can be attached to them.
 
-Rules:
-- Skill points are **earned in play**. Open question for Ziyue: can skill points ever be bought or skipped with currency? (Default: **no**. Skill points change power, so buying them would break the no-pay-to-win rule, section 5. Prisms and Spectrums stay for morphs and skins.)
+**Sources** (listed in `data/skill_point_sources.json`; amounts are pending the tree design):
+
+*Experience*
+- Level-ups.
+- Form mastery levels.
+
+*Quest rewards*
+- Mission clears, and optional mission objectives.
+- First defeat of a boss, and first defeat of each enemy category.
+- Discoveries and exploration.
+- Challenges and achievements.
+- Daily and weekly goals.
+- Co-op milestones.
+- **The first time a morph is earned in play (by farming)** and the first time a piece of gear is earned in play. Ziyue wants unlocks to be rewarding. Only earning counts: a morph or gear that is bought (market, Prisms, Spectrum skip) gives no skill points. (Open question: does skipping with Spectrum count as earned? Default: no. Skip means no quest was done.)
+- Collection milestones, counted from earned items only.
+- Event quests.
+- The **free** pass track. The paid track never gives skill points, because that would sell them. (Open question: should the pass give skill points at all? Default: free track only.)
+
+**Rules**
+- Skill points are **earned in play**, so they are never pay-to-win. A player who spends money gets the same skill points as one who does not.
 - Every source gives a fair amount, so no single source is required.
 - The point totals and the tree costs are set after Ziyue defines the tree.
+
+**Validator**
+- `data/skill_point_sources.json` allows only the `experience` and `quest` channels. There is no purchase channel.
+- A source cannot carry any price field.
+- The validator also scans all data and rejects any entry that links skill points to a price, skip price, Prisms, Spectrum, currency, or purchase. I tested these cases.
 
 ## 5. Balance rules
 - Every form has a strength and a clear weakness.
