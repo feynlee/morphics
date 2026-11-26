@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.46)
+# Morphics: Design Doc (v0.47)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -289,35 +289,36 @@ Levels:
 
 Mapping of the existing groups under the three top categories (new ids are proposed; every existing body-type id would change):
 
-| Top category | Subcategory | Old id | Proposed id | Forms today |
-|---|---|---|---|---|
-| Walker | Humanoid | `base.humanoid.*` | `base.walker.humanoid` (sizes: short, medium, large) | Wanderer |
-| Walker | Canine | `base.quadruped.small`, `.medium` | `base.walker.canine` (small, medium) | Ember Fox, Wolf |
-| Walker | Hoofed | `base.quadruped.medium` | `base.walker.hoofed` (medium) | Prism Stag |
-| Walker | Shelled | `base.quadruped.large` | `base.walker.shelled` (large) | Stone Tortoise |
-| Walker | Feline, Heavy beast | new | `base.walker.feline`, `base.walker.heavy` | none (planned) |
-| Walker | Four-legged dinosaur | new | `base.walker.quadruped_dino` | none (planned) |
-| Walker | Raptor, Tyrant | `base.biped_dino.*` | `base.walker.raptor`, `base.walker.tyrant` | Raptor (planned) |
-| Flyer | Flier | `base.bird.medium`, `.large` | `base.flyer.flier` (medium, large) | Hawk (planned) |
-| Flyer | Wader (heron) | `base.bird.medium` | `base.flyer.wader` (medium) | Gale Heron (planned) |
-| Swimmer | none yet | none | `base.swimmer.*` | none |
+| Top category | Subcategory | Color | Old id | Proposed id | Forms today |
+|---|---|---|---|---|---|
+| Walker | Humanoid | Red | `base.humanoid.*` | `base.walker.humanoid` (sizes: short, medium, large) | Wanderer |
+| Walker | Canine | Green | `base.quadruped.small`, `.medium` | `base.walker.canine` (small, medium) | Ember Fox, Wolf |
+| Walker | Hoofed | Green | `base.quadruped.medium` | `base.walker.hoofed` (medium) | Prism Stag |
+| Walker | Shelled | Green | `base.quadruped.large` | `base.walker.shelled` (large) | Stone Tortoise |
+| Walker | Feline, Heavy beast | Green | new | `base.walker.feline`, `base.walker.heavy` | none (planned) |
+| Walker | Four-legged dinosaur | Green | new | `base.walker.quadruped_dino` | none (planned) |
+| Walker | Raptor, Tyrant | not assigned | `base.biped_dino.*` | `base.walker.raptor`, `base.walker.tyrant` | Raptor (planned) |
+| Flyer | Flier | Yellow | `base.bird.medium`, `.large` | `base.flyer.flier` (medium, large) | Hawk (planned) |
+| Flyer | Wader (heron) | Yellow | `base.bird.medium` | `base.flyer.wader` (medium) | Gale Heron (planned) |
+| Swimmer | none yet | Blue | none | `base.swimmer.*` | none |
+
+Decided (Ziyue): a creature that flies is a Flyer, even if it can also walk. So the Gale Heron is a Flier.
 
 Open points for Ziyue:
-- Gale Heron is a wading bird. It sits under Flyer because it flies. It could be a Walker instead.
 - Swimmers have no forms yet. Fish, sea creatures and other swimmers would each need their own subcategory.
-- Dragons, winged humanoids and centaurs mix movement types. A new hybrid subcategory goes under the domain its main gait belongs to.
+- Dragons, winged humanoids and centaurs mix movement types. A hybrid goes under the domain of its main gait, and a creature that flies is a Flyer.
+- Raptor and Tyrant have no color yet. Orange is free for them. Purple is also free.
 
-Spectrum colors (plan kept as is, unassigned colors left open):
+Spectrum colors (Ziyue): color is assigned **per subcategory**, not per top category or family.
 - Six colors: red, orange, yellow, green, blue, purple. `data/spectrums.json` stays the source of truth.
-- **Red is Humanoid. Green is Beast.** Orange, Yellow, Blue and Purple stay unassigned.
-- Humanoid and Beast are no longer top categories, because both are Walkers. They stay as **color groups**: a label on each subcategory that names its Spectrum. The Humanoid group holds the Humanoid subcategory. The Beast group holds Canine, Feline, Heavy, Hoofed, Shelled and Four-legged dinosaur.
-- Wild drops follow the color group: an enemy of any subcategory in the group drops the group's color. Drop entries are one per color group with a color.
-- Open: whether color groups stay as a separate label like this, or each top category gets its own color. Ziyue has not decided. Nothing is applied until then.
+- Red: Humanoid. Green: the Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur). Yellow: all Flyer subcategories. Blue: all Swimmer subcategories. Orange and Purple: not assigned yet.
+- Several subcategories may share a color. The old family groups (Humanoid, Beast, Winged creature, Bipedal dinosaur) are dropped as a level.
+- Wild drops follow the subcategory color: an enemy of a subcategory (any size) drops that subcategory's color. `data/drops.json` has one entry per color in use. The validator checks that each active subcategory's color has an entry and that the entry drops that same color.
 
 Validator and data changes when applied:
-- A top category has `status` only. It must not have `rig`, `gait`, `mesh`, `required_animations` or `spectrum`.
-- A subcategory (child of a top category) needs `rig`, `gait`, `mesh`, `skeleton`, `required_animations` and a `group`. A size (child of a subcategory) has no rig fields.
-- A group that names a Spectrum uses a color from `data/spectrums.json`. No two groups share a color. A color may have no group.
+- A top category has `status` only. It must not have `rig`, `gait`, `mesh`, `required_animations` or `spectrum`. A top category's id is one of `base.walker`, `base.swimmer`, `base.flyer`.
+- A subcategory (child of a top category) needs `rig`, `gait`, `mesh`, `skeleton`, `required_animations` and a `spectrum` (a color id). A size (child of a subcategory) has no rig fields.
+- A subcategory's `spectrum` must be a color in `data/spectrums.json`. Subcategories may share a color. A color may have no subcategory. Sizes inherit the color.
 - A size under a top category, or a subcategory under a subcategory, is an error. Add negative tests for each rule.
 - Skins fit a subcategory mesh or one of its sizes. The existing skin rule (narrow by default) stays.
 - Forms, skins, skill tree base-variant nodes and drops move to the new ids. `Forms.json` BaseId changes, so the Unreal Data Table needs a re-import by the build thread. The Wolf rig is `rig.walker.canine`.
