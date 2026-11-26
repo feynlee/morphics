@@ -29,26 +29,27 @@ CENTER = {
     "tail_3": (0, -0.90, 0.62, 0.105, 0.10),
     "tail_2": (0, -0.77, 0.69, 0.085, 0.09),
     "tail_1": (0, -0.64, 0.76, 0.055, 0.07),
-    "pelvis": (0, -0.50, 0.80, 0.150, 0.16),
-    "spine_2": (0, -0.15, 0.80, 0.125, 0.17),
-    "chest": (0, 0.20, 0.76, 0.135, 0.20),
-    "withers": (0, 0.42, 0.88, 0.110, 0.15),
-    "neck_1": (0, 0.58, 0.94, 0.085, 0.12),
-    "neck_2": (0, 0.72, 0.99, 0.075, 0.10),
-    "skull": (0, 0.88, 1.00, 0.100, 0.105),
-    "muzzle_1": (0, 1.00, 0.955, 0.058, 0.060),
-    "muzzle_2": (0, 1.08, 0.935, 0.045, 0.048),
-    "nose": (0, 1.14, 0.935, 0.028, 0.03),
+    "pelvis": (0, -0.50, 0.82, 0.160, 0.17),
+    "spine_2": (0, -0.15, 0.82, 0.120, 0.17),
+    "chest": (0, 0.20, 0.76, 0.150, 0.21),
+    "withers": (0, 0.42, 0.88, 0.125, 0.16),
+    "neck_1": (0, 0.58, 0.94, 0.100, 0.13),
+    "neck_2": (0, 0.72, 0.99, 0.090, 0.11),
+    "skull": (0, 0.88, 1.01, 0.118, 0.120),
+    "muzzle_1": (0, 1.02, 0.965, 0.068, 0.070),
+    "muzzle_2": (0, 1.10, 0.945, 0.050, 0.052),
+    "nose": (0, 1.15, 0.940, 0.034, 0.034),
 }
 LEG_L = {
-    "f_shoulder": (0.100, 0.30, 0.67, 0.085, 0.105),
-    "f_elbow": (0.095, 0.26, 0.46, 0.055, 0.058),
-    "f_wrist": (0.100, 0.31, 0.25, 0.028, 0.032),
-    "f_paw": (0.100, 0.36, 0.035, 0.040, 0.055),
-    "h_hip": (0.115, -0.46, 0.64, 0.115, 0.135),
-    "h_knee": (0.120, -0.30, 0.45, 0.065, 0.075),
-    "h_hock": (0.100, -0.56, 0.30, 0.030, 0.035),
-    "h_paw": (0.100, -0.50, 0.035, 0.038, 0.052),
+    "f_shoulder": (0.105, 0.30, 0.66, 0.095, 0.115),
+    "f_elbow": (0.100, 0.26, 0.45, 0.062, 0.065),
+    "f_wrist": (0.100, 0.31, 0.24, 0.038, 0.042),
+    "f_paw": (0.100, 0.37, 0.045, 0.050, 0.070),
+    "h_hip": (0.125, -0.47, 0.66, 0.130, 0.150),
+    "h_thigh": (0.125, -0.40, 0.56, 0.105, 0.125),
+    "h_knee": (0.125, -0.30, 0.44, 0.070, 0.080),
+    "h_hock": (0.105, -0.56, 0.30, 0.042, 0.048),
+    "h_paw": (0.105, -0.50, 0.045, 0.048, 0.068),
 }
 EDGES = [
     ("nose", "muzzle_2"), ("muzzle_2", "muzzle_1"), ("muzzle_1", "skull"), ("skull", "neck_2"),
@@ -56,7 +57,7 @@ EDGES = [
     ("spine_2", "pelvis"), ("pelvis", "tail_1"), ("tail_1", "tail_2"), ("tail_2", "tail_3"),
     ("tail_3", "tail_4"), ("tail_4", "tail_tip"),
     ("f_shoulder", "f_elbow"), ("f_elbow", "f_wrist"), ("f_wrist", "f_paw"),
-    ("h_hip", "h_knee"), ("h_knee", "h_hock"), ("h_hock", "h_paw"),
+    ("h_hip", "h_thigh"), ("h_thigh", "h_knee"), ("h_knee", "h_hock"), ("h_hock", "h_paw"),
 ]
 P = {}
 for k, v in CENTER.items():
@@ -122,7 +123,7 @@ def add_part(name, prim, loc, scale, rot=(0, 0, 0)):
 parts = []
 for s, side in ((1, "L"), (-1, "R")):
     bpy.ops.mesh.primitive_cone_add(vertices=24, radius1=0.068, radius2=0.012, depth=0.18,
-                                    location=(s * 0.082, 0.83, 1.10), rotation=(math.radians(-8), math.radians(s * 12), 0))
+                                    location=(s * 0.090, 0.84, 1.13), rotation=(math.radians(-8), math.radians(s * 12), 0))
     ear = bpy.context.active_object
     ear.name = f"Ear_{side}"
     ear.scale = (1, 0.45, 1)
@@ -131,9 +132,9 @@ for s, side in ((1, "L"), (-1, "R")):
     bpy.ops.object.modifier_apply(modifier="s")
     bpy.ops.object.shade_smooth()
     parts.append(ear)
-    eye = add_part(f"Eye_{side}", "primitive_uv_sphere_add", (s * 0.058, 0.955, 1.02), (0.018, 0.012, 0.014))
+    eye = add_part(f"Eye_{side}", "primitive_uv_sphere_add", (s * 0.066, 0.97, 1.045), (0.019, 0.013, 0.015))
     parts.append(eye)
-nose = add_part("Nose", "primitive_uv_sphere_add", (0, 1.125, 0.938), (0.030, 0.026, 0.022))
+nose = add_part("Nose", "primitive_uv_sphere_add", (0, 1.172, 0.945), (0.032, 0.028, 0.024))
 parts.append(nose)
 
 # ---------------------------------------------------------------- materials
@@ -245,6 +246,9 @@ for o in parts:
     o.data.materials.append(key_mat)
     g = o.vertex_groups.new(name="nofur")
     g.add([v.index for v in o.data.vertices], 1.0, "REPLACE")
+    if o.name.startswith("Ear"):
+        eg = o.vertex_groups.new(name="ear")
+        eg.add([v.index for v in o.data.vertices], 1.0, "REPLACE")
 bpy.ops.object.select_all(action="DESELECT")
 for o in parts:
     o.select_set(True)
@@ -256,19 +260,23 @@ bpy.ops.object.join()
 vg = body.vertex_groups.new(name="fur")
 vg_ruff = body.vertex_groups.new(name="ruff")
 vg_tail = body.vertex_groups.new(name="tail")
+vg_short = body.vertex_groups.new(name="short")
+ear_idx = body.vertex_groups["ear"].index
 nofur_idx = body.vertex_groups["nofur"].index
 for v in body.data.vertices:
     x, y, z = v.co
     w = 1.0
     if any(g.group == nofur_idx for g in v.groups):
         w = 0.0
-    elif z < 0.12:
-        w = 0.0                       # no fur on the paw pads
-    elif y > 1.05:
-        w = 0.0                       # bare nose
-    elif y > 0.96:
-        w = 0.5
+    elif z < 0.16:
+        w = 0.0                       # paws get short fur instead
+    elif y > 0.98:
+        w = 0.0                       # muzzle gets short fur instead
     vg.add([v.index], w, "REPLACE")
+    is_ear = any(g.group == ear_idx for g in v.groups)
+    is_part = any(g.group == nofur_idx for g in v.groups)
+    short = 1.0 if (is_ear or (not is_part and (v.co[2] < 0.16 or v.co[1] > 0.98))) else 0.0
+    vg_short.add([v.index], short, "REPLACE")
     ruff = max(0.0, 1 - abs(y - 0.55) / 0.28) if z > 0.7 else 0.0
     vg_ruff.add([v.index], ruff, "REPLACE")
     vg_tail.add([v.index], 1.0 if y < -0.55 else 0.0, "REPLACE")
@@ -300,6 +308,7 @@ def add_fur(name, count, length, vgroup, rough=0.01, children=8, spread=0.012):
 
 
 add_fur("fur_body", 14000, 0.05, "fur", rough=0.012, children=10)
+add_fur("fur_short", 26000, 0.018, "short", rough=0.01, children=6, spread=0.006)
 add_fur("fur_ruff", 3500, 0.10, "ruff", rough=0.02, children=10, spread=0.02)
 add_fur("fur_tail", 3500, 0.10, "tail", rough=0.015, children=10, spread=0.02)
 
