@@ -93,8 +93,7 @@
     "unlock": {
       "type": "object",
       "required": [
-        "type",
-        "cost"
+        "type"
       ],
       "properties": {
         "type": {
@@ -105,11 +104,6 @@
             "pass",
             "event"
           ]
-        },
-        "cost": {
-          "type": "integer",
-          "minimum": 0,
-          "description": "For earn: the farming target (fragments or spectrum to collect)."
         },
         "skip": {
           "type": "object",
@@ -132,6 +126,75 @@
             }
           },
           "description": "Market price to skip farming. Required when type is earn. Prisms only."
+        },
+        "craft": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "morphic",
+            "source_boss",
+            "boss_drop_chance_solo",
+            "components",
+            "spectrum"
+          ],
+          "description": "Required for earn. The morph is unlocked by crafting its Morphic (a crafting currency specific to the morph) and consuming it. A Morphic is crafted from boss and dungeon drops plus a set amount of the form's own category Spectrum. All numbers are placeholders to playtest. Multiplayer scaling is not defined.",
+          "properties": {
+            "morphic": {
+              "type": "string",
+              "description": "Name of the crafted item: '<morph name> Morphic'."
+            },
+            "source_boss": {
+              "type": "string",
+              "pattern": "^boss\\.[a-z0-9_]+$",
+              "description": "The dungeon boss whose drops are the components."
+            },
+            "boss_drop_chance_solo": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1,
+              "description": "Chance that the boss drops a component in solo play (placeholder)."
+            },
+            "components": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "item",
+                  "count"
+                ],
+                "properties": {
+                  "item": {
+                    "type": "string",
+                    "pattern": "^item\\.[a-z0-9_]+\\.[a-z0-9_]+$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            },
+            "spectrum": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "amount"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "description": "Spectrum spent when crafting. It must be the form's own category Spectrum."
+            }
+          }
         }
       }
     },

@@ -31,7 +31,14 @@ def row(form):
         "DefaultSkinId": form["default_skin"],
         "Model": form.get("model", ""),
         "UnlockType": form["unlock"]["type"],
-        "UnlockCost": form["unlock"]["cost"],
+        "CraftMorphic": form["unlock"].get("craft", {}).get("morphic", ""),
+        "CraftSourceBoss": form["unlock"].get("craft", {}).get("source_boss", ""),
+        "CraftBossDropChanceSolo": form["unlock"].get("craft", {}).get("boss_drop_chance_solo", 0.0),
+        "CraftComponents": [
+            {"Item": c["item"], "Count": c["count"]} for c in form["unlock"].get("craft", {}).get("components", [])
+        ],
+        "CraftSpectrumId": form["unlock"].get("craft", {}).get("spectrum", {}).get("id", ""),
+        "CraftSpectrumAmount": form["unlock"].get("craft", {}).get("spectrum", {}).get("amount", 0),
     }
 
 

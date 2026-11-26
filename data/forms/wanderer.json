@@ -22,7 +22,29 @@
   "default_skin": "skin.wanderer.default",
   "unlock": {
     "type": "earn",
-    "cost": 600,
+    "craft": {
+      "morphic": "Wanderer Morphic",
+      "source_boss": "boss.wanderer",
+      "boss_drop_chance_solo": 0.2,
+      "components": [
+        {
+          "item": "item.wanderer.charm",
+          "count": 2
+        },
+        {
+          "item": "item.wanderer.cloth",
+          "count": 1
+        },
+        {
+          "item": "item.wanderer.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "red",
+        "amount": 50
+      }
+    },
     "skip": {
       "prisms": "deferred"
     }

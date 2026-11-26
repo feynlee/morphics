@@ -48,7 +48,7 @@ Example (sketch, not final):
   "skills": ["skill.fox_dash", "skill.flame_burst", "skill.cinder_storm"],
   "model": "/Game/Forms/EmberFox/SK_EmberFox",
   "skins": ["skin.ember_fox.default", "skin.ember_fox.frost"],
-  "unlock": { "type": "earn", "cost": 1200 }
+  "unlock": { "type": "earn", "craft": { "morphic": "Ember Fox Morphic", "source_boss": "boss.ember_fox", "boss_drop_chance_solo": 0.2, "components": [{ "item": "item.ember_fox.ear", "count": 2 }], "spectrum": { "id": "green", "amount": 80 } }, "skip": { "prisms": "deferred" } }
 }
 ```
 (All names here are placeholders and original.)

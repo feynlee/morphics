@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.30)
+# Morphics: Design Doc (v0.31)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -95,9 +95,9 @@ Starter slots:
 Notes:
 - The starter names and stats are placeholders. Wanderer may become a plain "Human". Starters stay plain.
 - Adding a new top-level body type adds a new starter slot. The picker shows one card per top-level body type.
-- **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They come from missions: form fragments, like other earned forms. They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
+- **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They are crafted like other earned morphs (section 3c). They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
 - **Skip farming with Prisms.** Players can always buy a starter in the market with Prisms to skip the farming for it. This is the same rule as for every other morph (decided: every morph can be bought with Prisms to bypass farming).
-- Data: starters use unlock type `earn` with a farming target (`cost`) and a Prisms skip price (`skip`, value `deferred` for now). The picked starter is granted by the setup rule and does not use that cost.
+- Data: starters use unlock type `earn` with a crafting recipe (`craft`, section 3c) and a Prisms skip price (`skip`, value `deferred` for now). The picked starter is granted by the setup rule and does not use that recipe.
 - Farming goal: the unpicked starters are an early target for new players, and they give a reason to play missions in the first sessions.
 - Skins for a starter are sold like any other skin. Starters are a good first target for early skin sales, because every player owns one.
 
@@ -107,9 +107,9 @@ Open questions for Ziyue:
 
 ## 3. Core loop
 1. Pick a mission (alone or with co-op friends). Choose a starting form.
-2. Fight and explore. Collect **Essence** and loot.
+2. Fight and explore. Collect crafting drops and loot. A dungeon ends in a boss (section 3c).
 3. **Morph** between owned forms at any time. A morph has no time limit. A short cooldown after a morph stops swap spam.
-4. Finish the mission. Get rewards: soft currency, form XP, materials, cosmetic fragments.
+4. Finish the mission. Get rewards: Spectrums, form XP, materials, crafting components.
 5. Spend rewards in the Hub: level up forms, unlock skills, equip skins, craft or buy forms.
 6. Start the next mission.
 
@@ -117,10 +117,47 @@ Because morphs do not expire, **form choice is a build choice**. A player can st
 
 The "morph" action is still the key moment. It must feel fast and good to watch.
 
+## 3c. Earning a morph: bosses, components, Morphics
+Decided by Ziyue. Every earned morph is unlocked by crafting its **Morphic** and consuming it.
+
+**Terms**
+- **Morphic**: the crafted item for one morph, named "<morph name> Morphic" (for example "Ember Fox Morphic"). It is a crafting currency specific to that morph. Consuming it unlocks the morph. (An earlier draft said "essence". That term is now only a crafting component.)
+- **Component**: a drop that is one input of a Morphic recipe (an ear, a tail, an essence).
+
+**Flow**
+1. The player runs a dungeon. A dungeon ends in a **boss**. Example: an Ember Fox boss.
+2. The boss can drop components for its morph. Example: in solo play the Ember Fox boss has a **20 percent chance** to drop a component (placeholder).
+3. The player collects all components of the recipe, and also pays a set amount of the morph's **own category Spectrum** (Ember Fox is a four-legged beast, so Green).
+4. The player crafts the Morphic and consumes it. The morph is unlocked.
+
+**Example recipe (placeholder numbers):** Ember Fox Morphic = 2 Ember Fox ears + 1 Ember Fox tail + 1 Ember Fox essence + 80 Green Spectrums.
+
+**Rules**
+- Components are specific to one morph (`item.<morph>.<part>`). Spectrums come from battle drops (section 6c) and cannot be converted, so the player must fight that category.
+- The 20 percent solo chance, the component counts, and the Spectrum amounts are **placeholders**. They need playtesting. **Multiplayer scaling is not defined yet.**
+- Prisms skip all of this: buying the morph in the market with Prisms bypasses the crafting (section 6). Spectrums and components cannot be bought.
+- Show drop chances and recipes in the game (Teen+ care, no hidden odds).
+
+**Data** (`unlock.craft` on every `earn` form, checked by the validator)
+```json
+"craft": {
+  "morphic": "Ember Fox Morphic",
+  "source_boss": "boss.ember_fox",
+  "boss_drop_chance_solo": 0.2,
+  "components": [
+    { "item": "item.ember_fox.ear", "count": 2 },
+    { "item": "item.ember_fox.tail", "count": 1 },
+    { "item": "item.ember_fox.essence", "count": 1 }
+  ],
+  "spectrum": { "id": "green", "amount": 80 }
+}
+```
+The validator requires: a recipe on every earned morph; the name "<morph name> Morphic"; boss id `boss.<morph>`; at least one component, each with a count of 1 or more and an id that starts with `item.<morph>.`; and a Spectrum amount in the morph's own category Spectrum. `unlock.cost` (fragments) is removed from forms.
+
 ## 3b. Retention: always something to do
 Goal: a player at any level has a next target.
 - **Form mastery**: each form has levels, skill upgrades, and mastery rewards (titles, emotes, skin variants).
-- **Farm targets** (every one can be skipped with currency, see section 6): missions drop form fragments and materials. A set of fragments unlocks or upgrades a form.
+- **Farm targets** (every one can be skipped with currency, see section 6): dungeon bosses drop crafting components for a morph. Collect all of them, add Spectrums, and craft the morph's Morphic (section 3c).
 - **Rotating content**: weekly missions and daily goals.
 - **Seasons**: a new season every 8 to 12 weeks with new missions, new forms, and a new reward track.
 - **New forms on a schedule**: a new form every 2 to 4 weeks.
@@ -385,7 +422,7 @@ Confirmed by Ziyue:
 | Item | How to get it |
 |---|---|
 | Starter forms (3 to 4) | Free for all players |
-| Standard forms | Earn with form fragments from missions, OR skip the farming by buying with Prisms |
+| Standard forms | Craft the Morphic from boss drops and Spectrums (section 3c), OR skip the farming by buying with Prisms |
 | Premium forms | Prisms |
 | Skins | Prisms, event rewards, or pass tiers |
 | Form XP and skill upgrades | Earned in play only (never bought) |

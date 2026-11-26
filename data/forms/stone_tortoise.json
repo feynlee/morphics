@@ -22,7 +22,29 @@
   "default_skin": "skin.stone_tortoise.default",
   "unlock": {
     "type": "earn",
-    "cost": 900,
+    "craft": {
+      "morphic": "Stone Tortoise Morphic",
+      "source_boss": "boss.stone_tortoise",
+      "boss_drop_chance_solo": 0.2,
+      "components": [
+        {
+          "item": "item.stone_tortoise.shell_shard",
+          "count": 3
+        },
+        {
+          "item": "item.stone_tortoise.claw",
+          "count": 1
+        },
+        {
+          "item": "item.stone_tortoise.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "green",
+        "amount": 80
+      }
+    },
     "skip": {
       "prisms": "deferred"
     }

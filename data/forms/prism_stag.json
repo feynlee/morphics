@@ -21,8 +21,7 @@
   "model": "",
   "default_skin": "skin.prism_stag.default",
   "unlock": {
-    "type": "pass",
-    "cost": 0
+    "type": "pass"
   },
   "limited": true,
   "tree_start": "node.support_1"

@@ -22,7 +22,29 @@
   "default_skin": "skin.gale_heron.default",
   "unlock": {
     "type": "earn",
-    "cost": 900,
+    "craft": {
+      "morphic": "Gale Heron Morphic",
+      "source_boss": "boss.gale_heron",
+      "boss_drop_chance_solo": 0.2,
+      "components": [
+        {
+          "item": "item.gale_heron.plume",
+          "count": 3
+        },
+        {
+          "item": "item.gale_heron.beak",
+          "count": 1
+        },
+        {
+          "item": "item.gale_heron.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "blue",
+        "amount": 80
+      }
+    },
     "skip": {
       "prisms": "deferred"
     }

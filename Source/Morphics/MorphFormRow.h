@@ -4,6 +4,16 @@
 #include "Engine/DataTable.h"
 #include "MorphFormRow.generated.h"
 
+/** One crafting component of a Morphic (for example 2 Ember Fox ears). */
+USTRUCT(BlueprintType)
+struct FMorphCraftComponent
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString Item;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 Count = 1;
+};
+
 /**
  * One row of the Forms Data Table.
  * Rows come from data/forms/*.json through tools/build_datatable.py.
@@ -29,5 +39,11 @@ struct FMorphFormRow : public FTableRowBase
 	/** Soft path of the skeletal mesh. Empty in M1 (placeholder mesh). */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FSoftObjectPath Model;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString UnlockType;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 UnlockCost = 0;
+	/** Crafting data for earned morphs. Empty for other unlock types. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString CraftMorphic;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString CraftSourceBoss;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float CraftBossDropChanceSolo = 0.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) TArray<FMorphCraftComponent> CraftComponents;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString CraftSpectrumId;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 CraftSpectrumAmount = 0;
 };

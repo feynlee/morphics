@@ -29,6 +29,9 @@ Needs the `jsonschema` package. Cross checks:
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
 - every earned form (morph), starters included, has a Prisms skip price (the value is "deferred" until
   Prism pricing is set), and no unlock or market price uses Spectrums (Spectrums are in-game currency only)
+- every earned form (morph) lists how it is crafted (unlock.craft): a Morphic named '<morph name> Morphic',
+  a source boss, a solo drop chance, at least one component with a count, and a Spectrum amount in the
+  form's own category Spectrum (a boss id is boss.<form short id>; components are item.<form short id>.<part>)
 - Prism pricing is deferred (data/pricing.json): no Prism price may be set until Ziyue decides
 - skins are named after the morph: a default skin has its form's name; a form-exclusive skin
   name starts with its form's name
@@ -265,6 +268,28 @@ def main():
         if form.get("starter") and form["unlock"]["type"] not in ("free", "earn"):
             errors.append(f"{form['id']}: a starter form must be free or earned, not {form['unlock']['type']}")
         utype = form["unlock"]["type"]
+        craft = form["unlock"].get("craft")
+        if utype == "earn" and craft is None:
+            errors.append(f"{form['id']}: an earned morph needs unlock.craft (components and a Spectrum amount)")
+        if utype != "earn" and craft is not None:
+            errors.append(f"{form['id']}: unlock.craft is only for earned morphs")
+        if craft is not None:
+            short = form["id"].split(".", 1)[-1]
+            if craft.get("morphic") != f"{form.get('name')} Morphic":
+                errors.append(f"{form['id']}: the crafted item is named '{form.get('name')} Morphic'")
+            if craft.get("source_boss") != f"boss.{short}":
+                errors.append(f"{form['id']}: source_boss must be boss.{short}")
+            roots = chain(bases, form.get("base"))
+            own = bases[roots[-1]].get("spectrum") if roots else None
+            if craft.get("spectrum", {}).get("id") != own:
+                errors.append(f"{form['id']}: craft Spectrum must be the form's own category Spectrum ({own})")
+            seen_items = set()
+            for comp in craft.get("components", []):
+                if not str(comp.get("item", "")).startswith(f"item.{short}."):
+                    errors.append(f"{form['id']}: component {comp.get('item')} must start with item.{short}.")
+                if comp.get("item") in seen_items:
+                    errors.append(f"{form['id']}: component {comp.get('item')} is listed twice")
+                seen_items.add(comp.get("item"))
         if utype in ("pass", "event") and not form.get("limited"):
             errors.append(f"{form['id']}: a {utype} exclusive must set limited: true")
         if "market_override" in form:

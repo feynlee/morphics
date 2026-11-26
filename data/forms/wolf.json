@@ -22,7 +22,29 @@
   "default_skin": "skin.wolf.default",
   "unlock": {
     "type": "earn",
-    "cost": 600,
+    "craft": {
+      "morphic": "Wolf Morphic",
+      "source_boss": "boss.wolf",
+      "boss_drop_chance_solo": 0.2,
+      "components": [
+        {
+          "item": "item.wolf.fang",
+          "count": 2
+        },
+        {
+          "item": "item.wolf.pelt",
+          "count": 1
+        },
+        {
+          "item": "item.wolf.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "green",
+        "amount": 50
+      }
+    },
     "skip": {
       "prisms": "deferred"
     }

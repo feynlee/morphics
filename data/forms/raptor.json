@@ -22,7 +22,29 @@
   "default_skin": "skin.raptor.default",
   "unlock": {
     "type": "earn",
-    "cost": 600,
+    "craft": {
+      "morphic": "Raptor Morphic",
+      "source_boss": "boss.raptor",
+      "boss_drop_chance_solo": 0.2,
+      "components": [
+        {
+          "item": "item.raptor.claw",
+          "count": 2
+        },
+        {
+          "item": "item.raptor.tooth",
+          "count": 2
+        },
+        {
+          "item": "item.raptor.essence",
+          "count": 1
+        }
+      ],
+      "spectrum": {
+        "id": "amber",
+        "amount": 50
+      }
+    },
     "skip": {
       "prisms": "deferred"
     }
