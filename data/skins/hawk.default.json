@@ -1,6 +1,6 @@
 {
   "id": "skin.hawk.default",
-  "base": "base.bird.medium",
+  "base": "base.flyer.flier.medium",
   "name": "Hawk",
   "look": {
     "material_instance": "",

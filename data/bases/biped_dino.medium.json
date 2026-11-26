@@ -1,7 +1,0 @@
-{
-  "id": "base.biped_dino.medium",
-  "name": "Medium bipedal dinosaur",
-  "parent": "base.biped_dino",
-  "status": "planned",
-  "examples": "Raptor"
-}

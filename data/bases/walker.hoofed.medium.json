@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.hoofed.medium",
+  "name": "Medium hoofed",
+  "parent": "base.walker.hoofed",
+  "status": "active",
+  "examples": "Stag, deer"
+}

@@ -4,7 +4,7 @@
   "lore": "Fast, hits hard, low defense.",
   "role": "Striker",
   "rarity": "Common",
-  "base": "base.quadruped.small",
+  "base": "base.walker.canine.small",
   "base_stats": {
     "hp": 100,
     "speed": 8,

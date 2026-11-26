@@ -1,0 +1,7 @@
+{
+  "id": "base.flyer.flier.medium",
+  "name": "Medium flier",
+  "parent": "base.flyer.flier",
+  "status": "planned",
+  "examples": "Hawk"
+}

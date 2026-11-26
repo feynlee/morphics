@@ -4,7 +4,7 @@
   "lore": "A plain, balanced traveler. The starter humanoid.",
   "role": "Striker",
   "rarity": "Common",
-  "base": "base.humanoid.medium",
+  "base": "base.walker.humanoid.medium",
   "base_stats": {
     "hp": 120,
     "speed": 6,

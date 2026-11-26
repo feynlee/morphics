@@ -28,18 +28,18 @@ Target: **stylized, closer to Palworld** (decided by Ziyue on 2026-11-26 after s
 - Blender is not confirmed installed in the cloud environment. First task: check, or run the pipeline on Ziyue's PC.
 
 ## Body types (a tree)
-Animation is made **per top-level body type, not per form**. See `DESIGN.md` section 4b for the tree.
-- Body types live in `data/bases/*.json` as a tree. Example: Beast > Small beast > Ember Fox (a farmable variant).
-- Each top-level body type has ONE skeleton and ONE required animation list.
+Animation is made **per subcategory, not per form**. See `DESIGN.md` section 4b for the tree.
+- Body types live in `data/bases/*.json` as a tree. Example: Walker > Canine > Small canine > Ember Fox (a farmable variant).
+- Each subcategory has ONE skeleton (rig), ONE gait set, ONE base mesh and ONE required animation list. The three top categories (Walker, Swimmer, Flyer) have none of these.
 - Each subcategory (small, medium, large, and so on) reuses the animations through retargeting (Unreal IK Retargeter) with its proportion settings.
-- A form picks a node. An orc and a human both use `base.humanoid.medium`. A dwarf uses `base.humanoid.short`.
+- A form picks a node. An orc and a human both use `base.walker.humanoid.medium`. A dwarf uses `base.walker.humanoid.short`.
 - Cost effect: a new form in an existing node needs a model, textures, a default skin, and VFX. It needs no new skeleton and no new animation set.
 - **Inherit first, override only what changes.** A subcategory starts with every parent animation, retargeted. After a test pass, the artist lists the few that need changes (for example the run and jump of a small beast) in `animation_overrides` and makes those.
-- Lookup order for an animation: form extra, then subcategory override, then parent, then root.
+- Lookup order for an animation: form extra, then size override, then subcategory.
 - Fix a problem shared by all children in the parent set. Fix a size-specific problem as an override. This keeps the work small.
 - A new subcategory needs a retarget setup and a test pass.
-- A new top-level body type is the expensive step: new skeleton, full animation set, and retarget tests.
-- Build order: humanoid and beast first (they are `active`). Winged creature and bipedal dinosaur after the first two work in game.
+- A new subcategory is the expensive step: new skeleton, mesh, full animation set, and retarget tests.
+- Build order: Humanoid, canine, hoofed and shelled first (they are `active`). Flier, raptor and the planned ones after the first two work in game.
 
 ## Pipeline per form
 1. **Brief** (JSON `look` notes plus a short text): silhouette, colors, materials, motion style.
@@ -53,7 +53,7 @@ Animation is made **per top-level body type, not per form**. See `DESIGN.md` sec
 9. **Skins**: a skin is made for one body-type node, not for one form. **Narrow is the default**: it fits that node only, and we tune it to those proportions. Make many narrow variations per node, because each one is a separate product. A broad skin (`fit: subtree`) is an exception for shared patterns and needs Ziyue's approval. Build on the root skeleton and test on every form the skin fits. It must never be used on another branch (the validator checks this).
 
 ## Making it scale ("many forms at launch")
-- Body-type tree: one skeleton and one animation set per top-level body type, with size subcategories.
+- Body-type tree: one skeleton, gait set and mesh per subcategory, with sizes as scales.
 - Modular parts (heads, tails, horns, armor) and a material library.
 - A per-form budget (triangles, texture size, animation count) and a checklist.
 - Batch export and import scripts, so one command rebuilds all art from source.
@@ -65,6 +65,6 @@ Animation is made **per top-level body type, not per form**. See `DESIGN.md` sec
 
 ## Next steps
 1. Check which tools can run where (Blender, Python, Unreal command line).
-2. Build the first base end to end. Beast is a good first test: skeleton, the 12 required animations for the small subcategory, then Wolf (the plain starter: model, textures, default skin). Ember Fox is a later, farmable variant.
+2. Build the first base end to end. Canine is a good first test: rig `rig.walker.canine`, the 12 required animations for the canine subcategory, then Wolf (the plain starter: model, textures, default skin). Ember Fox is a later, farmable variant.
 3. Retarget to the large subcategory and test with Stone Tortoise or Ember Fox.
 4. Ziyue reviews it in the editor. Decide: continue, adjust, or change the plan.

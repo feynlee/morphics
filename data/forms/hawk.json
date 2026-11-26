@@ -4,7 +4,7 @@
   "lore": "A plain hawk. The starter winged creature.",
   "role": "Scout",
   "rarity": "Common",
-  "base": "base.bird.medium",
+  "base": "base.flyer.flier.medium",
   "base_stats": {
     "hp": 80,
     "speed": 10,
@@ -40,7 +40,7 @@
         }
       ],
       "spectrum": {
-        "id": "blue",
+        "id": "yellow",
         "amount": 50
       }
     },

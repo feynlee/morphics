@@ -6,7 +6,7 @@ Status: draft v2 for Ziyue to approve. Style is **cartoony and stylized, Palworl
 **Cartoony pass (Ziyue):** the Wolf now has chibi proportions, big eyes, short legs, round paws with toes and a mouth line. The budget is still 10,000 triangles.
 
 ## Role
-The plain starter for the beast family (`base.quadruped.medium`). It sets the quality bar. Starters are plain and basic. Themed variants come later.
+The plain starter for the canine subcategory (`base.walker.canine.medium`). It sets the quality bar. Starters are plain and basic. Themed variants come later.
 
 ## Look
 - **Shape:** a wolf with friendly, readable proportions. A larger head (about one third of the body length), a short strong muzzle, big upright ears, thicker legs, a chunky body, and a big bushy tail. Clear silhouette from behind and from the side. No gore or harsh features, because the audience is teen and up and the look is friendly.
@@ -16,14 +16,14 @@ The plain starter for the beast family (`base.quadruped.medium`). It sets the qu
 - **Material:** one material. Base color 2K, normal map 1K. Stylized shading with a soft rim light. No fur shader and no Groom.
 - **Budget:** about 10,000 triangles at LOD0, plus 3 lower levels of detail. About 45 bones from the shared quadruped skeleton.
 
-## Rig (body type skeleton `base.quadruped`)
+## Rig (canine subcategory, `rig.walker.canine`)
 Root, pelvis, spine (4), chest, neck (2), head, jaw, ears (2), tail (5), four legs (upper, lower, paw, toe). Digitigrade hind legs. All quadruped morphs retarget to this skeleton.
 
 ## Animations (first set)
 Idle (breathing, tail and ear motion), walk, run. Then jump, basic attack (bite), pounce, howl, hit, death, morph in and out. Walk and run follow real gait timing: the walk is a lateral-sequence 4-beat gait, the run is a gallop.
 
 ## Skins
-The default skin is the coat above. A skin for `base.quadruped.medium` changes color, markings and fur only. It never changes the proportions.
+The default skin is the coat above. A skin for `base.walker.canine.medium` changes color, markings and fur only. It never changes the proportions.
 
 ## Not allowed
 No copying of creatures, designs or assets from other games. No cartoon exaggeration.

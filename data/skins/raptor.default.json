@@ -1,6 +1,6 @@
 {
   "id": "skin.raptor.default",
-  "base": "base.biped_dino.medium",
+  "base": "base.walker.raptor.medium",
   "name": "Raptor",
   "look": {
     "material_instance": "",

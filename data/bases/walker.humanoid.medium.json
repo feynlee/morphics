@@ -1,7 +1,7 @@
 {
-  "id": "base.humanoid.medium",
+  "id": "base.walker.humanoid.medium",
   "name": "Medium humanoid",
-  "parent": "base.humanoid",
+  "parent": "base.walker.humanoid",
   "status": "active",
   "examples": "Human, orc, elf"
 }

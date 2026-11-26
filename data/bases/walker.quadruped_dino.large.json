@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.quadruped_dino.large",
+  "name": "Large four-legged dinosaur",
+  "parent": "base.walker.quadruped_dino",
+  "status": "planned",
+  "examples": "Triceratops type"
+}

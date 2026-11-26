@@ -1,6 +1,6 @@
 {
   "id": "skin.wanderer.default",
-  "base": "base.humanoid.medium",
+  "base": "base.walker.humanoid.medium",
   "name": "Wanderer",
   "look": {
     "material_instance": "",

@@ -1,0 +1,26 @@
+{
+  "id": "base.walker.heavy",
+  "name": "Heavy beast",
+  "parent": "base.walker",
+  "status": "planned",
+  "examples": "Bear, boar",
+  "rig": "rig.walker.heavy",
+  "mesh": "mesh.walker.heavy",
+  "skeleton": "",
+  "gait": "Heavy flat-footed walk and short charge.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "green"
+}

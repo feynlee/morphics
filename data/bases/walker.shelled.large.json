@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.shelled.large",
+  "name": "Large shelled",
+  "parent": "base.walker.shelled",
+  "status": "active",
+  "examples": "Tortoise"
+}

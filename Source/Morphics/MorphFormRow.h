@@ -28,7 +28,7 @@ struct FMorphFormRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FText DisplayName;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString Role;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString Rarity;
-	/** Body-type node, for example base.quadruped.small. Skins fit this node and its ancestors. */
+	/** Body-type node, for example base.walker.canine.small. Skins fit this node and its ancestors. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FString BaseId;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float Hp = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float Speed = 1.f;

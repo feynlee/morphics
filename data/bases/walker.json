@@ -1,0 +1,6 @@
+{
+  "id": "base.walker",
+  "name": "Walker",
+  "status": "active",
+  "description": "Moves on the ground. Subcategories hold the skeletons and gaits."
+}

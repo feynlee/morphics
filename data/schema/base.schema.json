@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Morphics Base Category (a node in the body-type tree)",
+  "title": "Morphics Body Type (a node in the tree: top category > subcategory > size)",
   "type": "object",
   "required": [
     "id",
@@ -11,7 +11,7 @@
     "id": {
       "type": "string",
       "pattern": "^base\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
-      "description": "A child id is its parent id plus one more segment."
+      "description": "A child id is its parent's id plus one more segment. Top categories are base.walker, base.swimmer, base.flyer."
     },
     "name": {
       "type": "string"
@@ -24,7 +24,7 @@
     },
     "parent": {
       "type": "string",
-      "description": "Parent base id. Absent on a root (top-level) base."
+      "description": "Parent base id. Absent on a top category."
     },
     "status": {
       "enum": [
@@ -34,7 +34,7 @@
     },
     "skeleton": {
       "type": "string",
-      "description": "Unreal asset path. Set on a root. Children inherit it."
+      "description": "Unreal asset path. Set on a subcategory only. Sizes inherit it."
     },
     "required_animations": {
       "type": "array",
@@ -42,11 +42,11 @@
       "items": {
         "type": "string"
       },
-      "description": "Set on a root. Children inherit it."
+      "description": "Set on a subcategory only. Sizes inherit it."
     },
     "proportion_notes": {
       "type": "string",
-      "description": "Optional. How this subcategory differs from its parent (size, build)."
+      "description": "Optional. How this size differs from its subcategory."
     },
     "animation_overrides": {
       "type": "array",
@@ -54,11 +54,25 @@
       "items": {
         "type": "string"
       },
-      "description": "Animations this subcategory replaces. Every other animation is inherited from the parent. Names must be in the root's required_animations."
+      "description": "Animations this size replaces. Every other animation is inherited from its subcategory. Names must be in the subcategory's required_animations."
     },
     "spectrum": {
       "type": "string",
-      "description": "Spectrum id: the soft currency for forms under this root. Set on roots only. Unique per root."
+      "description": "Spectrum id (a color in data/spectrums.json). Set on a subcategory only. Sizes inherit it. Several subcategories may share one color."
+    },
+    "rig": {
+      "type": "string",
+      "pattern": "^rig\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "Rig id. Set on a subcategory only. Sizes inherit it. It is the skeleton contract for retargeting."
+    },
+    "mesh": {
+      "type": "string",
+      "pattern": "^mesh\\.[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+      "description": "Base mesh id. Set on a subcategory only. Skins attach to this mesh."
+    },
+    "gait": {
+      "type": "string",
+      "description": "The gait set of this subcategory. Set on a subcategory only."
     }
   }
 }

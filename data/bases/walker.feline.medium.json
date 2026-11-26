@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.feline.medium",
+  "name": "Medium feline",
+  "parent": "base.walker.feline",
+  "status": "planned",
+  "examples": "Lion, panther"
+}

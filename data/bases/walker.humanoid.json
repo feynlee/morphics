@@ -1,0 +1,27 @@
+{
+  "id": "base.walker.humanoid",
+  "name": "Humanoid",
+  "parent": "base.walker",
+  "status": "active",
+  "examples": "Human, orc, elf, dwarf, gnome, halfling, ogre, giant",
+  "rig": "rig.walker.humanoid",
+  "mesh": "mesh.walker.humanoid",
+  "skeleton": "",
+  "gait": "Upright two-legged walk and run.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "red",
+  "description": "Two legs, two arms."
+}

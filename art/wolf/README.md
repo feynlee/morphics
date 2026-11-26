@@ -5,7 +5,7 @@ Art direction: cartoony and stylized, low poly, detail in textures (decided 2026
 
 ## Status: cartoony pass (2026-11-26)
 - Style: cartoony and stylized (Ziyue's request). Chibi proportions: big head, big round eyes, short sturdy legs, round paws with toes, a mouth line.
-- `build_wolf.py` makes 10,000 triangles at LOD0, one material, a 2K base color texture and a 1K normal map, and the shared quadruped rig (`base.quadruped`, family name: Beast) with `idle`, `walk` and `run` actions.
+- `build_wolf.py` makes 10,000 triangles at LOD0, one material, a 2K base color texture and a 1K normal map, and the canine rig (`rig.walker.canine`) with `idle`, `walk` and `run` actions.
 - Colors and fur strokes are painted by script into the textures. No hair particles and no fur cards.
 - Known problems: the front legs still read paler than the body, the ears are plain cones, the tail is a ball, and there are no lower levels of detail yet. A hand-sculpt pass is needed for final quality.
 - The earlier realistic version is kept as a reference: `build_wolf_realistic.py` and `reference_realistic/`. It is not used in the game.
@@ -20,7 +20,7 @@ Environment variables: `SAMPLES` (render samples, default 32), `VIEWS` (comma li
 ## Files in `out/`
 `SK_Wolf.fbx` (mesh and rig with all actions), `wolf_basecolor.png`, `wolf_normal.png`, `wolf.blend`, and preview renders (`wolf_*.png`, `walk_sheet.png`).
 
-## Rig (`base.quadruped` skeleton)
+## Rig (`rig.walker.canine`)
 `root`, `pelvis`, `spine_1`, `spine_2`, `neck_1`, `neck_2`, `head`, `jaw`, `ear_L`, `ear_R`, `tail_1` to `tail_5`, and for each side `f_upper`, `f_lower`, `f_paw`, `h_upper`, `h_lower`, `h_paw` (L and R prefix). Names are the contract for retargeting other quadruped morphs.
 
 ## Animations

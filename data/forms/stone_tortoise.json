@@ -4,7 +4,7 @@
   "lore": "Slow, very tough, low damage.",
   "role": "Tank",
   "rarity": "Common",
-  "base": "base.quadruped.large",
+  "base": "base.walker.shelled.large",
   "base_stats": {
     "hp": 180,
     "speed": 4,

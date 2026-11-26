@@ -5,9 +5,14 @@
     "color": "#E5484D"
   },
   {
-    "id": "amber",
-    "name": "Amber Spectrum",
-    "color": "#F5A524"
+    "id": "orange",
+    "name": "Orange Spectrum",
+    "color": "#F76B15"
+  },
+  {
+    "id": "yellow",
+    "name": "Yellow Spectrum",
+    "color": "#E5B800"
   },
   {
     "id": "green",
@@ -20,8 +25,8 @@
     "color": "#3E63DD"
   },
   {
-    "id": "violet",
-    "name": "Violet Spectrum",
+    "id": "purple",
+    "name": "Purple Spectrum",
     "color": "#8E4EC6"
   }
 ]

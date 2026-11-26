@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.heavy.large",
+  "name": "Large heavy beast",
+  "parent": "base.walker.heavy",
+  "status": "planned",
+  "examples": "Bear, boar"
+}

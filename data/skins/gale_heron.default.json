@@ -1,6 +1,6 @@
 {
   "id": "skin.gale_heron.default",
-  "base": "base.bird.medium",
+  "base": "base.flyer.wader.medium",
   "form_id": "form.gale_heron",
   "name": "Gale Heron",
   "look": {

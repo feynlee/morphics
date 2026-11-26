@@ -1,8 +1,7 @@
 [
   {
     "source": "wild_enemy",
-    "match": "body_type_root",
-    "enemy_base": "base.humanoid",
+    "match": "subcategory_color",
     "spectrum": "red",
     "chance": 0.03,
     "amount_min": 1,
@@ -10,8 +9,7 @@
   },
   {
     "source": "wild_enemy",
-    "match": "body_type_root",
-    "enemy_base": "base.quadruped",
+    "match": "subcategory_color",
     "spectrum": "green",
     "chance": 0.03,
     "amount_min": 1,
@@ -19,18 +17,8 @@
   },
   {
     "source": "wild_enemy",
-    "match": "body_type_root",
-    "enemy_base": "base.bird",
-    "spectrum": "blue",
-    "chance": 0.03,
-    "amount_min": 1,
-    "amount_max": 3
-  },
-  {
-    "source": "wild_enemy",
-    "match": "body_type_root",
-    "enemy_base": "base.biped_dino",
-    "spectrum": "amber",
+    "match": "subcategory_color",
+    "spectrum": "yellow",
     "chance": 0.03,
     "amount_min": 1,
     "amount_max": 3

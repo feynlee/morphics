@@ -1,6 +1,6 @@
 {
   "id": "skin.prism_stag.default",
-  "base": "base.quadruped.medium",
+  "base": "base.walker.hoofed.medium",
   "name": "Prism Stag",
   "look": {
     "material_instance": "",

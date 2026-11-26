@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.feline.small",
+  "name": "Small feline",
+  "parent": "base.walker.feline",
+  "status": "planned",
+  "examples": "Lynx, wildcat"
+}

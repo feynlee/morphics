@@ -1,0 +1,26 @@
+{
+  "id": "base.walker.quadruped_dino",
+  "name": "Four-legged dinosaur",
+  "parent": "base.walker",
+  "status": "planned",
+  "examples": "Triceratops, ankylosaur",
+  "rig": "rig.walker.quadruped_dino",
+  "mesh": "mesh.walker.quadruped_dino",
+  "skeleton": "",
+  "gait": "Heavy stride with tail balance and a charge.",
+  "required_animations": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "attack_basic",
+    "skill_1",
+    "skill_2",
+    "ultimate",
+    "morph_in",
+    "morph_out",
+    "hit",
+    "death"
+  ],
+  "spectrum": "green"
+}

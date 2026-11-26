@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.tyrant.large",
+  "name": "Large tyrant",
+  "parent": "base.walker.tyrant",
+  "status": "planned",
+  "examples": "Rex type"
+}

@@ -6,10 +6,10 @@ Needs the `jsonschema` package. Cross checks:
   crafting material loot table (data/loot_tables.json). Loot table weights sum to 100, the table holds exactly
   the recipe's components, never a Morphic, never a Spectrum, each boss table belongs to one boss, and other tables are allowed
 - Spectrums drop only from wild enemies (data/drops.json, source wild_enemy), never from bosses
-- Spectrum drops match on the body-type root (match: body_type_root): a wild enemy of any subcategory
-  (for example small beast) drops the Spectrum of its top-level type (beast: Green)
-- spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
-  category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
+- Spectrum drops match on the subcategory color (match: subcategory_color): a wild enemy of any size
+  under a subcategory (for example small canine) drops the Spectrum of that subcategory (canine: Green)
+- spectrum drops (data/drops.json): one entry per color that a subcategory uses, the chance is rare
+  (at most 10 percent), amount_min <= amount_max
 - skill points are never sold: data/skill_point_sources.json has only experience and quest
   channels, and no data file may attach a currency price, skip, or purchase to skill points
 - two skill point tracks: a spirit-track source awards spirit_points only, a morph-track source awards
@@ -26,12 +26,16 @@ Needs the `jsonschema` package. Cross checks:
 - skill tree (data/skill_tree.json): edges name real nodes, the tree is connected (every node can be
   reached from every other, so players can move anywhere), and every form has a tree_start node
 - no data file may define a spectrum conversion or exchange (spectrums cannot be converted)
-- every top-level body type has a spectrum from data/spectrums.json, and no two share one
+- data/spectrums.json holds exactly six colors: red, orange, yellow, green, blue, purple
+- body types form three levels: top category (base.walker, base.swimmer, base.flyer) > subcategory > size.
+  A top category has no rig fields and no spectrum. A subcategory has rig, mesh, gait, skeleton,
+  required_animations and a spectrum from data/spectrums.json (subcategories may share a color; a color
+  may have no subcategory). A size has no rig fields and no spectrum. Sizes sit under a subcategory only
 - bases form a tree: parents exist, no cycles, a child id is parent id + one segment,
-  a root has required_animations, a child is not "active" under a "planned" parent
-- animation_overrides only name animations that the root requires
+  a child is not "active" under a "planned" parent
+- animation_overrides only name animations that the subcategory requires
 - a starter form is never sold: its unlock type is "free" or "earn"
-- exactly one starter form per top-level body type (planned types included)
+- at most one starter form per subcategory, and every color in use has at least one starter
 - an `earn` unlock must have a skip price (always an option to skip farming), and `skip` is only for `earn`
 - every earned form (morph), starters included, has a Prisms skip price (the value is "deferred" until
   Prism pricing is set), and no unlock or market price uses Spectrums (Spectrums are in-game currency only)
@@ -199,13 +203,37 @@ def check_prisms_market_only():
     return errors
 
 
+TOP_CATEGORIES = ("base.walker", "base.swimmer", "base.flyer")
+RIG_FIELDS = ("rig", "mesh", "gait", "skeleton", "required_animations")
+
+
+def level(bases, base_id):
+    """0 = top category, 1 = subcategory, 2 = size, 3 or more = too deep."""
+    return len(chain(bases, base_id)) - 1
+
+
+def subcategory_of(bases, base_id):
+    """The subcategory id that holds this node (itself, or its parent for a size)."""
+    ids = chain(bases, base_id)
+    return ids[-2] if len(ids) >= 2 else None
+
+
+def color_of(bases, base_id):
+    sub = subcategory_of(bases, base_id)
+    return bases[sub].get("spectrum") if sub else None
+
+
 def check_bases(bases):
     errors = []
     for b in bases.values():
+        lvl = level(bases, b["id"])
         parent_id = b.get("parent")
         if parent_id is None:
-            if "required_animations" not in b:
-                errors.append(f"{b['id']}: a root base needs required_animations")
+            if b["id"] not in TOP_CATEGORIES:
+                errors.append(f"{b['id']}: a top category must be one of {', '.join(TOP_CATEGORIES)}")
+            for field in RIG_FIELDS + ("spectrum",):
+                if field in b:
+                    errors.append(f"{b['id']}: a top category has no {field}. Subcategories own skeleton, gait, mesh and color")
             continue
         parent = bases.get(parent_id)
         if parent is None:
@@ -215,15 +243,25 @@ def check_bases(bases):
             errors.append(f"{b['id']}: id must start with parent id {parent_id}.")
         if b["id"].count(".") != parent_id.count(".") + 1:
             errors.append(f"{b['id']}: id must add exactly one segment to {parent_id}")
-        root_id = chain(bases, parent_id)[-1]
-        required = bases[root_id].get("required_animations", [])
-        for anim in b.get("animation_overrides", []):
-            if anim not in required:
-                errors.append(f"{b['id']}: override {anim} is not in the required animations of {root_id}")
-        if parent["status"] == "planned" and b["status"] == "active":
-            errors.append(f"{b['id']}: cannot be active under planned parent {parent_id}")
         if parent_id not in chain(bases, parent_id) or b["id"] in chain(bases, parent_id):
             errors.append(f"{b['id']}: parent chain has a cycle")
+            continue
+        if lvl == 1:
+            for field in RIG_FIELDS + ("spectrum",):
+                if field not in b:
+                    errors.append(f"{b['id']}: a subcategory needs {field}")
+        elif lvl == 2:
+            for field in RIG_FIELDS + ("spectrum",):
+                if field in b:
+                    errors.append(f"{b['id']}: a size has no {field}. It inherits from {parent_id}")
+            required = parent.get("required_animations", [])
+            for anim in b.get("animation_overrides", []):
+                if anim not in required:
+                    errors.append(f"{b['id']}: override {anim} is not in the required animations of {parent_id}")
+        else:
+            errors.append(f"{b['id']}: too deep. Use top category > subcategory > size")
+        if parent["status"] == "planned" and b["status"] == "active":
+            errors.append(f"{b['id']}: cannot be active under planned parent {parent_id}")
     return errors
 
 
@@ -239,19 +277,11 @@ def main():
     for err in Draft202012Validator(spectrum_schema).iter_errors(spectrums):
         errors.append(f"data/spectrums.json: {err.message}")
     spectrum_ids = [s["id"] for s in spectrums]
-    used = {}
+    if spectrum_ids != ["red", "orange", "yellow", "green", "blue", "purple"]:
+        errors.append(f"data/spectrums.json: the colors must be red, orange, yellow, green, blue, purple (found {', '.join(spectrum_ids)})")
     for b in bases.values():
-        if "parent" in b:
-            if "spectrum" in b:
-                errors.append(f"{b['id']}: only a top-level body type sets a spectrum")
-            continue
-        sp = b.get("spectrum")
-        if sp not in spectrum_ids:
-            errors.append(f"{b['id']}: unknown or missing spectrum {sp}")
-        elif sp in used:
-            errors.append(f"{b['id']}: spectrum {sp} is already used by {used[sp]}")
-        else:
-            used[sp] = b["id"]
+        if level(bases, b["id"]) == 1 and b.get("spectrum") not in spectrum_ids:
+            errors.append(f"{b['id']}: unknown or missing spectrum {b.get('spectrum')}")
 
     for skin in skins.values():
         if skin.get("base") not in bases:
@@ -285,8 +315,7 @@ def main():
                 errors.append(f"{form['id']}: the crafted item is named '{form.get('name')} Morphic'")
             if craft.get("source_boss") != f"boss.{short}":
                 errors.append(f"{form['id']}: source_boss must be boss.{short}")
-            roots = chain(bases, form.get("base"))
-            own = bases[roots[-1]].get("spectrum") if roots else None
+            own = color_of(bases, form.get("base"))
             if craft.get("spectrum", {}).get("id") != own:
                 errors.append(f"{form['id']}: craft Spectrum must be the form's own category Spectrum ({own})")
             seen_items = set()
@@ -401,32 +430,24 @@ def main():
         errors.append(f"data/drops.json: {err.message}")
     seen_drop = {}
     for entry in drops:
-        if str(entry.get("enemy_base", "")).startswith("boss.") or entry.get("source") != "wild_enemy":
-            errors.append(f"data/drops.json: Spectrums drop only from wild enemies, not {entry.get('enemy_base')}")
-        root = bases.get(entry.get("enemy_base"))
-        if root is None or "parent" in root:
-            errors.append(f"data/drops.json: {entry.get('enemy_base')} is not a top-level body type")
+        if entry.get("source") != "wild_enemy":
+            errors.append(f"data/drops.json: Spectrums drop only from wild enemies, not {entry.get('source')}")
+        color = entry.get("spectrum")
+        if color not in spectrum_ids:
+            errors.append(f"data/drops.json: unknown Spectrum {color}")
             continue
-        if entry.get("enemy_base") in seen_drop:
-            errors.append(f"data/drops.json: more than one drop entry for {entry['enemy_base']}")
-        seen_drop[entry["enemy_base"]] = True
-        if entry.get("spectrum") != root.get("spectrum"):
-            errors.append(f"data/drops.json: {root['id']} drops {entry.get('spectrum')}, but its spectrum is {root.get('spectrum')}")
+        if color in seen_drop:
+            errors.append(f"data/drops.json: more than one drop entry for {color}")
+        seen_drop[color] = True
         if entry.get("amount_min", 1) > entry.get("amount_max", 1):
-            errors.append(f"data/drops.json: {root['id']} has amount_min above amount_max")
-    # Subcategories inherit the Spectrum drop of their body-type root.
-    by_root = {e.get("enemy_base"): e for e in drops}
+            errors.append(f"data/drops.json: {color} has amount_min above amount_max")
+    # A wild enemy of a subcategory drops the Spectrum of that subcategory. So every color in use needs an entry.
     for b in bases.values():
-        roots = chain(bases, b["id"])
-        root_id = roots[-1] if roots else None
-        entry = by_root.get(root_id)
-        if entry is None or entry.get("match") != "body_type_root":
-            errors.append(f"data/drops.json: {b['id']} has no body-type-root drop entry ({root_id})")
-        elif entry.get("spectrum") != bases[root_id].get("spectrum"):
-            errors.append(f"data/drops.json: {b['id']} would drop {entry.get('spectrum')}, not its root Spectrum")
-    for b in bases.values():
-        if "parent" not in b and b.get("status") == "active" and b["id"] not in seen_drop:
-            errors.append(f"data/drops.json: active body type {b['id']} needs a drop entry")
+        if level(bases, b["id"]) == 1 and b.get("spectrum") not in seen_drop:
+            errors.append(f"data/drops.json: {b['id']} uses {b.get('spectrum')}, which has no drop entry")
+    for color in seen_drop:
+        if not any(level(bases, b["id"]) == 1 and b.get("spectrum") == color for b in bases.values()):
+            errors.append(f"data/drops.json: {color} is dropped, but no subcategory uses it")
 
     if pricing.get("prisms_use") != "market_only":
         errors.append("data/pricing.json: prisms_use must be market_only (Prisms are a market resource, not an in-game cost)")
@@ -477,15 +498,15 @@ def main():
     starters = {}
     for form in forms.values():
         if form.get("starter") and form.get("base") in bases:
-            starters.setdefault(chain(bases, form["base"])[-1], []).append(form["id"])
-    for b in bases.values():
-        if "parent" in b:
-            continue
-        found = starters.get(b["id"], [])
+            starters.setdefault(subcategory_of(bases, form["base"]), []).append(form["id"])
+    for sub_id, found in starters.items():
         if len(found) > 1:
-            errors.append(f"{b['id']}: more than one starter form: {', '.join(found)}")
-        elif not found:
-            errors.append(f"{b['id']}: needs exactly one starter form, found none")
+            errors.append(f"{sub_id}: more than one starter form: {', '.join(found)}")
+    colors_with_starter = {bases[sub_id].get("spectrum") for sub_id in starters if sub_id in bases}
+    for b in bases.values():
+        if level(bases, b["id"]) == 1 and b.get("spectrum") not in colors_with_starter:
+            errors.append(f"{b['id']}: its color {b.get('spectrum')} has no starter form")
+            colors_with_starter.add(b.get("spectrum"))
 
     for err in errors:
         print("ERROR", err)

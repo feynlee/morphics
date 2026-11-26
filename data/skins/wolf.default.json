@@ -1,6 +1,6 @@
 {
   "id": "skin.wolf.default",
-  "base": "base.quadruped.medium",
+  "base": "base.walker.canine.medium",
   "name": "Wolf",
   "look": {
     "material_instance": "",

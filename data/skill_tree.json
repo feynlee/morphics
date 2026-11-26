@@ -58,64 +58,100 @@
       "region": "control"
     },
     {
-      "id": "node.base_humanoid_medium",
-      "name": "Body type: humanoid medium",
+      "id": "node.base_flyer_flier_large",
+      "name": "Body type: large flier",
       "region": "base",
-      "restricted_to_base": "base.humanoid.medium"
+      "restricted_to_base": "base.flyer.flier.large"
     },
     {
-      "id": "node.base_humanoid_short",
-      "name": "Body type: humanoid short",
+      "id": "node.base_flyer_flier_medium",
+      "name": "Body type: medium flier",
       "region": "base",
-      "restricted_to_base": "base.humanoid.short"
+      "restricted_to_base": "base.flyer.flier.medium"
     },
     {
-      "id": "node.base_humanoid_large",
-      "name": "Body type: humanoid large",
+      "id": "node.base_flyer_wader_medium",
+      "name": "Body type: medium wader",
       "region": "base",
-      "restricted_to_base": "base.humanoid.large"
+      "restricted_to_base": "base.flyer.wader.medium"
     },
     {
-      "id": "node.base_quadruped_small",
-      "name": "Body type: quadruped small",
+      "id": "node.base_walker_canine_medium",
+      "name": "Body type: medium canine",
       "region": "base",
-      "restricted_to_base": "base.quadruped.small"
+      "restricted_to_base": "base.walker.canine.medium"
     },
     {
-      "id": "node.base_quadruped_medium",
-      "name": "Body type: quadruped medium",
+      "id": "node.base_walker_canine_small",
+      "name": "Body type: small canine",
       "region": "base",
-      "restricted_to_base": "base.quadruped.medium"
+      "restricted_to_base": "base.walker.canine.small"
     },
     {
-      "id": "node.base_quadruped_large",
-      "name": "Body type: quadruped large",
+      "id": "node.base_walker_feline_medium",
+      "name": "Body type: medium feline",
       "region": "base",
-      "restricted_to_base": "base.quadruped.large"
+      "restricted_to_base": "base.walker.feline.medium"
     },
     {
-      "id": "node.base_bird_medium",
-      "name": "Body type: winged creature medium",
+      "id": "node.base_walker_feline_small",
+      "name": "Body type: small feline",
       "region": "base",
-      "restricted_to_base": "base.bird.medium"
+      "restricted_to_base": "base.walker.feline.small"
     },
     {
-      "id": "node.base_bird_large",
-      "name": "Body type: winged creature large",
+      "id": "node.base_walker_heavy_large",
+      "name": "Body type: large heavy beast",
       "region": "base",
-      "restricted_to_base": "base.bird.large"
+      "restricted_to_base": "base.walker.heavy.large"
     },
     {
-      "id": "node.base_biped_dino_medium",
-      "name": "Body type: biped_dino medium",
+      "id": "node.base_walker_hoofed_medium",
+      "name": "Body type: medium hoofed",
       "region": "base",
-      "restricted_to_base": "base.biped_dino.medium"
+      "restricted_to_base": "base.walker.hoofed.medium"
     },
     {
-      "id": "node.base_biped_dino_large",
-      "name": "Body type: biped_dino large",
+      "id": "node.base_walker_humanoid_large",
+      "name": "Body type: large humanoid",
       "region": "base",
-      "restricted_to_base": "base.biped_dino.large"
+      "restricted_to_base": "base.walker.humanoid.large"
+    },
+    {
+      "id": "node.base_walker_humanoid_medium",
+      "name": "Body type: medium humanoid",
+      "region": "base",
+      "restricted_to_base": "base.walker.humanoid.medium"
+    },
+    {
+      "id": "node.base_walker_humanoid_short",
+      "name": "Body type: short humanoid",
+      "region": "base",
+      "restricted_to_base": "base.walker.humanoid.short"
+    },
+    {
+      "id": "node.base_walker_quadruped_dino_large",
+      "name": "Body type: large four-legged dinosaur",
+      "region": "base",
+      "restricted_to_base": "base.walker.quadruped_dino.large"
+    },
+    {
+      "id": "node.base_walker_raptor_medium",
+      "name": "Body type: medium raptor",
+      "region": "base",
+      "restricted_to_base": "base.walker.raptor.medium"
+    },
+    {
+      "id": "node.base_walker_shelled_large",
+      "name": "Body type: large shelled",
+      "region": "base",
+      "restricted_to_base": "base.walker.shelled.large"
+    },
+    {
+      "id": "node.base_walker_tyrant_large",
+      "name": "Body type: large tyrant",
+      "region": "base",
+      "restricted_to_base": "base.walker.tyrant.large"
     }
   ],
   "edges": [
@@ -181,43 +217,67 @@
     ],
     [
       "node.origin",
-      "node.base_humanoid_medium"
+      "node.base_flyer_flier_large"
     ],
     [
       "node.origin",
-      "node.base_humanoid_short"
+      "node.base_flyer_flier_medium"
     ],
     [
       "node.origin",
-      "node.base_humanoid_large"
+      "node.base_flyer_wader_medium"
     ],
     [
       "node.origin",
-      "node.base_quadruped_small"
+      "node.base_walker_canine_medium"
     ],
     [
       "node.origin",
-      "node.base_quadruped_medium"
+      "node.base_walker_canine_small"
     ],
     [
       "node.origin",
-      "node.base_quadruped_large"
+      "node.base_walker_feline_medium"
     ],
     [
       "node.origin",
-      "node.base_bird_medium"
+      "node.base_walker_feline_small"
     ],
     [
       "node.origin",
-      "node.base_bird_large"
+      "node.base_walker_heavy_large"
     ],
     [
       "node.origin",
-      "node.base_biped_dino_medium"
+      "node.base_walker_hoofed_medium"
     ],
     [
       "node.origin",
-      "node.base_biped_dino_large"
+      "node.base_walker_humanoid_large"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_humanoid_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_humanoid_short"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_quadruped_dino_large"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_raptor_medium"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_shelled_large"
+    ],
+    [
+      "node.origin",
+      "node.base_walker_tyrant_large"
     ]
   ]
 }

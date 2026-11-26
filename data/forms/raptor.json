@@ -4,7 +4,7 @@
   "lore": "A plain raptor. The starter bipedal dinosaur.",
   "role": "Striker",
   "rarity": "Common",
-  "base": "base.biped_dino.medium",
+  "base": "base.walker.raptor.medium",
   "base_stats": {
     "hp": 100,
     "speed": 9,
@@ -40,7 +40,7 @@
         }
       ],
       "spectrum": {
-        "id": "amber",
+        "id": "green",
         "amount": 50
       }
     },

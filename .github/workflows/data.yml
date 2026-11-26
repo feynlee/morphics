@@ -13,5 +13,6 @@ jobs:
           python-version: "3.12"
       - run: pip install jsonschema
       - run: python tools/validate_data.py
+      - run: python tools/test_validate_data.py
       - run: python tools/build_datatable.py
       - run: python tools/build_market.py

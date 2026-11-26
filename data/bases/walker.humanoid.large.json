@@ -1,7 +1,7 @@
 {
-  "id": "base.humanoid.large",
+  "id": "base.walker.humanoid.large",
   "name": "Large humanoid",
-  "parent": "base.humanoid",
+  "parent": "base.walker.humanoid",
   "status": "active",
   "examples": "Ogre, giant"
 }

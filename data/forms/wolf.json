@@ -4,7 +4,7 @@
   "lore": "A plain wolf. The starter beast.",
   "role": "Striker",
   "rarity": "Common",
-  "base": "base.quadruped.medium",
+  "base": "base.walker.canine.medium",
   "base_stats": {
     "hp": 110,
     "speed": 8,

@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.49)
+# Morphics: Design Doc (v0.50)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -29,7 +29,7 @@ Decided by Ziyue:
 - Launch content: as many forms as possible. Ziyue and Claude design the forms together.
 - Monetization: forms are sold for an in-game currency. Currency bundles are sold on Steam.
 - Audience: teen and older (teen+).
-- Body types are a **tree**. Every form declares one body type (a node in the tree). Forms under one top-level body type share a skeleton and animations. See section 4b.
+- Body types are a **tree**. Every form declares one body type (a node in the tree). Forms under one subcategory share a skeleton, gait and mesh. See section 4b.
 - Art: Claude makes the 3D art and animations (models, rigs, animations, VFX briefs), with Ziyue's direction and approval.
 - Budget and timeline: none set. Work is scoped by milestones, not by dates.
 - Storefronts: Steam first. Epic Games Store is added as a later storefront.
@@ -60,7 +60,7 @@ The spirit is a **setup and storytelling state, not a gameplay state.** By the t
 **Setup sequence (short)**
 1. Story intro: the spirit, the world, and why it needs a body. Short, skippable on later playthroughs.
 2. Game setup in the same scene: the player name, and settings such as co-op or solo, if needed.
-3. **Starter pick**: the spirit meets one vessel for each top-level body type. The player picks one.
+3. **Starter pick**: the spirit meets one vessel for each starter slot. The player picks one.
 4. **First inhabitation**: the spirit enters the chosen vessel. This uses the morph-in effect and it is the first time the player sees their skin. It must look great, because it shows what the game sells.
 5. Gameplay begins in the chosen form.
 
@@ -78,24 +78,24 @@ Target length: a few minutes. It is mostly presentation, so it is cheap to build
 
 **How the first form is chosen (decided)**
 - During setup, the player **picks a starter form**.
-- There is **one starter per top-level body type**. Each starter is a very basic form of that body type, so the choice shows the variety of the game on the first screen.
+- There is **one starter per starter slot**. Each starter is a very basic form of its subcategory, so the choice shows the variety of the game on the first screen.
 - The starter the player picks is **granted free** in setup. All the other starters are **free to acquire through farming and gameplay** (decided). They are marked `starter: true` in their JSON.
-- Validator rule: **exactly one starter per top-level body type**, planned types included. A starter's unlock type is `free` or `earn`, never `buy`, `pass`, or `event`. It can still be skipped with Prisms like any earned form.
+- Validator rule: **at most one starter per subcategory, and every Spectrum color in use has at least one starter**, planned subcategories included. A starter's unlock type is `free` or `earn`, never `buy`, `pass`, or `event`. It can still be skipped with Prisms like any earned form.
 - **Starters look very plain and basic**: a plain archetype of the body type (a plain wolf, a plain hawk, a plain raptor, a plain human). No elemental or special theme. Themed morphs are variations that players **farm for**. Example: Ember Fox is a farmable variant of the beast, and a plain Wolf is the starter.
-- Winged creature and bipedal dinosaur starters are part of the plan now (Hawk and Raptor). Their body types are still `planned` until the art exists.
+- Flier and Raptor starters are part of the plan now (Hawk and Raptor). Their subcategories are still `planned` until the art exists.
 
 Starter slots:
 
-| Slot | Top-level body type | Status | Starter (plain) | Farmable variants (examples in data) |
+| Slot | Subcategory (color) | Status | Starter (plain) | Farmable variants (examples in data) |
 |---|---|---|---|---|
-| 1 | Humanoid (bipedal human) | active | Wanderer | none yet |
-| 2 | Beast | active | Wolf | Ember Fox, Stone Tortoise |
-| 3 | Winged creature | planned | Hawk | Gale Heron |
-| 4 | Bipedal dinosaur | planned | Raptor | none yet |
+| 1 | Humanoid (Red) | active | Wanderer | none yet |
+| 2 | Canine (Green) | active | Wolf | Ember Fox |
+| 3 | Flier (Yellow) | planned | Hawk | none yet |
+| 4 | Raptor (Green) | planned | Raptor | none yet |
 
 Notes:
 - The starter names and stats are placeholders. Wanderer may become a plain "Human". Starters stay plain.
-- Adding a new top-level body type adds a new starter slot. The picker shows one card per top-level body type.
+- A new subcategory with a starter adds a new starter slot. The picker shows one card per starter slot.
 - **Unpicked starters are earned in play, for free.** The player does not need to pay for them. They are crafted like other earned morphs (section 3c). They are not unlocked instantly in the hub. So the pick is a first step, not a lock, and every player can own all starters over time.
 - **Skip farming with Prisms.** Players can always buy a starter in the market with Prisms to skip the farming for it. This is the same rule as for every other morph (decided: every morph can be bought with Prisms to bypass farming).
 - Data: starters use unlock type `earn` with a crafting recipe (`craft`, section 3c) and a Prisms skip price (`skip`, value `deferred` for now). The picked starter is granted by the setup rule and does not use that recipe.
@@ -226,115 +226,64 @@ New forms mostly recombine these blocks.
 A JSON schema checks every data file in CI before import.
 
 ## 4b. Body types (a tree)
-A **body type** is a node in a tree. Forms under one top-level body type share a skeleton and one animation set.
-This lets us make many forms: a new form is a new look plus skills, not a new animation set.
+A **body type** is a node in a tree with three levels: **top category > subcategory > size**. A form declares one node.
+A new form is a new look plus skills on an existing subcategory, not a new animation set.
 
-Naming (Ziyue): the family "Four-legged beast" is now **Beast**, and "Bird" is now **Winged creature**. Ids stay `base.quadruped*` and `base.bird*` so data and saves do not break. Winged creature is a winged creature that usually stands and walks on two legs and has two wings. It covers birds and may later cover other winged shapes. Beast has four legs and can include four-legged dinosaurs. Decided by Ziyue: four-legged dinosaurs (such as a triceratops type) are large beasts (`base.quadruped.large`).
-
-Structure: **top-level body type > subcategory > form**. Example: Beast > Small beast > Ember Fox.
-- The **top level** (root) sets the skeleton and the required animation list.
-- A **subcategory** sets size and build (small, medium, large). It **inherits the skeleton and all animations** from its parent and retargets them to its proportions.
-- A **form** declares the node it uses. Usually that is a subcategory.
-- Deeper levels are allowed when needed (for example: Large beast > Heavy large beast). One more segment per level.
+Decided by Ziyue (applied in v0.50):
+- The **top categories** are **Walker, Swimmer and Flyer**. They only group subcategories. They have no skeleton, gait, mesh or color.
+- A **subcategory** is a unique **skeleton (rig), gait set, base mesh and Spectrum color**. Skins attach to the subcategory mesh. A morph is a skin plus skills on a subcategory.
+- A **size** (small, medium, large) is a scale of the subcategory mesh. It inherits the rig, gait, mesh and color, and may override a few animations.
+- A creature that flies is a Flyer, even if it can also walk. So the Gale Heron is a Flier.
+- Four-legged dinosaurs are large beasts. Raptor and Tyrant are counted as beasts for now. All of these are Green.
 
 ```
-base.humanoid                  Humanoid
-  base.humanoid.medium         human, orc, elf
-  base.humanoid.short          dwarf, gnome, halfling
-  base.humanoid.large          ogre, giant
-base.quadruped                 Beast
-  base.quadruped.small         fox, lynx, small canine      <- Ember Fox (farmable)
-  base.quadruped.medium        large cat, large canine
-  base.quadruped.large         bear, boar, tortoise, four-legged dinosaur  <- Stone Tortoise
-base.bird (planned)            Winged creature
-  base.bird.medium             heron, hawk                  <- Gale Heron (farmable)
-  base.bird.large              eagle, roc
-base.biped_dino (planned)      Bipedal dinosaur
-  base.biped_dino.medium       raptor
-  base.biped_dino.large        rex type
+base.walker                       Walker (active)
+  base.walker.humanoid            Humanoid, Red        <- Wanderer
+    .short .medium .large         dwarf, human, ogre
+  base.walker.canine              Canine, Green        <- Wolf, Ember Fox
+    .small .medium                fox, wolf
+  base.walker.feline (planned)    Feline, Green
+    .small .medium                lynx, lion
+  base.walker.heavy (planned)     Heavy beast, Green
+    .large                        bear, boar
+  base.walker.hoofed              Hoofed, Green        <- Prism Stag
+    .medium                       stag, deer
+  base.walker.shelled             Shelled, Green       <- Stone Tortoise
+    .large                        tortoise
+  base.walker.quadruped_dino (planned)   Four-legged dinosaur, Green
+    .large                        triceratops type
+  base.walker.raptor (planned)    Raptor, Green        <- Raptor
+    .medium
+  base.walker.tyrant (planned)    Tyrant, Green
+    .large                        rex type
+base.swimmer (planned)            Swimmer. Blue. No subcategories yet.
+base.flyer (planned)              Flyer
+  base.flyer.flier (planned)      Flier, Yellow        <- Hawk
+    .medium .large                hawk, eagle, roc
+  base.flyer.wader (planned)      Wader, Yellow        <- Gale Heron
+    .medium                       heron
 ```
 
-### 4b-1. Proposal: define subcategories by rig and gait, not by species (draft, needs Ziyue's choice)
-Problem (Ziyue): if the top level is broad, one animation set must suit very different animals. A wolf, a bear and a tortoise do not share a good walk.
+Why this split: if one animation set had to suit very different animals, a wolf, a bear and a tortoise would not all walk well. A subcategory groups morphs that can share a good gait. A new species that fits an existing subcategory costs no animation work. A species with a different gait or spine needs its own subcategory.
+- Test for a new species: its bones map to the subcategory rig, and the shared animations play with only a scale change.
+- Example: a Frost Wolf is a new skin plus skills under `base.walker.canine`. A jackal fits too.
 
-Proposal:
-- **Top level stays the body type.** It sets the skeleton layout, the Spectrum color and the required animation list.
-- **A subcategory is a rig profile.** It is a set of bone proportions plus a gait set (walk, run, jump, attack) that the whole group can share. Size (small, medium, large) is then a scale of that profile, not the main split.
-- **Test for a new species.** A species fits an existing subcategory when its bones map to the profile and the shared animations play with only a scale change. If it needs a different gait or a different spine, it needs its own subcategory.
-- **A new species under an existing subcategory costs no animation work.** Example: a Frost Wolf is a new look plus skills under the canine profile. A jackal or a fox fits it too.
-- **Ids.** Existing ids stay. New profiles would use one more segment, for example `base.quadruped.canine.medium`. Nothing changes in the data until Ziyue picks an option.
+Old ids (before v0.50) and where they went: `base.humanoid.*` became `base.walker.humanoid.*`. `base.quadruped.small` and `.medium` became `base.walker.canine.small` and `.medium`, except Prism Stag (`base.walker.hoofed.medium`). `base.quadruped.large` became `base.walker.shelled.large`. `base.bird.medium` became `base.flyer.flier.medium` (Hawk) and `base.flyer.wader.medium` (Gale Heron). `base.biped_dino.*` became `base.walker.raptor.medium` and `base.walker.tyrant.large`.
 
-Draft split for Beast (to check with Ziyue):
+Spectrum colors are set per subcategory (section 6). Several subcategories can share a color. Swimmer is Blue by decision, but it has no subcategories yet, so Blue has no node in the data.
 
-| Profile | Gait | Species that fit | Forms today |
-|---|---|---|---|
-| Canine | Trot and lope, flexible spine | wolf, fox, jackal, coyote, dog | Wolf, Ember Fox |
-| Feline | Stalk and pounce, very flexible spine | lynx, lion, panther | none yet |
-| Bear and boar | Heavy plantigrade walk | bear, boar | none yet |
-| Hoofed | Long legs, trot and gallop | stag, deer, horse | Prism Stag |
-| Shelled | Slow walk, no real run, head and limbs retract | tortoise, turtle | Stone Tortoise |
-| Four-legged dinosaur | Heavy, tail balance, charge | triceratops, ankylosaur | none yet |
-
-Species that would need their own subcategory (they do not fit the canine profile): cats, bears and boars, hoofed animals, shelled animals and four-legged dinosaurs. Heron, a tall wading bird, would also need its own profile under Winged creature, apart from hawk (a short-legged perch and dive flier). Raptor stays alone under Bipedal dinosaur for now.
-
-Cost: each profile is one rig and one animation set (12 required animations). More profiles mean more animation work but the animations fit every form in the group. Order of work: canine first (Wolf is the quality test), then the profile of the next form that ships.
-
-### 4b-2. Proposal: Walkers, Swimmers and Flyers on top; subcategories own skeleton, gait and mesh (draft, not applied)
-Decision (Ziyue): the overall categories are **Walkers, Swimmers and Flyers**. From there we create subcategories. Each subcategory is a unique **skeleton, gait set and base mesh**. Skins attach to that mesh, and different morphs are made by putting a skin and skills on a subcategory.
-
-Levels:
-- **Top category (movement domain):** Walker, Swimmer or Flyer. It has no skeleton, no gait and no mesh. It only groups subcategories.
-- **Subcategory:** owns the `rig` (skeleton), the `gait` set, the required animations and the base mesh (`mesh`). Skins fit a subcategory mesh. A new morph under a subcategory is a new skin plus skills, with no new animation work.
-- **Size:** a scale of the subcategory mesh (small, medium, large), with optional animation overrides.
-
-Mapping of the existing groups under the three top categories (new ids are proposed; every existing body-type id would change):
-
-| Top category | Subcategory | Color | Old id | Proposed id | Forms today |
-|---|---|---|---|---|---|
-| Walker | Humanoid | Red | `base.humanoid.*` | `base.walker.humanoid` (sizes: short, medium, large) | Wanderer |
-| Walker | Canine | Green | `base.quadruped.small`, `.medium` | `base.walker.canine` (small, medium) | Ember Fox, Wolf |
-| Walker | Hoofed | Green | `base.quadruped.medium` | `base.walker.hoofed` (medium) | Prism Stag |
-| Walker | Shelled | Green | `base.quadruped.large` | `base.walker.shelled` (large) | Stone Tortoise |
-| Walker | Feline, Heavy beast | Green | new | `base.walker.feline`, `base.walker.heavy` | none (planned) |
-| Walker | Four-legged dinosaur | Green | new | `base.walker.quadruped_dino` | none (planned) |
-| Walker | Raptor, Tyrant | Green | `base.biped_dino.*` | `base.walker.raptor`, `base.walker.tyrant` | Raptor (planned) |
-| Flyer | Flier | Yellow | `base.bird.medium`, `.large` | `base.flyer.flier` (medium, large) | Hawk (planned) |
-| Flyer | Wader (heron) | Yellow | `base.bird.medium` | `base.flyer.wader` (medium) | Gale Heron (planned) |
-| Swimmer | none yet | Blue | none | `base.swimmer.*` | none |
-
-Decided (Ziyue): a creature that flies is a Flyer, even if it can also walk. So the Gale Heron is a Flier.
-
-Open points for Ziyue:
-- Swimmers have no forms yet. Fish, sea creatures and other swimmers would each need their own subcategory.
-- Dragons, winged humanoids and centaurs mix movement types. A hybrid goes under the domain of its main gait, and a creature that flies is a Flyer.
-- Orange and Purple stay **reserved and unused** for expansion (Ziyue). Raptor and Tyrant are considered beasts for now (Ziyue), so they are Green.
-
-Spectrum colors (Ziyue): color is assigned **per subcategory**, not per top category or family.
-- Six colors: red, orange, yellow, green, blue, purple. `data/spectrums.json` stays the source of truth.
-- Red: Humanoid. Green: the Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur, Raptor, Tyrant). Yellow: all Flyer subcategories. Blue: all Swimmer subcategories. Orange and Purple: reserved for expansion, unused for now.
-- Several subcategories may share a color. The old family groups (Humanoid, Beast, Winged creature, Bipedal dinosaur) are dropped as a level.
-- Wild drops follow the subcategory color: an enemy of a subcategory (any size) drops that subcategory's color. `data/drops.json` has one entry per color in use. The validator checks that each active subcategory's color has an entry and that the entry drops that same color.
-
-Validator and data changes when applied:
-- A top category has `status` only. It must not have `rig`, `gait`, `mesh`, `required_animations` or `spectrum`. A top category's id is one of `base.walker`, `base.swimmer`, `base.flyer`.
-- A subcategory (child of a top category) needs `rig`, `gait`, `mesh`, `skeleton`, `required_animations` and a `spectrum` (a color id). A size (child of a subcategory) has no rig fields.
-- A subcategory's `spectrum` must be a color in `data/spectrums.json`. Subcategories may share a color. A color may have no subcategory. Sizes inherit the color.
-- A size under a top category, or a subcategory under a subcategory, is an error. Add negative tests for each rule.
-- Skins fit a subcategory mesh or one of its sizes. The existing skin rule (narrow by default) stays.
-- Forms, skins, skill tree base-variant nodes and drops move to the new ids. `Forms.json` BaseId changes, so the Unreal Data Table needs a re-import by the build thread. The Wolf rig is `rig.walker.canine`.
-- `amber` becomes `orange` and `violet` becomes `purple` in the color set.
-
-Data rules (`data/bases/*.json`, checked by the validator):
-- A node has `id`, `name`, `status` (active or planned), and an optional `parent`.
-- A child id is its parent's id plus one segment (`base.quadruped` > `base.quadruped.small`).
-- A root has `required_animations` (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death) and a `skeleton`.
-- **Inheritance**: a subcategory reuses the parent's animations by default. It lists only the animations it changes in `animation_overrides` (for example, a small beast has its own run and jump). An override must name an animation from the root's required list. Everything not listed is inherited.
-- Expect some tuning: retargeted animations may need small fixes per subcategory. Fix a shared problem at the parent, so all children gain. Fix a size-specific problem as an override.
-- A form may add `extra_animations` on top, for its own signature moves. Order of lookup: form extra, then subcategory override, then parent, then root.
+Data rules (`data/bases/*.json`, checked by `tools/validate_data.py`, with negative tests in `tools/test_validate_data.py`):
+- A node has `id`, `name` and `status` (active or planned). A subcategory and a size also have `parent` and `examples`.
+- A child id is its parent's id plus one segment (`base.walker` > `base.walker.canine` > `base.walker.canine.small`). The top categories are `base.walker`, `base.swimmer` and `base.flyer`.
+- A top category has none of the rig fields and no `spectrum`.
+- A subcategory has `rig`, `mesh`, `gait`, `skeleton`, `required_animations` (idle, walk, run, jump, basic attack, 2 skills, ultimate, morph in, morph out, hit, death) and `spectrum`.
+- A size has none of those. It may list `animation_overrides` (for example, a small canine has its own run and jump). An override must name an animation from the subcategory's required list. Everything not listed is inherited.
+- A size sits under a subcategory only. A size under a top category, or a size under a size, is an error.
+- Fix a shared animation problem at the subcategory, so all sizes gain. Fix a size-specific problem as an override.
+- A form may add `extra_animations` on top, for its own signature moves. Order of lookup: form extra, then size override, then subcategory.
 - A node cannot be `active` under a `planned` parent.
 - Every form declares `base`. The validator rejects an unknown node.
-- A form may add `extra_animations` for its own signature moves.
-- New top-level body types are added as data. A new top level needs a new skeleton and a full animation set, so it is a bigger task than a new subcategory or a new form.
+- New subcategories are added as data. A new subcategory needs a new rig, a full animation set and a mesh, so it is a bigger task than a new form or a new size.
 - Gameplay: the node sets default movement feel and hitbox size range. A form can change them within limits.
 
 ### Skins and what players see
@@ -355,8 +304,8 @@ Body-type cue (recommendation, for Ziyue to decide):
 - Each skin is made for one body-type node. **Narrow is the default: a skin fits forms of exactly that node.** It never fits another branch of the tree.
 - Why narrow: skins are the product. A narrow skin is made for exact proportions, so it looks its best. It also lets us make many separate variations and sell each one. For example, a different fox skin, lynx skin, and small-canine skin can each be sold on their own.
 - Examples:
-  - A narrow skin for `base.quadruped.small` fits every small beast (fox, lynx, small canine). It does not fit a medium or large beast.
-  - A narrow skin for `base.humanoid.short` fits dwarf, gnome, and halfling forms, and no medium humanoid.
+  - A narrow skin for `base.walker.canine.small` fits every small canine (fox, small dog). It does not fit a medium canine or a small feline.
+  - A narrow skin for `base.walker.humanoid.short` fits dwarf, gnome, and halfling forms, and no medium humanoid.
 - **Broad skins are an option** (`fit: subtree`): the skin fits its node and every node below it. Use this only for shared patterns and materials (for example a fur pattern or an armor-plate set) that look right at every size. A broad skin is the exception, and Ziyue approves each one.
 - A skin can also be exclusive to one form (`form_id`). Default looks work this way. This is the narrowest option.
 - A player who owns a skin can wear it on any owned form it fits.
@@ -478,22 +427,23 @@ Skill points feed the skill tree (section 4c). They are not sold in the market, 
 **Model: Prisms (premium, sold on Steam) and Spectrums (soft, earned in play). Forms and skins are bought with in-game currency.** No pay-to-win.
 
 Currencies (theme: light and the spectrum of light):
-- **Spectrums** (soft): earned only in play. There are several, each with its own color. **Each spectrum is the currency for one type of form**, set by the form's top-level body type. Respec of a form's tree costs its own spectrum.
+- **Spectrums** (soft): earned only in play. There are several, each with its own color. **Each spectrum is the currency for one type of form**, set by the form's subcategory color. Respec of a form's tree costs its own spectrum.
 - **Prisms** (premium): a combination of all spectrums, so in the market they can buy any morph or skin. **Prisms are a market resource and nothing else (confirmed by Ziyue): they are not an in-game cost.** They are bought in Steam bundles. They may also drop in small amounts from play (to confirm).
 
-Spectrum colors (placeholders, set in `data/spectrums.json`; each top-level body type names its spectrum in its JSON):
+Spectrum colors (placeholders, set in `data/spectrums.json`; each subcategory names its color in its JSON, and sizes inherit it):
 
-| Spectrum | Color | Top-level body type (form type) |
+| Spectrum | Color | Used by |
 |---|---|---|
 | Red | `#E5484D` | Humanoid |
-| Green | `#30A46C` | Beast |
-| Blue | `#3E63DD` | Winged creature (planned) |
-| Amber | `#F5A524` | Bipedal dinosaur (planned) |
-| Violet | `#8E4EC6` | unused, reserved for a fifth body type |
+| Orange | `#F76B15` | reserved for expansion, unused |
+| Yellow | `#E5B800` | Flyers (Flier, Wader) |
+| Green | `#30A46C` | Beast subcategories (Canine, Feline, Heavy, Hoofed, Shelled, Four-legged dinosaur, Raptor, Tyrant) |
+| Blue | `#3E63DD` | Swimmers (no subcategory yet) |
+| Purple | `#8E4EC6` | reserved for expansion, unused |
 
 Rules:
-- A skin uses the spectrum of its body type's top level. All forms and skins under one top level share a spectrum.
-- A new top-level body type needs a new spectrum (the validator requires one, and no two share). This is one more reason a new top-level type is a big step.
+- A skin uses the spectrum of its subcategory. All forms and skins under one subcategory share a color. Several subcategories may share a color.
+- The set is exactly six colors (the validator checks it). A new subcategory picks one of them. Orange and Purple are kept free for expansion.
 - **Prisms are market-only (confirmed).** They are not used for respec, skill points, or any in-game cost. In the market they can buy any morph, starters included, to bypass farming (section 6).
 - Spectrums are earned as **rare drops from wild enemies** of that category (bosses never drop them) (section 6c). Enemies never drop another category's spectrum.
 - Crafting components do not cost currency. They drop from boss **loot tables** (section 3c), and bosses never drop Spectrums or Morphics.
@@ -546,23 +496,23 @@ Platform notes: Steam is the storefront. Steam takes a share of sales, so plan b
 Decided by Ziyue: players **earn Spectrums as rare drops by defeating regular enemies of a morph category out in the wild** (for example regular Ember Foxes). **Bosses never drop Spectrums.** Bosses drop only crafting components (section 3c). This keeps Spectrum farming in the open world and component farming in dungeons.
 
 **Rules**
-- Enemies belong to a **morph category**: a top-level body type (humanoid, beast, winged creature, bipedal dinosaur). Enemy design follows the same body-type tree.
-- Defeating an enemy of a category can drop **that category's own Spectrum color**. Humanoid enemies drop Red, beasts drop Green, winged creatures drop Blue, bipedal dinosaurs drop Amber.
-- **Body type decides the color (confirmed by Ziyue).** The match is on the top-level body type, so every subcategory inherits it. A wild enemy under beast drops Green, including small beast (for example a regular Ember Fox), medium beast, and large beast. A new subcategory needs no new drop entry. A new top-level type needs its own Spectrum and drop entry.
+- Enemies belong to a **subcategory** in the body-type tree (for example canine, flier). Enemy design follows the same tree.
+- Defeating an enemy of a subcategory can drop **that subcategory's Spectrum color**. Humanoid enemies drop Red, beast enemies (canine, feline, heavy, hoofed, shelled, dinosaurs) drop Green, flyers drop Yellow, and swimmers will drop Blue.
+- **Subcategory decides the color (confirmed by Ziyue).** The match is on the color of the enemy's subcategory, and every size under it inherits it. A wild canine drops Green, including a small canine (for example a regular Ember Fox) and a medium canine. A new size needs no new drop entry. A new subcategory with an existing color needs none either. A new color needs its own drop entry.
 - Drops are **rare**. The validator caps the drop chance at 10 percent per defeated enemy.
 - Enemies never drop another category's Spectrum. (Spectrums cannot be converted, so battle is the way to earn each one.)
 - A drop shows as a small glowing colored mote the player picks up. In co-op, each player gets their own drop, so players do not compete for them.
-- Drops are tied to battle, not to the form the player is wearing. A player can earn Green from beasts while playing as a humanoid.
+- Drops are tied to battle, not to the form the player is wearing. A player can earn Green from canines while playing as a humanoid.
 - Wild enemies are the only Spectrum source. A boss never drops a Spectrum, and the validator rejects it.
 
 **Why this design**
 - It gives a reason to fight each kind of enemy, so missions need variety in enemy categories.
-- A player who wants a Green form fights beasts. The choice of mission or region becomes a farming choice, which supports the "always something to farm" goal.
+- A player who wants a Green form fights beast enemies. The choice of mission or region becomes a farming choice, which supports the "always something to farm" goal.
 
 **Data** (`data/drops.json`, checked by the validator)
-- One entry per top-level body type: `source` (always `wild_enemy`), `match` (always `body_type_root`), `enemy_base` (the root), `spectrum`, `chance`, `amount_min`, `amount_max`. Boss drops are separate: `data/boss_drops.json` and `data/loot_tables.json` (section 3c).
-- The spectrum must be the category's own spectrum. Every active body type needs an entry. The amount range must be valid.
-- Example: `{ "enemy_base": "base.quadruped", "spectrum": "green", "chance": 0.03, "amount_min": 1, "amount_max": 3 }`.
+- One entry per color that a subcategory uses: `source` (always `wild_enemy`), `match` (always `subcategory_color`), `spectrum`, `chance`, `amount_min`, `amount_max`. Boss drops are separate: `data/boss_drops.json` and `data/loot_tables.json` (section 3c).
+- Every color that a subcategory uses needs exactly one entry, and an entry for a color no subcategory uses is an error. The amount range must be valid.
+- Example: `{ "source": "wild_enemy", "match": "subcategory_color", "spectrum": "green", "chance": 0.03, "amount_min": 1, "amount_max": 3 }`.
 
 **Tuning: needs playtesting**
 - The current numbers (3 percent chance, 1 to 3 per drop) are **placeholders**, not tested. Drop rates must be set by playtest.

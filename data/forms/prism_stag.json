@@ -4,7 +4,7 @@
   "lore": "A pass-exclusive support form. Placeholder.",
   "role": "Support",
   "rarity": "Epic",
-  "base": "base.quadruped.medium",
+  "base": "base.walker.hoofed.medium",
   "base_stats": {
     "hp": 110,
     "speed": 7,

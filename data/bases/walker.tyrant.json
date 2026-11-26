@@ -1,9 +1,13 @@
 {
-  "id": "base.bird",
-  "name": "Winged creature",
+  "id": "base.walker.tyrant",
+  "name": "Tyrant",
+  "parent": "base.walker",
   "status": "planned",
-  "description": "A winged creature that usually stands and walks on two legs. It has two wings. Covers birds and other winged creatures.",
+  "examples": "Rex type",
+  "rig": "rig.walker.tyrant",
+  "mesh": "mesh.walker.tyrant",
   "skeleton": "",
+  "gait": "Two-legged heavy stride, short charge.",
   "required_animations": [
     "idle",
     "walk",
@@ -18,5 +22,5 @@
     "hit",
     "death"
   ],
-  "spectrum": "blue"
+  "spectrum": "green"
 }

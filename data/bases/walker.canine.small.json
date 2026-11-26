@@ -1,9 +1,9 @@
 {
-  "id": "base.quadruped.small",
-  "name": "Small beast",
-  "parent": "base.quadruped",
+  "id": "base.walker.canine.small",
+  "name": "Small canine",
+  "parent": "base.walker.canine",
   "status": "active",
-  "examples": "Fox, lynx, small canine",
+  "examples": "Fox, small canine",
   "animation_overrides": [
     "run",
     "jump"

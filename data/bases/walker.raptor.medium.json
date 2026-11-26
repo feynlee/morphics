@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.raptor.medium",
+  "name": "Medium raptor",
+  "parent": "base.walker.raptor",
+  "status": "planned",
+  "examples": "Raptor"
+}

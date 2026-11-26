@@ -1,9 +1,13 @@
 {
-  "id": "base.biped_dino",
-  "name": "Bipedal dinosaur",
+  "id": "base.flyer.wader",
+  "name": "Wader",
+  "parent": "base.flyer",
   "status": "planned",
-  "description": "Two strong legs, a tail, and small or no arms.",
+  "examples": "Heron, crane",
+  "rig": "rig.flyer.wader",
+  "mesh": "mesh.flyer.wader",
   "skeleton": "",
+  "gait": "Tall wading steps on long legs. Slow takeoff.",
   "required_animations": [
     "idle",
     "walk",
@@ -18,5 +22,5 @@
     "hit",
     "death"
   ],
-  "spectrum": "amber"
+  "spectrum": "yellow"
 }

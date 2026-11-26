@@ -1,6 +1,6 @@
 {
   "id": "skin.ember_fox.default",
-  "base": "base.quadruped.small",
+  "base": "base.walker.canine.small",
   "form_id": "form.ember_fox",
   "name": "Ember Fox",
   "look": {

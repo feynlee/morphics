@@ -1,9 +1,13 @@
 {
-  "id": "base.quadruped",
-  "name": "Beast",
+  "id": "base.walker.hoofed",
+  "name": "Hoofed",
+  "parent": "base.walker",
   "status": "active",
-  "description": "Four legs. Covers cats, canines, bears, foxes and other beasts. It can include four-legged dinosaurs.",
+  "examples": "Stag, deer, horse",
+  "rig": "rig.walker.hoofed",
+  "mesh": "mesh.walker.hoofed",
   "skeleton": "",
+  "gait": "Long legs, trot and gallop.",
   "required_animations": [
     "idle",
     "walk",

@@ -1,0 +1,7 @@
+{
+  "id": "base.walker.canine.medium",
+  "name": "Medium canine",
+  "parent": "base.walker.canine",
+  "status": "active",
+  "examples": "Wolf, large canine"
+}
