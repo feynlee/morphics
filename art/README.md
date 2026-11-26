@@ -6,7 +6,7 @@ Built with Blender Python (`pip install bpy`). Shared helpers are in `art/common
 |---|---|---|---|---|---|---|
 | Human | base.walker.humanoid.medium | rig.walker.humanoid | mesh.walker.humanoid | `art/human/build_human.py` | 9,020 | 22 |
 | Hawk | base.flyer.flier.medium | rig.flyer.flier | mesh.flyer.flier | `art/hawk/build_hawk.py` | 8,772 | 19 |
-| Wolf (canine) | base.walker.canine.medium | rig.walker.canine | mesh.walker.canine | `art/wolf/build_wolf.py` | 10,000 | 33 |
+| Wolf (canine) | base.walker.canine.medium | rig.walker.canine | mesh.walker.canine | `art/wolf/build_wolf.py` | 10,000 | 27 |
 
 Run: `python3 art/<name>/build_<name>.py --render --sheet --fbx`. Output goes to `art/<name>/out/`.
 
