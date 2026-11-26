@@ -3,5 +3,5 @@
   "name": "Large flier",
   "parent": "base.flyer.flier",
   "status": "planned",
-  "examples": "Eagle, roc"
+  "examples": "Eagle, roc, dragon (for now)"
 }

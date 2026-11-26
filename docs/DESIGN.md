@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.52)
+# Morphics: Design Doc (v0.53)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -234,6 +234,7 @@ Decided by Ziyue (applied in v0.50):
 - A **subcategory** is a unique **skeleton (rig), gait set, base mesh and Spectrum color**. Skins attach to the subcategory mesh. A morph is a skin plus skills on a subcategory.
 - A **size** (small, medium, large) is a scale of the subcategory mesh. It inherits the rig, gait, mesh and color, and may override a few animations.
 - A creature that flies is a Flyer, even if it can also walk. So the Gale Heron is a Flier.
+- **Movement rule (Ziyue):** if it flies, it is a Flyer, even if it can also walk. If it has legs and walks, it is a Walker. If it has fins or flippers, it is a Swimmer. So an **otter has four legs and is a Beast (Walker, Green)**, and a **seal has flippers and is a Swimmer (Blue)**. A seal needs its own swimmer subcategory later.
 - Four-legged dinosaurs are large beasts. Raptor and Tyrant are counted as beasts for now. All of these are Green.
 
 ```
@@ -587,7 +588,7 @@ Decided questions were removed. Still open:
 
 **Design questions (body types), first priority.** The first build is a proof of concept with three forms: a human, a canine (Wolf) and a hawk.
 - **Swimmer order:** decided. The first swimmer is the Shark. Which swimmer subcategory comes next (fish, sea mammals, crustaceans, eels) is open and not urgent.
-- **Swim and walk:** a flier stays a Flyer even if it walks. Is a swimmer that also walks on land (otter, seal) a Swimmer or a Walker?
+- **Otter subcategory:** decided that an otter is a Beast. Which subcategory? Canine is the nearest, but an otter's bounding gait may need its own (mustelid) subcategory. For now it is listed as a provisional canine example.
 - **Hybrids:** does a dragon (four legs plus wings) need its own Flyer subcategory? Same question for winged humanoids and centaurs.
 - **Beast-people:** is a wolf-person under the humanoid subcategory or canine?
 - **Raptor and Tyrant:** Green for now. Orange or Purple later, or stay Green?

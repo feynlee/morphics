@@ -2,5 +2,5 @@
   "id": "base.swimmer",
   "name": "Swimmer",
   "status": "planned",
-  "description": "Lives and moves in water. No subcategories yet."
+  "description": "Lives and moves in water, with fins or flippers. Seals are Swimmers. The Shark is the first subcategory."
 }
