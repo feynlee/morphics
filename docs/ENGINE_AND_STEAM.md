@@ -3,12 +3,18 @@
 Status: Engine DECIDED by Ziyue: **Unreal Engine** (visual quality sells the morphs).
 Extends `DESIGN.md`. Prices and license terms change. Check Epic's and Valve's current terms before you commit.
 
+## 0. Target engine version
+- **Target: Unreal Engine 5.8.4** (hotfix of the 5.8 release, announced on the Epic forums as "5.8.4 Hotfix Released").
+- Ziyue is installing 5.8.4 on the dev PC. The install is still in progress.
+- Rule: pin the whole project to 5.8.4. Do not upgrade engine versions in the middle of a milestone. Plugins (including Steam) must support 5.8.
+- Check the Steam plugin and any marketplace plugin for 5.8 support before you use them.
+
 ## 1. Why Unreal
 Morphics sells how forms look. Unreal gives the best 3D visuals out of the box:
 - Nanite and Lumen for detailed models and lighting.
 - Niagara for morph and ability effects.
 - Material Editor for skin variants (color, pattern, shine) without new meshes.
-- MetaHuman and Control Rig tools for characters and animation.
+- Control Rig tools for animation.
 - Built-in Steam support (Online Subsystem Steam or the Steam plugins).
 - Epic's royalty applies after a revenue threshold. Check current terms.
 
@@ -87,7 +93,7 @@ Steam is one back end behind it.
 - Free-to-play with purchases needs clear price display and refund handling.
 
 ## 5. Next steps (after design is agreed)
-1. Install Unreal and make a one-character test: model, morph effect, Steam login.
+1. Finish the UE 5.8.4 install. Make a one-character test: model, morph effect, Steam login.
 2. Write the JSON schema and the importer.
 3. Build the M1 prototype.
 
