@@ -7,6 +7,7 @@
     "additionalProperties": false,
     "required": [
       "source",
+      "match",
       "enemy_base",
       "spectrum",
       "chance",
@@ -18,9 +19,13 @@
         "const": "wild_enemy",
         "description": "Spectrums drop only from regular enemies found in the wild, never from bosses."
       },
+      "match": {
+        "const": "body_type_root",
+        "description": "The entry matches the enemy's top-level body type. Every subcategory under it (such as small beast under four-legged beast) inherits the same Spectrum."
+      },
       "enemy_base": {
         "type": "string",
-        "description": "Top-level body type of the enemy category."
+        "description": "Top-level body type (the root). Wild enemies of this type and of every subcategory below it drop this Spectrum."
       },
       "spectrum": {
         "type": "string",

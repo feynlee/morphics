@@ -6,6 +6,8 @@ Needs the `jsonschema` package. Cross checks:
   crafting material loot table (data/loot_tables.json). Loot table weights sum to 100, the table holds exactly
   the recipe's components, never a Morphic, never a Spectrum, and each table belongs to one boss
 - Spectrums drop only from wild enemies (data/drops.json, source wild_enemy), never from bosses
+- Spectrum drops match on the body-type root (match: body_type_root): a wild enemy of any subcategory
+  (for example small beast) drops the Spectrum of its top-level type (four-legged beast: Green)
 - spectrum drops (data/drops.json): one entry per active top-level body type, the drop is that
   category's own spectrum, the chance is rare (at most 10 percent), amount_min <= amount_max
 - skill points are never sold: data/skill_point_sources.json has only experience and quest
@@ -413,6 +415,16 @@ def main():
             errors.append(f"data/drops.json: {root['id']} drops {entry.get('spectrum')}, but its spectrum is {root.get('spectrum')}")
         if entry.get("amount_min", 1) > entry.get("amount_max", 1):
             errors.append(f"data/drops.json: {root['id']} has amount_min above amount_max")
+    # Subcategories inherit the Spectrum drop of their body-type root.
+    by_root = {e.get("enemy_base"): e for e in drops}
+    for b in bases.values():
+        roots = chain(bases, b["id"])
+        root_id = roots[-1] if roots else None
+        entry = by_root.get(root_id)
+        if entry is None or entry.get("match") != "body_type_root":
+            errors.append(f"data/drops.json: {b['id']} has no body-type-root drop entry ({root_id})")
+        elif entry.get("spectrum") != bases[root_id].get("spectrum"):
+            errors.append(f"data/drops.json: {b['id']} would drop {entry.get('spectrum')}, not its root Spectrum")
     for b in bases.values():
         if "parent" not in b and b.get("status") == "active" and b["id"] not in seen_drop:
             errors.append(f"data/drops.json: active body type {b['id']} needs a drop entry")

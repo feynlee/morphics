@@ -1,4 +1,4 @@
-# Morphics: Design Doc (v0.33)
+# Morphics: Design Doc (v0.34)
 
 Status: AGREED by Ziyue for M1. Later sections may still change.
 All mechanics, names, and art are original.
@@ -473,6 +473,7 @@ Decided by Ziyue: players **earn Spectrums as rare drops by defeating regular en
 **Rules**
 - Enemies belong to a **morph category**: a top-level body type (humanoid, four-legged beast, bird, bipedal dinosaur). Enemy design follows the same body-type tree.
 - Defeating an enemy of a category can drop **that category's own Spectrum color**. Humanoid enemies drop Red, four-legged beasts drop Green, birds drop Blue, bipedal dinosaurs drop Amber.
+- **Body type decides the color (confirmed by Ziyue).** The match is on the top-level body type, so every subcategory inherits it. A wild enemy under four-legged beast drops Green, including small beast (for example a regular Ember Fox), medium beast, and large beast. A new subcategory needs no new drop entry. A new top-level type needs its own Spectrum and drop entry.
 - Drops are **rare**. The validator caps the drop chance at 10 percent per defeated enemy.
 - Enemies never drop another category's Spectrum. (Spectrums cannot be converted, so battle is the way to earn each one.)
 - A drop shows as a small glowing colored mote the player picks up. In co-op, each player gets their own drop, so players do not compete for them.
@@ -484,7 +485,7 @@ Decided by Ziyue: players **earn Spectrums as rare drops by defeating regular en
 - A player who wants a Green form fights four-legged beasts. The choice of mission or region becomes a farming choice, which supports the "always something to farm" goal.
 
 **Data** (`data/drops.json`, checked by the validator)
-- One entry per top-level body type: `source` (always `wild_enemy`), `enemy_base`, `spectrum`, `chance`, `amount_min`, `amount_max`. Boss drops are separate: `data/boss_drops.json` and `data/loot_tables.json` (section 3c).
+- One entry per top-level body type: `source` (always `wild_enemy`), `match` (always `body_type_root`), `enemy_base` (the root), `spectrum`, `chance`, `amount_min`, `amount_max`. Boss drops are separate: `data/boss_drops.json` and `data/loot_tables.json` (section 3c).
 - The spectrum must be the category's own spectrum. Every active body type needs an entry. The amount range must be valid.
 - Example: `{ "enemy_base": "base.quadruped", "spectrum": "green", "chance": 0.03, "amount_min": 1, "amount_max": 3 }`.
 
